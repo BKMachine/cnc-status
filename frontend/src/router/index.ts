@@ -13,13 +13,13 @@ const router = createRouter({
     {
       path: '/status',
       name: 'status',
-      component: StatusView
+      component: StatusView,
     },
     {
       path: '/status/fullscreen',
       name: 'status/fullscreen',
-      component: StatusView
-    }
+      component: StatusView,
+    },
   ],
 });
 

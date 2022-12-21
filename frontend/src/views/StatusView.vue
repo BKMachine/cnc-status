@@ -1,57 +1,44 @@
 <template>
-    <main class="container">
-      <div class="machines" v-for="machine in machines" :key="machine.name">
-        <MachineStatusCard :data="machine" />
-      </div>
-      <div>
-        <button id="fullscreen" class="fullscreen" @click="fullscreen">
-          Fullscreen
-        </button>
-      </div>
-    </main>
+  <main class="container" v-if="machines.length">
+    <div class="machines" v-for="machine in sortedMachines" :key="machine.name">
+      <MachineStatusCard :data="machine" />
+    </div>
+    <div>
+      <button id="fullscreen" class="fullscreen" @click="fullscreen">
+        Fullscreen
+      </button>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
-import {status} from '@/plugins/enums';
 import MachineStatusCard from '@/components/MachineStatusCard.vue';
-import {onMounted} from "vue";
-import { useRoute } from 'vue-router'
+import { computed, onMounted, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from '@/plugins/axios';
 
-const route = useRoute()
+const route = useRoute();
 
-onMounted(() => {
-  if (route.name === 'status/fullscreen') fullscreen()
+const machines = ref([] as Machine[]);
+const sortedMachines = computed(() => {
+  return machines.value.sort((a: Machine, b: Machine) => {
+    return (a.name > b.name) ? 1 : 0 || b.status - a.status
+  })
 })
 
-const machines = [
-  {
-    name: 'RD-1',
-    status: status.NOT_RUNNING,
-    time: new Date(),
-    lastCycle: 650
-  },
-  {
-    name: 'RD-2',
-    status: status.RUNNING,
-    time: new Date(),
-    lastCycle: 650
-  },
-  {
-    name: 'RD-3',
-    status: status.IDLE,
-    time: new Date(),
-    lastCycle: 650
-  },
-  {
-    name: 'RD-4',
-    status: status.ALARMED,
-    time: new Date(),
-    lastCycle: 650
-  }
-]
+onMounted(() => {
+  if (route.name === 'status/fullscreen') fullscreen();
+  axios.get('/status').then(({ data }: { data: Machine[] }) => {
+    const now = new Date();
+    for (let i = 0; i < data.length; i++) {
+      data[i].time = now
+    }
+    machines.value = data;
+  });
+});
 
 function fullscreen() {
-  const elem = document.getElementById("app");
+  const elem = document.getElementById('app');
   if (!elem) return;
   elem.requestFullscreen();
 }

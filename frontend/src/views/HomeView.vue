@@ -1,9 +1,7 @@
 <template>
   <main>Hello World</main>
   <router-link to="status">
-  <button>
-    Status
-  </button>
+    <button>Status</button>
   </router-link>
 </template>
 
