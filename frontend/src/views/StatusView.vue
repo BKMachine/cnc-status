@@ -1,7 +1,7 @@
 <template>
   <main class="container" v-if="machines.length">
     <div class="machines" v-for="machine in sortedMachines" :key="machine.name">
-      <MachineStatusCard :data="machine" />
+      <MachineStatusCard :data="machine" :now="state.now"/>
     </div>
     <div>
       <button id="fullscreen" class="fullscreen" @click="fullscreen">
@@ -18,6 +18,14 @@ import { useRoute } from 'vue-router';
 import axios from '@/plugins/axios';
 
 const route = useRoute();
+
+const state = reactive({
+  now: new Date(),
+});
+
+setInterval(() => {
+  state.now = new Date();
+}, 250);
 
 const machines = ref([] as Machine[]);
 const sortedMachines = computed(() => {

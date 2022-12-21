@@ -11,14 +11,15 @@
 </template>
 
 <script setup lang="ts">
-import type { status } from '@/plugins/enums';
 import { Duration } from 'luxon';
-import { computed, watch } from 'vue';
-import { store as now } from '@/store/now';
+import {computed, ref} from 'vue';
 
 const props = defineProps<{
   data: Machine;
+  now: Date;
 }>();
+
+const time = ref(new Date(props.data.time))
 
 const lastCycle = computed(() => {
   const dur = Duration.fromObject({ seconds: props.data.lastCycle });
@@ -26,9 +27,8 @@ const lastCycle = computed(() => {
 });
 
 const timer = computed(() => {
-  const seconds =
-    now.state.now.getSeconds() - new Date(props.data.time).getSeconds();
-  if (!seconds) return '00:00:00';
+  let seconds = Math.floor((props.now.valueOf() - time.value.valueOf()) / 1000);
+  if (seconds < 0) seconds = 0;
   const dur = Duration.fromObject({ seconds });
   return dur.toFormat('hh:mm:ss');
 });
