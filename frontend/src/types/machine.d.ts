@@ -1,23 +1,27 @@
 interface Machine {
   name: string;
-  url: string;
   status: Status;
 }
 
 interface Status {
-  program: string
-  comment: string
-  status: string
-  time: string
-  block: string
-  tool: string
-  rpm: number
-  load: number
-  mode: string
-  counter: string
-  feedOverride: string
-  rapidOverride: string
-  spindleOverride: string
-  feedrate: number
-  estop: string
+  online: boolean;
+  program: string;
+  comment: string;
+  tool: string;
+  overrides: {
+    feed: number;
+    rapid: number;
+    spindle: number;
+  };
+  rpm: number;
+  alarms: any[];
+  parts: number;
+  cycle: number;
+  /*status: string;
+  time: string;
+  block: string;
+  load: number;
+  mode: string;
+  feedrate: number;
+  estop: string;*/
 }

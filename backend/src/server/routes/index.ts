@@ -9,8 +9,13 @@ router.get('/', (req, res, next) => {
 
 router.get('/status', async (req, res, next) => {
   try {
-    const status = machines()
-    res.status(200).json(status);
+    const response = []
+    for (const machine in machines) {
+      const m = {...machines[machine]}
+      delete m.mappings
+      response.push(m)
+    }
+    res.status(200).json(response);
   } catch(e) {
     next(e)
   }

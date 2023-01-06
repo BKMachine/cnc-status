@@ -3,15 +3,15 @@ import * as database from './database';
 import logger from './logger';
 
 async function start(): Promise<void> {
-  await database.connect();
+  // await database.connect();
   server.start();
-  require('./machines')
+  require('./mqtt')
 }
 
 async function stop(): Promise<void> {
   const shutdownSequence = [
     server.stop,
-    database.disconnect,
+    // database.disconnect,
   ];
 
   for (let i = 0; i < shutdownSequence.length; i++) {
