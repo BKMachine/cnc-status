@@ -5,6 +5,7 @@ import logger from './logger';
 async function start(): Promise<void> {
   await database.connect();
   server.start();
+  require('./machines')
 }
 
 async function stop(): Promise<void> {

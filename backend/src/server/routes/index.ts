@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import StatusService from '../services/status_service'
+import machines from '../../machines'
 
 const router = Router();
 
@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/status', async (req, res, next) => {
   try {
-    const status = StatusService
+    const status = machines()
     res.status(200).json(status);
   } catch(e) {
     next(e)
