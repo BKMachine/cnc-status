@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^1.2.1",
+    "lodash": "^4.17.21",
     "luxon": "^3.1.1",
     "socket.io-client": "^4.5.4",
     "vue": "^3.2.45",
@@ -24,6 +25,7 @@
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/axios": "^0.14.0",
     "@types/jsdom": "^20.0.1",
+    "@types/lodash": "^4.14.191",
     "@types/luxon": "^3.1.0",
     "@types/node": "^18.11.17",
     "@vitejs/plugin-vue": "^4.0.0",

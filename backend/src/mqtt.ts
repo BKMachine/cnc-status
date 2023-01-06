@@ -19,6 +19,7 @@ client.on('disconnect', () => {
 
 client.on('message', (topic, message) => {
   const machine = topic.split('/')[1]
+  if (!machine) return
   const data = JSON.parse(message.toString())
   if (!data.observation) return
   const { mappings } = machines[machine]
@@ -30,7 +31,7 @@ client.on('message', (topic, message) => {
       const value = _.get(data, location, undefined)
       if (value === undefined) continue
       const old = machines[machine].status[key]
-      if (!_.isEqual(old, value)) emit('change', {name: machine, status: {[key]: value}})
+      if (!_.isEqual(old, value)) emit('change', {name: machines[machine].name, status: {[key]: value}})
       machines[machine].status[key] = value
     }
   }

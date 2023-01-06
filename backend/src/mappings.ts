@@ -1,13 +1,21 @@
-export const robodrill: Mapping = {
+const common: Mapping = {
   online: {
     subtopic: 'sweep',
     location: 'state.data.online'
   },
-  program: {
+  mainProgram: {
+    subtopic: 'production/1',
+    location: 'state.data.program.main.number'
+  },
+  mainComment: {
+    subtopic: 'production/1',
+    location: 'state.data.program.main.comment'
+  },
+  runningProgram: {
     subtopic: 'production/1',
     location: 'state.data.program.running.number'
   },
-  comment: {
+  runningComment: {
     subtopic: 'production/1',
     location: 'state.data.program.running.comment'
   },
@@ -29,6 +37,38 @@ export const robodrill: Mapping = {
   },
   cycle: {
     subtopic: 'production/1',
+    location: 'state.data.timers.cycle_time_ms'
+  },
+  mode: {
+    subtopic: 'state/1',
+    location: 'state.data.mode'
+  },
+  execution: {
+    subtopic: 'state/1',
+    location: 'state.data.execution'
+  }
+}
+
+export const robodrill: Mapping = {
+  ...common,
+}
+
+export const doosanLathe: Mapping = {
+  ...common,
+}
+
+export const hanwhaSwiss: Mapping = {
+  ...common,
+  mode: {
+    subtopic: 'state/2',
+    location: 'state.data.mode'
+  },
+  execution: {
+    subtopic: 'state/2',
+    location: 'state.data.execution'
+  },
+  cycle: {
+    subtopic: 'production/2',
     location: 'state.data.timers.cycle_time_ms'
   }
 }

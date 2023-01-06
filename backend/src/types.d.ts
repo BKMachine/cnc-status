@@ -7,8 +7,10 @@ interface Machine {
 
 interface Status {
   online: boolean
-  program: string
-  comment: string
+  mainProgram: string
+  mainComment: string
+  runningProgram: string
+  runningComment: string
   tool: string
   overrides: {
     feed: number
@@ -18,6 +20,8 @@ interface Status {
   alarms: any[]
   parts: number
   cycle: number
+  mode: string
+  execution: string
   [key: string]: any
 }
 

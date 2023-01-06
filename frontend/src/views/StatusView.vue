@@ -11,6 +11,7 @@ import MachineStatusCard from '@/components/MachineStatusCard.vue';
 import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
+import _ from 'lodash'
 
 const state = reactive({
   now: new Date(),
@@ -36,8 +37,7 @@ onMounted(() => {
     (payload: { name: string; status: { [key: string]: any } }) => {
       const index = machines.value.findIndex((x) => x.name === payload.name);
       if (index !== -1) {
-        const old = { ...machines.value[index] };
-        machines.value.splice(index, 1, Object.assign({}, old, payload));
+        machines.value[index] = _.merge(machines.value[index], payload)
       } else {
         machines.value.push(payload as Machine);
       }
@@ -48,9 +48,11 @@ onMounted(() => {
 <style scoped>
 .container {
   display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 .machines {
-  margin: 10px;
+  margin: 5px;
 }
 </style>

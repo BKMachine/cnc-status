@@ -10,7 +10,10 @@ const format = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
 app.use(morgan(format, { stream: logger.stream }));
 app.use(express.json());
 
+app.use('/img', express.static(path.join(__dirname, './images')));
+
 app.use('/api', Api);
+
 
 if (process.env.NODE_ENV === 'production') {
   const wwwDir = path.join(__dirname, '../../../frontend/dist');
