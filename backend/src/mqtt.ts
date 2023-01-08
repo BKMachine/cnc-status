@@ -34,9 +34,10 @@ export function connect() {
         const value = _.get(data, location, undefined);
         if (value === undefined) continue;
         const old = machines[machine].status[key];
-        if (!_.isEqual(old, value))
+        if (!_.isEqual(old, value)) {
+          machines[machine] = _.merge({}, machines[machine], { status: { [key]: value } });
           emit('change', { name: machines[machine].name, status: { [key]: value } });
-        machines[machine].status[key] = value;
+        }
       }
     }
   });

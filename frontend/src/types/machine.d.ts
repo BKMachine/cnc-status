@@ -1,5 +1,6 @@
-interface Machine {
+export interface Machine {
   name: string;
+  image: string;
   status: Status;
 }
 
