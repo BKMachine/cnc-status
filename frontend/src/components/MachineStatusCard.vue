@@ -1,64 +1,107 @@
 <template>
   <main>
-    <div
-      class="machine"
-      :class="[
-        status,
-        { alarmed: hasAlarm, online: isOnline, offline: !isOnline },
-      ]"
-    >
-      <div class="name">
-        <div>{{ data.name }}</div>
-        <img class="logo" v-if="data.image" :src="data.image" alt="" />
-      </div>
-      <div v-if="!isOnline" class="offline-message">
-        <img :src="offlineImg" alt="" />
-      </div>
-      <div v-else-if="hasAlarm">
-        <table>
-          <tr v-for="alarm in data.status.alarms" :key="alarm.number">
-            <td class="alarm-number">{{ alarm.number }} -</td>
-            <td>{{ alarm.message }}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="details" v-else>
-        <div class="title">
-          {{ data.status.mainProgram }} {{ data.status.mainComment }}
+    <div v-if="!isMobile()" class="container">
+      <div
+        class="machine"
+        :class="[
+          status,
+          { alarmed: hasAlarm, online: isOnline, offline: !isOnline },
+        ]"
+      >
+        <div class="name">
+          <div>{{ data.name }}</div>
+          <img class="logo" v-if="data.image" :src="data.image" alt="" />
         </div>
-        <div class="subtitle">
-          <div v-if="showSubtitle">
-            {{ data.status.runningProgram }} {{ data.status.runningComment }}
+        <div v-if="!isOnline" class="offline-message">
+          <img :src="offlineImg" alt="" />
+        </div>
+        <div v-else-if="hasAlarm">
+          <table>
+            <tr v-for="alarm in data.status.alarms" :key="alarm.number">
+              <td class="alarm-number">{{ alarm.number }} -</td>
+              <td>{{ alarm.message }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="details" v-else>
+          <div class="title">
+            {{ data.status.mainProgram }} {{ data.status.mainComment }}
+          </div>
+          <div class="subtitle">
+            <div v-if="showSubtitle">
+              {{ data.status.runningProgram }} {{ data.status.runningComment }}
+            </div>
+          </div>
+          <div>
+            Tool: <span>{{ data.status.tool }}</span>
+          </div>
+          <div>
+            Feed Override: <span>{{ data.status.overrides.feed }}%</span>
+          </div>
+          <div>
+            Rapid Override: <span>{{ rapidOverride }}</span>
+          </div>
+          <div>
+            Parts Count: <span>{{ data.status.parts }}</span>
+          </div>
+          <div>
+            Cycle: <span>{{ cycle }}</span>
+          </div>
+          <div>
+            Last Cycle: <span>{{ lastCycle }}</span>
+          </div>
+          <div>
+            Mode: <span>{{ mode }}</span>
+          </div>
+          <div>
+            Execution: <span>{{ data.status.execution }}</span>
+          </div>
+          <div class="myProgress">
+            <div class="myBar" :style="`width: ${progress}%`"></div>
           </div>
         </div>
-        <div>
-          Tool: <span>{{ data.status.tool }}</span>
+        <div class="timer" v-if="isOnline">
+          <div>{{ timer }}</div>
         </div>
-        <div>
-          Feed Override: <span>{{ data.status.overrides.feed }}%</span>
+      </div>
+    </div>
+
+    <div v-else class="mobile">
+      <div
+        :class="[
+          status,
+          { alarmed: hasAlarm, online: isOnline, offline: !isOnline },
+        ]"
+      >
+        <div class="name">
+          <div>{{ data.name }}</div>
+          <div class="title">
+            {{ data.status.mainProgram }} {{ data.status.mainComment }}
+          </div>
+          <img
+            class="mobile-offline"
+            v-if="!isOnline"
+            :src="offlineImg"
+            alt=""
+          />
+          <img class="logo" v-if="data.image" :src="data.image" alt="" />
         </div>
-        <div>
-          Rapid Override: <span>{{ rapidOverride }}</span>
+        <div v-if="!isOnline"></div>
+        <div v-else-if="hasAlarm">
+          <table>
+            <tr v-for="alarm in data.status.alarms" :key="alarm.number">
+              <td class="alarm-number">{{ alarm.number }} -</td>
+              <td>{{ alarm.message }}</td>
+            </tr>
+          </table>
         </div>
-        <div>
-          Parts Count: <span>{{ data.status.parts }}</span>
+        <div v-else>
+          <div class="title">
+            {{ data.status.mainProgram }} {{ data.status.mainComment }}
+          </div>
         </div>
-        <div>
-          Cycle: <span>{{ cycle }}</span>
-        </div>
-        <div>
-          Last Cycle: <span>{{ lastCycle }}</span>
-        </div>
-        <div>
-          Mode: <span>{{ mode }}</span>
-        </div>
-        <div>
-          Execution: <span>{{ data.status.execution }}</span>
-        </div>
-        <div class="myProgress">
-          <div class="myBar" :style="`width: ${progress}%`"></div>
-        </div>
-        <div class="timer">
+        <div class="mobile-subtext" v-if="isOnline">
+          <div v-if="!hasAlarm">Parts: {{ data.status.parts }}</div>
           <div>{{ timer }}</div>
         </div>
       </div>
@@ -71,6 +114,7 @@ import { Duration } from 'luxon';
 import { computed, ref, watch } from 'vue';
 import offlineImg from '@/components/images/offline.png';
 import type { Machine } from '@/types/machine';
+import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
   data: Machine;
@@ -180,6 +224,11 @@ const showSubtitle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: white;
+}
+
+.mobile .name {
+  font-size: 18px;
 }
 
 .name img {
@@ -218,6 +267,10 @@ const showSubtitle = computed(() => {
   white-space: nowrap;
 }
 
+.mobile .title {
+  font-size: 12px;
+}
+
 .subtitle {
   font-size: 12px !important;
   text-overflow: ellipsis;
@@ -230,6 +283,7 @@ const showSubtitle = computed(() => {
   font-size: 20px !important;
   display: flex;
   justify-content: center;
+  align-items: flex-end;
 }
 
 .myProgress {
@@ -257,5 +311,35 @@ const showSubtitle = computed(() => {
 .alarm-number {
   white-space: nowrap;
   display: flex;
+}
+
+.mobile {
+  width: 100%;
+  font-size: 12px;
+}
+
+.mobile > div {
+  padding: 5px;
+}
+
+.mobile .logo {
+  height: 16px;
+}
+
+.mobile-subtext {
+  display: flex;
+}
+
+.mobile-subtext > div {
+  margin-right: 10px;
+}
+
+.mobile-offline {
+  position: absolute;
+  left: 11%;
+}
+
+.mobile table tr {
+  line-height: 10px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <main class="container" v-if="machines.length">
+  <main class="container" :class="{ mobile: mobile }" v-if="machines.length">
     <div class="machines" v-for="machine in machines" :key="machine.name">
       <MachineStatusCard :data="machine" :now="state.now" />
     </div>
@@ -13,10 +13,13 @@ import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
 import _ from 'lodash';
 import type { Machine } from '@/types/machine';
+import isMobile from '@/plugins/isMobile';
 
 const state = reactive({
   now: new Date(),
 });
+
+const mobile = isMobile();
 
 setInterval(() => {
   state.now = new Date();
@@ -61,7 +64,7 @@ async function getStatus() {
 </script>
 
 <style scoped>
-.container {
+.container:not(.mobile) {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
