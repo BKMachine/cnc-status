@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import morgan from 'morgan';
 import * as logger from '../logger';
-import Api from './routes';
+import api from './api';
 
 const app = express();
 
@@ -11,9 +11,7 @@ app.use(morgan(format, { stream: logger.stream }));
 app.use(express.json());
 
 app.use('/img', express.static(path.join(__dirname, './images')));
-
-app.use('/api', Api);
-
+app.use('/api', api);
 
 if (process.env.NODE_ENV === 'production') {
   const wwwDir = path.join(__dirname, '../../../frontend/dist');

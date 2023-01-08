@@ -7,8 +7,8 @@ let io: Server;
 export default function (server: http.Server) {
   io = new Server(server, {
     cors: {
-      origin: '*'
-    }
+      origin: '*', // todo
+    },
   });
 
   io.on('connection', (socket) => {

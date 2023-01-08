@@ -1,16 +1,18 @@
-import * as server from './server';
-import * as database from './database';
+// import * as database from './database';
 import logger from './logger';
+import * as mqtt from './mqtt';
+import * as server from './server';
 
 async function start(): Promise<void> {
   // await database.connect();
+  mqtt.connect();
   server.start();
-  require('./mqtt')
 }
 
 async function stop(): Promise<void> {
   const shutdownSequence = [
     server.stop,
+    mqtt.disconnect,
     // database.disconnect,
   ];
 

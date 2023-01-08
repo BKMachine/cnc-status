@@ -1,11 +1,11 @@
+import app from './app';
 import logger from './logger';
-import app from './app'
 
 logger.info('Application starting...');
 
 app.start().then(() => {
-    logger.info('Startup complete');
-  })
+  logger.info('Startup complete');
+});
 
 const signals: NodeJS.Signals[] = ['SIGHUP', 'SIGINT', 'SIGTERM'];
 

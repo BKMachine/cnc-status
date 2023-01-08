@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import machines from '../../machines'
+import machines from '../../machines';
 
 const router = Router();
 
@@ -9,15 +9,15 @@ router.get('/', (req, res, next) => {
 
 router.get('/status', async (req, res, next) => {
   try {
-    const response = []
+    const response = [];
     for (const machine in machines) {
-      const m = {...machines[machine]}
-      delete m.mappings
-      response.push(m)
+      const m = { ...machines[machine] };
+      delete m.mappings;
+      response.push(m);
     }
     res.status(200).json(response);
-  } catch(e) {
-    next(e)
+  } catch (e) {
+    next(e);
   }
 });
 

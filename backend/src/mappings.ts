@@ -1,74 +1,78 @@
 const common: Mapping = {
   online: {
     subtopic: 'sweep',
-    location: 'state.data.online'
+    location: 'state.data.online',
   },
   mainProgram: {
     subtopic: 'production/1',
-    location: 'state.data.program.main.number'
+    location: 'state.data.program.main.number',
   },
   mainComment: {
     subtopic: 'production/1',
-    location: 'state.data.program.main.comment'
+    location: 'state.data.program.main.comment',
   },
   runningProgram: {
     subtopic: 'production/1',
-    location: 'state.data.program.running.number'
+    location: 'state.data.program.running.number',
   },
   runningComment: {
     subtopic: 'production/1',
-    location: 'state.data.program.running.comment'
+    location: 'state.data.program.running.comment',
   },
   tool: {
     subtopic: 'state/1',
-    location: 'state.data.modal.t'
+    location: 'state.data.modal.t',
   },
   overrides: {
     subtopic: 'state/1',
-    location: 'state.data.override'
+    location: 'state.data.override',
   },
   alarms: {
     subtopic: 'alarms/1',
-    location: 'state.data.alarms'
+    location: 'state.data.alarms',
   },
   parts: {
     subtopic: 'production/1',
-    location: 'state.data.pieces.produced'
+    location: 'state.data.pieces.produced',
   },
   cycle: {
     subtopic: 'production/1',
-    location: 'state.data.timers.cycle_time_ms'
+    location: 'state.data.timers.cycle_time_ms',
   },
   mode: {
     subtopic: 'state/1',
-    location: 'state.data.mode'
+    location: 'state.data.mode',
   },
   execution: {
     subtopic: 'state/1',
-    location: 'state.data.execution'
-  }
-}
+    location: 'state.data.execution',
+  },
+};
 
 export const robodrill: Mapping = {
   ...common,
-}
+};
 
 export const doosanLathe: Mapping = {
   ...common,
-}
+};
+
+export const doosanMill: Mapping = {
+  ...common,
+};
 
 export const hanwhaSwiss: Mapping = {
   ...common,
   mode: {
     subtopic: 'state/2',
-    location: 'state.data.mode'
+    location: 'state.data.mode',
   },
   execution: {
     subtopic: 'state/2',
-    location: 'state.data.execution'
+    location: 'state.data.execution',
   },
   cycle: {
     subtopic: 'production/2',
-    location: 'state.data.timers.cycle_time_ms'
-  }
-}
+    location: 'state.data.timers.cycle_time_ms',
+  },
+};
