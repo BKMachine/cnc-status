@@ -30,6 +30,7 @@ ENV DOCKER=true \
     NODE_ENV=production
 COPY --from=backend_prod_dependencies /app/node_modules ./backend/node_modules
 COPY --from=backend_builder /app/dist ./backend/dist
+COPY --from=backend_builder /app/src/server/images ./backend/dist/server/images
 COPY --from=frontend_builder /app/dist ./frontend/dist
 
 EXPOSE 3000
