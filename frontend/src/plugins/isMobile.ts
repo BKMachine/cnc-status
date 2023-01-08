@@ -12,6 +12,7 @@ export default () => {
       )
     )
       isMobile = true;
+    // @ts-ignore
   })(navigator.userAgent || navigator.vendor || window.opera);
   return isMobile;
 };
