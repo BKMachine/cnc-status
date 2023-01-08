@@ -27,8 +27,13 @@ const machines = ref([] as Machine[]);
 let io: Socket;
 
 onMounted(() => {
+  const wsUrl =
+    import.meta.env.MODE === 'production'
+      ? import.meta.env.BASE_URL
+      : 'http://127.0.0.1:3000';
+
   getStatus().then(() => {
-    io = socket('http://127.0.0.1:3000', {
+    io = socket(wsUrl, {
       transports: ['websocket', 'polling'],
     });
 
