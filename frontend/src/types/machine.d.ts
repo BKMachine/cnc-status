@@ -11,6 +11,8 @@ interface Status {
   runningProgram: string;
   runningComment: string;
   tool: string;
+  mode: string;
+  execution: string;
   overrides: {
     feed: number;
     rapid: number;
@@ -20,12 +22,6 @@ interface Status {
   alarms: any[];
   parts: number;
   cycle: number;
-  mode: string;
-  execution: string;
-  /*status: string;
-  time: string;
-  block: string;
-  load: number;
-  feedrate: number;
-  estop: string;*/
+  lastCycle: number;
+  lastStateTs: string;
 }

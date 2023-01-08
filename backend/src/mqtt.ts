@@ -35,8 +35,15 @@ export function connect() {
         if (value === undefined) continue;
         const old = machines[machine].status[key];
         if (!_.isEqual(old, value)) {
-          machines[machine] = _.merge({}, machines[machine], { status: { [key]: value } });
-          emit('change', { name: machines[machine].name, status: { [key]: value } });
+          const newStatus = { status: { [key]: value } };
+          if (key === 'cycle') {
+            if (value < old) newStatus.status.lastCycle = old;
+          }
+          if (key === 'execution') {
+            newStatus.status.lastStateTs = new Date();
+          }
+          machines[machine] = _.merge({}, machines[machine], newStatus);
+          emit('change', { name: machines[machine].name, newStatus });
         }
       }
     }

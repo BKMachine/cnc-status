@@ -18,6 +18,8 @@ const status: Status = {
   alarms: [],
   parts: 0,
   cycle: 0,
+  lastCycle: 0,
+  lastStateTs: new Date(),
 };
 
 const machines: { [key: string]: Machine } = {

@@ -22,6 +22,8 @@ interface Status {
   alarms: any[];
   parts: number;
   cycle: number;
+  lastCycle: number;
+  lastStateTs: Date;
   [key: string]: any;
 }
 

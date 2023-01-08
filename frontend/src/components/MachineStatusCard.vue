@@ -125,26 +125,14 @@ const isOnline = computed(() => {
   return props.data.status.online;
 });
 
-const cycleMs = computed(() => {
-  return props.data.status.cycle;
-});
-
 const cycle = computed(() => {
-  const seconds = Math.floor(cycleMs.value / 1000);
+  const seconds = Math.floor(props.data.status.cycle / 1000);
   const dur = Duration.fromObject({ seconds });
   return dur.toFormat('m:ss');
 });
 
-const last = ref(500000);
-
-watch(cycleMs, (current, old) => {
-  if (current < old) {
-    last.value = old;
-  }
-});
-
 const lastCycle = computed(() => {
-  const seconds = Math.floor(last.value / 1000);
+  const seconds = Math.floor(props.data.status.lastCycle / 1000);
   const dur = Duration.fromObject({ seconds });
   return dur.toFormat('m:ss');
 });
@@ -171,25 +159,18 @@ const mode = computed(() => {
   return props.data.status.mode;
 });
 
-const execution = computed(() => {
-  return props.data.status.execution;
-});
-
-const time = ref(new Date());
-
-watch(execution, () => {
-  time.value = new Date();
-});
-
 const timer = computed(() => {
-  let seconds = Math.floor((props.now.valueOf() - time.value.valueOf()) / 1000);
+  let seconds = Math.floor(
+    (props.now.valueOf() - new Date(props.data.status.lastStateTs).valueOf()) /
+      1000,
+  );
   if (seconds < 0) seconds = 0;
   const dur = Duration.fromObject({ seconds });
   return dur.toFormat('hh:mm:ss');
 });
 
 const progress = computed(() => {
-  const value = (cycleMs.value / last.value) * 100;
+  const value = (props.data.status.cycle / props.data.status.lastCycle) * 100;
   return Math.min(value, 100);
 });
 
