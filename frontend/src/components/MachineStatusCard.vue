@@ -15,7 +15,15 @@
         <div v-if="!isOnline" class="offline-message">
           <img :src="offlineImg" alt="" />
         </div>
-        <div v-else-if="hasAlarm">
+        <div v-else-if="hasAlarm" class="details">
+          <div class="title">
+            {{ data.status.mainProgram }} {{ data.status.mainComment }}
+          </div>
+          <div class="subtitle">
+            <div v-if="showSubtitle">
+              {{ data.status.runningProgram }} {{ data.status.runningComment }}
+            </div>
+          </div>
           <table>
             <tr v-for="alarm in data.status.alarms" :key="alarm.number">
               <td class="alarm-number">{{ alarm.number }} -</td>
@@ -75,7 +83,7 @@
       >
         <div class="name">
           <div>{{ data.name }}</div>
-          <div class="title">
+          <div class="title" v-if="isOnline">
             {{ data.status.mainProgram }} {{ data.status.mainComment }}
           </div>
           <img
@@ -94,11 +102,6 @@
               <td>{{ alarm.message }}</td>
             </tr>
           </table>
-        </div>
-        <div v-else>
-          <div class="title">
-            {{ data.status.mainProgram }} {{ data.status.mainComment }}
-          </div>
         </div>
         <div class="mobile-subtext" v-if="isOnline">
           <div v-if="!hasAlarm">Parts: {{ data.status.parts }}</div>
@@ -175,7 +178,10 @@ const progress = computed(() => {
 });
 
 const showSubtitle = computed(() => {
-  return props.data.status.mainProgram !== props.data.status.runningProgram;
+  return (
+    props.data.status.runningProgram &&
+    props.data.status.mainProgram !== props.data.status.runningProgram
+  );
 });
 </script>
 
@@ -186,6 +192,12 @@ const showSubtitle = computed(() => {
   color: #ffffff;
   padding: 10px;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.details {
+  flex: 2;
 }
 
 .details > div {
@@ -241,7 +253,6 @@ const showSubtitle = computed(() => {
 }
 
 .title {
-  font-size: 18px;
   font-weight: bold;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -261,10 +272,10 @@ const showSubtitle = computed(() => {
 }
 
 .timer {
-  font-size: 20px !important;
+  font-size: 20px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  height: 20px;
 }
 
 .myProgress {
