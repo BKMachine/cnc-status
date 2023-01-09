@@ -63,16 +63,4 @@ export const doosanMill: Mapping = {
 
 export const hanwhaSwiss: Mapping = {
   ...common,
-  mode: {
-    subtopic: 'state/2',
-    location: 'state.data.mode',
-  },
-  execution: {
-    subtopic: 'state/2',
-    location: 'state.data.execution',
-  },
-  cycle: {
-    subtopic: 'production/2',
-    location: 'state.data.timers.cycle_time_ms',
-  },
 };
