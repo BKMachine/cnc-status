@@ -43,7 +43,7 @@ export function connect() {
             newStatus.status.lastStateTs = new Date();
           }
           machines[machine] = _.merge({}, machines[machine], newStatus);
-          emit('change', { name: machines[machine].name, newStatus });
+          emit('change', { name: machines[machine].name, status: newStatus.status });
         }
       }
     }
