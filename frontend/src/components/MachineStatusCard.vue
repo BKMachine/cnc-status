@@ -231,7 +231,7 @@ const showSubtitle = computed(() => {
 }
 
 .online {
-  background: #7f7f7f;
+  background: #6c6c6c;
 }
 
 .status-ACTIVE {
@@ -240,7 +240,8 @@ const showSubtitle = computed(() => {
 
 .status-STOPPED,
 .status-INTERRUPTED,
-.status-READY {
+.status-READY,
+.status-UNAVAILABLE {
   background: #6c6c6c;
 }
 

@@ -50,6 +50,9 @@ onMounted(() => {
         const index = machines.value.findIndex((x) => x.name === payload.name);
         if (index !== -1) {
           machines.value[index] = _.merge(machines.value[index], payload);
+          if (payload.status.alarms && !payload.status.alarms.length) {
+            machines.value[index].status.alarms = [];
+          }
         }
       },
     );
