@@ -22,7 +22,7 @@ const mobile = isMobile();
 
 setInterval(() => {
   state.now = new Date();
-}, 250);
+}, 1000);
 
 const machines = ref([] as Machine[]);
 
