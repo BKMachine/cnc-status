@@ -131,14 +131,14 @@ const isOnline = computed(() => {
 const cycle = computed(() => {
   const seconds = Math.floor(props.data.status.cycle / 1000);
   const dur = Duration.fromObject({ seconds });
-  if (dur.hours) return dur.toFormat('HH:mm:ss');
+  if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
 });
 
 const lastCycle = computed(() => {
   const seconds = Math.floor(props.data.status.lastCycle / 1000);
   const dur = Duration.fromObject({ seconds });
-  if (dur.hours) return dur.toFormat('HH:mm:ss');
+  if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
 });
 
