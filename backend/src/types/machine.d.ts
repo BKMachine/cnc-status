@@ -1,10 +1,3 @@
-interface Machine {
-  name: string;
-  image: string;
-  status: Status;
-  mappings?: Mapping;
-}
-
 interface Status {
   online: boolean;
   mainProgram: string;
@@ -23,7 +16,7 @@ interface Status {
   parts: number;
   cycle: number;
   lastCycle: number;
-  lastStateTs: Date;
+  lastStateTs: string;
   [key: string]: any;
 }
 

@@ -234,7 +234,8 @@ const showSubtitle = computed(() => {
   background: #6c6c6c;
 }
 
-.status-ACTIVE {
+.status-ACTIVE,
+.status-OPTIONAL_STOP {
   background: #287428;
 }
 

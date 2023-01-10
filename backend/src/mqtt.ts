@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import mqtt, { MqttClient } from 'mqtt';
 import logger from './logger';
+import Machine from './machine';
 import machines from './machines';
-import { emit } from './server/socket.io';
 
 let client: MqttClient;
 
@@ -21,29 +21,31 @@ export function connect() {
   });
 
   client.on('message', (topic, message) => {
-    const machine = topic.split('/')[1];
-    if (!machine) return;
+    const machineName = topic.split('/')[1];
+    if (!machineName || !machines[machineName]) return;
     const data = JSON.parse(message.toString());
     if (!data.observation) return;
-    const { mappings } = machines[machine];
-    for (const key in mappings) {
-      if (mappings.hasOwnProperty(key)) {
-        const subtopic = mappings[key].subtopic;
-        if (topic !== `fanuc/${machine}/${subtopic}`) continue;
-        const location = mappings[key].location;
+    const machine: Machine = machines[machineName];
+    const mappings = machine.getMappings();
+    if (!mappings) return;
+    for (const prop in mappings) {
+      if (mappings.hasOwnProperty(prop)) {
+        const subtopic = mappings[prop].subtopic;
+        if (topic !== `fanuc/${machineName}/${subtopic}`) continue;
+        const location = mappings[prop].location;
         const value = _.get(data, location, undefined);
         if (value === undefined) continue;
-        const old = machines[machine].status[key];
+        const old = machine.getStatus()[prop];
         if (!_.isEqual(old, value)) {
-          const newStatus = { status: { [key]: value } };
-          if (key === 'cycle') {
-            if (value < old) newStatus.status.lastCycle = old;
+          if (prop === 'cycle') {
+            if (old > value) machine.setStatus('lastCycle', old);
           }
-          if (key === 'execution') {
-            newStatus.status.lastStateTs = new Date();
+          if (prop === 'execution') {
+            if (machineName === 'rd3' && value === 'OPTIONAL_STOP') return;
+            const date = new Date().toISOString();
+            machine.setStatus('lastStateTs', date);
           }
-          machines[machine] = _.merge({}, machines[machine], newStatus);
-          emit('change', { name: machines[machine].name, status: newStatus.status });
+          machine.setStatus(prop, value);
         }
       }
     }

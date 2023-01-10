@@ -24,4 +24,5 @@ interface Status {
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
+  [key: string]: any;
 }

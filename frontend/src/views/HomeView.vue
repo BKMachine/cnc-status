@@ -44,18 +44,12 @@ onMounted(() => {
       getStatus();
     });
 
-    io.on(
-      'change',
-      (payload: { name: string; status: { [key: string]: any } }) => {
-        const index = machines.value.findIndex((x) => x.name === payload.name);
-        if (index !== -1) {
-          machines.value[index] = _.merge(machines.value[index], payload);
-          if (payload.status.alarms && !payload.status.alarms.length) {
-            machines.value[index].status.alarms = [];
-          }
-        }
-      },
-    );
+    io.on('change', (payload: { name: string; key: string; value: any }) => {
+      const index = machines.value.findIndex((x) => x.name === payload.name);
+      if (index !== -1) {
+        machines.value[index].status[payload.key] = payload.value;
+      }
+    });
   });
 });
 
