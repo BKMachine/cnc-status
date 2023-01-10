@@ -20,6 +20,7 @@ interface Status {
   };
   rpm: number;
   alarms: any[];
+  alarms2: any[];
   parts: number;
   cycle: number;
   lastCycle: number;

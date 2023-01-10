@@ -25,7 +25,7 @@
             </div>
           </div>
           <table>
-            <tr v-for="alarm in data.status.alarms" :key="alarm.number">
+            <tr v-for="alarm in alarms" :key="alarm.number">
               <td class="alarm-number">{{ alarm.number }} -</td>
               <td>{{ alarm.message }}</td>
             </tr>
@@ -97,7 +97,7 @@
         <div v-if="!isOnline"></div>
         <div v-else-if="hasAlarm">
           <table>
-            <tr v-for="alarm in data.status.alarms" :key="alarm.number">
+            <tr v-for="alarm in alarms" :key="alarm.number">
               <td class="alarm-number">{{ alarm.number }} -</td>
               <td>{{ alarm.message }}</td>
             </tr>
@@ -150,7 +150,7 @@ const rapidOverride = computed(() => {
 });
 
 const hasAlarm = computed(() => {
-  return props.data.status.alarms.length > 0;
+  return alarms.value.length > 0;
 });
 
 const status = computed(() => {
@@ -182,6 +182,10 @@ const showSubtitle = computed(() => {
     props.data.status.runningProgram &&
     props.data.status.mainProgram !== props.data.status.runningProgram
   );
+});
+
+const alarms = computed(() => {
+  return props.data.status.alarms.concat(props.data.status.alarms2);
 });
 </script>
 

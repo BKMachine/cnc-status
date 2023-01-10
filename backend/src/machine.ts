@@ -16,6 +16,7 @@ const initStatus: Status = {
     spindle: 0,
   },
   alarms: [],
+  alarms2: [],
   parts: 0,
   cycle: 0,
   lastCycle: 0,

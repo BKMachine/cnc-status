@@ -11,7 +11,6 @@ import MachineStatusCard from '@/components/MachineStatusCard.vue';
 import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
-import _ from 'lodash';
 import type { Machine } from '@/types/machine';
 import isMobile from '@/plugins/isMobile';
 

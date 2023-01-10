@@ -55,6 +55,10 @@ export const robodrill: Mapping = {
 
 export const doosanLathe: Mapping = {
   ...common,
+  alarms2: {
+    subtopic: 'alarms/2',
+    location: 'state.data.alarms',
+  },
 };
 
 export const doosanMill: Mapping = {
@@ -63,4 +67,8 @@ export const doosanMill: Mapping = {
 
 export const hanwhaSwiss: Mapping = {
   ...common,
+  alarms2: {
+    subtopic: 'alarms/2',
+    location: 'state.data.alarms',
+  },
 };
