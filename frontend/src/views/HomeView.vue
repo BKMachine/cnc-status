@@ -49,6 +49,10 @@ onMounted(() => {
         machines.value[index].status[payload.key] = payload.value;
       }
     });
+
+    io.on('refresh', () => {
+      location.reload();
+    });
   });
 });
 
