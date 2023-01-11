@@ -10,7 +10,8 @@
     "prettier": "prettier --write \"**/*.{js,ts,md,*rc,json}\" --ignore-path .gitignore",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "performance": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mqtt.messageHandler.performance.test.ts"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
@@ -35,6 +36,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "performance-now": "^2.1.0",
     "prettier": "^2.8.2",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^2.0.0",
