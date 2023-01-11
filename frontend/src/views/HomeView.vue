@@ -43,12 +43,17 @@ onMounted(() => {
       getStatus();
     });
 
-    io.on('change', (payload: { name: string; key: string; value: any }) => {
-      const index = machines.value.findIndex((x) => x.name === payload.name);
-      if (index !== -1) {
-        machines.value[index].status[payload.key] = payload.value;
-      }
-    });
+    io.on(
+      'change',
+      (payload: { name: string; changes: { key: string; value: any }[] }) => {
+        const index = machines.value.findIndex((x) => x.name === payload.name);
+        if (index !== -1) {
+          payload.changes.forEach((change) => {
+            machines.value[index].status[change.key] = change.value;
+          });
+        }
+      },
+    );
 
     io.on('refresh', () => {
       location.reload();

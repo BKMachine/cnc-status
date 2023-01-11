@@ -3,6 +3,7 @@ import mqtt, { MqttClient } from 'mqtt';
 import logger from './logger';
 import Machine from './machine';
 import machines from './machines';
+import mappings from './mappings';
 
 let client: MqttClient;
 
@@ -33,32 +34,38 @@ export function processMessage(topic: string, message: Buffer) {
   const machineName = topic.split('/')[1];
   if (!machineName || !machines[machineName]) return;
   const machine: Machine = machines[machineName];
-  const mappings = machine.getMappings();
-  if (!mappings) return;
-  let data: any;
+  let data: any = {};
   try {
     data = JSON.parse(message.toString());
   } catch (e) {
     return;
   }
-  if (!data.observation) return;
-  Object.keys(mappings).forEach((prop) => {
-    const subtopic = mappings[prop].subtopic;
-    if (topic !== `fanuc/${machineName}/${subtopic}`) return;
-    const location = mappings[prop].location;
-    const value = _.get(data, location, undefined);
+  const subtopic = topic.split('/').slice(2).join('/');
+  if (!mappings[subtopic]) return;
+  const changes: { key: string; value: string }[] = [];
+  Object.keys(mappings[subtopic]).forEach((location) => {
+    let value: any;
+    try {
+      value = data[location];
+    } catch (e) {
+      return;
+    }
     if (value === undefined) return;
-    const old = machine.getStatus()[prop];
+    const prop = mappings[subtopic][location];
+    const old = machines[machineName].getValue(prop);
     if (!_.isEqual(old, value)) {
       if (prop === 'cycle') {
-        if (old > value) machine.setStatus('lastCycle', old);
+        if (old > value) changes.push({ key: 'lastCycle', value: old });
       }
       if (prop === 'execution') {
-        if (machineName === 'rd3' && value === 'OPTIONAL_STOP') return;
+        if (value === 'OPTIONAL_STOP') return;
         const date = new Date().toISOString();
-        machine.setStatus('lastStateTs', date);
+        changes.push({ key: 'lastStateTs', value: date });
       }
-      machine.setStatus(prop, value);
+      changes.push({ key: prop, value: value });
+    }
+    if (changes.length) {
+      machine.setStatus(changes);
     }
   });
 }
