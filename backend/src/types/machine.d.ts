@@ -1,4 +1,4 @@
-interface Status {
+interface FocasStatus {
   online: boolean;
   mainProgram: string;
   mainComment: string;
@@ -21,8 +21,21 @@ interface Status {
   [key: string]: any;
 }
 
-interface Mapping {
+interface FocasMapping {
   [key: string]: {
     [key: string]: string;
   };
 }
+
+interface ArduinoStatus {
+  online: boolean;
+  green: boolean;
+  yellow: boolean;
+  red: boolean;
+  [key: string]: any;
+}
+
+type FocasMachine = import('../machines/FocasMachine');
+type ArduinoMachine = import('../machines/ArduinoMachine');
+
+type Machine = FocasMachine | ArduinoMachine;

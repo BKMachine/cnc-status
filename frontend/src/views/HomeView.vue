@@ -1,13 +1,23 @@
 <template>
   <main class="container" :class="{ mobile: mobile }" v-if="machines.length">
     <div class="machines" v-for="machine in machines" :key="machine.name">
-      <MachineStatusCard :data="machine" :now="state.now" />
+      <FocasMachine
+        v-if="machine.source === 'focas'"
+        :data="machine"
+        :now="state.now"
+      />
+      <ArduinoMachine
+        v-if="machine.source === 'arduino'"
+        :data="machine"
+        :now="state.now"
+      />
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import MachineStatusCard from '@/components/MachineStatusCard.vue';
+import FocasMachine from '@/components/FocasMachine.vue';
+import ArduinoMachine from '@/components/ArduinoMachine.vue';
 import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';

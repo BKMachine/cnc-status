@@ -116,11 +116,10 @@
 import { Duration } from 'luxon';
 import { computed, ref, watch } from 'vue';
 import offlineImg from '@/components/images/offline.png';
-import type { Machine } from '@/types/machine';
 import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
-  data: Machine;
+  data: FocasMachine;
   now: Date;
 }>();
 
