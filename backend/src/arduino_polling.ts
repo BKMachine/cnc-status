@@ -8,7 +8,7 @@ const axios = _axios.create({
 
 const arduinos = [
   {
-    url: 'http://10.40.1.109:80',
+    url: 'http://10.40.1.109:8193',
     machine: machines.ml1,
   },
 ];
