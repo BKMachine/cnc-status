@@ -22,6 +22,7 @@ import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
 import isMobile from '@/plugins/isMobile';
+import quack from '@/components/sounds/quack.mp3';
 
 const state = reactive({
   now: new Date(),
@@ -59,6 +60,7 @@ onMounted(() => {
         if (index !== -1) {
           payload.changes.forEach((change) => {
             machines.value[index].status[change.key] = change.value;
+            doQuack(change);
           });
         }
       },
@@ -74,6 +76,19 @@ async function getStatus() {
   return axios.get('/status').then(({ data }) => {
     machines.value = data;
   });
+}
+
+const audio = new Audio(quack);
+
+function doQuack(change: { key: string; value: any }) {
+  const { key, value } = change;
+  if (
+    (key === 'execution' && value === 'ACTIVE') ||
+    (key === 'green' && value === true)
+  ) {
+    console.log('quack');
+    audio.play();
+  }
 }
 </script>
 
