@@ -21,7 +21,6 @@ import ArduinoMachine from '@/components/ArduinoMachine.vue';
 import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
-import type { Machine } from '@/types/machine';
 import isMobile from '@/plugins/isMobile';
 
 const state = reactive({
@@ -34,7 +33,7 @@ setInterval(() => {
   state.now = new Date();
 }, 1000);
 
-const machines = ref([] as Machine[]);
+const machines = ref([] as Machines[]);
 
 let io: Socket;
 

@@ -6,9 +6,9 @@ const initStatus: ArduinoStatus = {
   green: false,
   yellow: false,
   red: false,
-  // cycle: 0,
-  // lastCycle: 0,
-  // lastStateTs: new Date().toISOString(),
+  cycle: 0,
+  lastCycle: 0,
+  lastStateTs: new Date().toISOString(),
 };
 
 class ArduinoMachine {
@@ -37,7 +37,8 @@ class ArduinoMachine {
 
   setStatus(changes: { key: string; value: any }[]) {
     changes.forEach((change) => {
-      this.status[change.key] = change.value;
+      const { key, value } = change;
+      this.status[key] = value;
     });
     emit('change', { name: this.name, changes });
   }

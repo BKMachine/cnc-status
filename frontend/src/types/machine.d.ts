@@ -13,6 +13,8 @@ interface ArduinoMachine extends Machine {
   status: ArduinoStatus;
 }
 
+type Machines = FocasMachine | ArduinoMachine;
+
 interface FocasStatus {
   online: boolean;
   mainProgram: string;

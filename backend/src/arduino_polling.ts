@@ -1,4 +1,5 @@
 import _axios from 'axios';
+import logger from './logger';
 import machines from './machines';
 
 const axios = _axios.create({
@@ -7,7 +8,7 @@ const axios = _axios.create({
 
 const arduinos = [
   {
-    url: 'http://10.8.4.133:80',
+    url: 'http://10.40.1.109:80',
     machine: machines.ml1,
   },
 ];
@@ -19,6 +20,7 @@ export function start() {
   interval = setInterval(() => {
     run();
   }, 2000);
+  logger.info('Started Arduino polling');
 }
 
 export function stop() {
@@ -38,6 +40,7 @@ function run() {
           const old = arduino.machine.getValue(key);
           if (value !== old) {
             changes.push({ key, value });
+            changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
           }
         }
         if (changes.length) {

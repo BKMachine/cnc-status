@@ -32,6 +32,9 @@ interface ArduinoStatus {
   green: boolean;
   yellow: boolean;
   red: boolean;
+  cycle: number;
+  lastCycle: number;
+  lastStateTs: string;
   [key: string]: any;
 }
 

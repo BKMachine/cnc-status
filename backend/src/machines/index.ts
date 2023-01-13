@@ -12,6 +12,8 @@ const machines: { [key: string]: Machine } = {
   s2: new FocasMachine('S2', 'Hanwha_logo.png'),
   s3: new FocasMachine('S3', 'Hanwha_logo.png'),
   ml1: new ArduinoMachine('ML1', 'Mori_logo.png'),
+  ml2: new ArduinoMachine('ML2', 'Mori_logo.png'),
+  ml3: new ArduinoMachine('ML3', 'Mori_logo.png'),
 };
 
 export default machines;

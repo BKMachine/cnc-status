@@ -4,7 +4,6 @@
       <div
         class="machine"
         :class="[
-          status,
           {
             alarmed: hasAlarm,
             online: isOnline,
@@ -20,36 +19,20 @@
         <div class="offline-message">
           <img v-if="!isOnline" :src="offlineImg" alt="" />
           <img
-            v-else-if="data.status.green || data.status.red"
+            v-else
             :src="jamie"
             alt=""
             style="height: 200px"
-            :class="{ flip: hasAlarm }"
+            :class="{ grayed: !data.status.green && !data.status.red }"
           />
         </div>
-        <div v-if="hasAlarm" class="details">
-          <div class="title">
-            {{ data.status.mainProgram }} {{ data.status.mainComment }}
-          </div>
-          <!--          <div class="subtitle">
-            <div v-if="showSubtitle">
-              {{ data.status.runningProgram }} {{ data.status.runningComment }}
-            </div>
-          </div>-->
-          <!--          <table>
-            <tr v-for="alarm in alarms" :key="alarm.number">
-              <td class="alarm-number">{{ alarm.number }} -</td>
-              <td>{{ alarm.message }}</td>
-            </tr>
-          </table>-->
-        </div>
-        <!--        <div class="timer" v-if="isOnline">
+        <div class="timer" v-if="isOnline">
           <div>{{ timer }}</div>
-        </div>-->
+        </div>
       </div>
     </div>
 
-    <div v-else class="mobile">
+    <!--    <div v-else class="mobile">
       <div
         :class="[
           status,
@@ -83,7 +66,7 @@
           <div>{{ timer }}</div>
         </div>
       </div>
-    </div>
+    </div>-->
   </main>
 </template>
 
@@ -139,7 +122,7 @@ const hasAlarm = computed(() => {
   return props.data.status.mode;
 });*/
 
-/*const timer = computed(() => {
+const timer = computed(() => {
   let seconds = Math.floor(
     (props.now.valueOf() - new Date(props.data.status.lastStateTs).valueOf()) /
       1000,
@@ -147,7 +130,7 @@ const hasAlarm = computed(() => {
   if (seconds < 0) seconds = 0;
   const dur = Duration.fromObject({ seconds });
   return dur.toFormat('hh:mm:ss');
-});*/
+});
 
 /*const progress = computed(() => {
   const value = (props.data.status.cycle / props.data.status.lastCycle) * 100;
@@ -319,7 +302,7 @@ const hasAlarm = computed(() => {
   line-height: 10px;
 }
 
-.flip {
-  transform: scaleY(-1);
+.grayed {
+  filter: grayscale(100%);
 }
 </style>
