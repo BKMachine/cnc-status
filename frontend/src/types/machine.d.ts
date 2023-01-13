@@ -1,10 +1,21 @@
-export interface Machine {
+interface Machine {
   name: string;
   image: string;
-  status: Status;
 }
 
-interface Status {
+interface FocasMachine extends Machine {
+  source: 'focas';
+  status: FocasStatus;
+}
+
+interface ArduinoMachine extends Machine {
+  source: 'arduino';
+  status: ArduinoStatus;
+}
+
+type Machines = FocasMachine | ArduinoMachine;
+
+interface FocasStatus {
   online: boolean;
   mainProgram: string;
   mainComment: string;
@@ -25,5 +36,13 @@ interface Status {
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
+  [key: string]: any;
+}
+
+interface ArduinoStatus {
+  online: boolean;
+  green: boolean;
+  yellow: boolean;
+  red: boolean;
   [key: string]: any;
 }

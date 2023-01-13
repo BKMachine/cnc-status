@@ -1,7 +1,7 @@
-import { baseUrl } from './config';
-import { emit } from './server/socket.io';
+import { baseUrl } from '../config';
+import { emit } from '../server/socket.io';
 
-const initStatus: Status = {
+const initStatus: FocasStatus = {
   online: false,
   mainProgram: '',
   mainComment: '',
@@ -23,10 +23,10 @@ const initStatus: Status = {
   lastStateTs: new Date().toISOString(),
 };
 
-class Machine {
+class FocasMachine {
   private name: string;
   private image: string;
-  private status: Status;
+  private status: FocasStatus;
 
   constructor(name: string, image: string) {
     this.name = name;
@@ -37,6 +37,7 @@ class Machine {
   getMachine() {
     return {
       name: this.name,
+      source: 'focas',
       image: this.image,
       status: this.status,
     };
@@ -54,4 +55,4 @@ class Machine {
   }
 }
 
-export default Machine;
+export default FocasMachine;

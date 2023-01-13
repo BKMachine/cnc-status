@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import mqtt, { MqttClient } from 'mqtt';
 import logger from './logger';
-import Machine from './machine';
 import machines from './machines';
-import mappings from './mappings';
+import mappings from './machines/focas_mappings';
+import FocasMachine from './machines/FocasMachine';
 
 let client: MqttClient;
 
@@ -33,7 +33,7 @@ export function disconnect() {
 export function processMessage(topic: string, message: Buffer) {
   const machineName = topic.split('/')[1];
   if (!machineName || !machines[machineName]) return;
-  const machine: Machine = machines[machineName];
+  const machine: FocasMachine = machines[machineName];
   let data: any = {};
   try {
     data = JSON.parse(message.toString());

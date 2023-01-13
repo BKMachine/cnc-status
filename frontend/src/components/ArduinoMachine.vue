@@ -4,69 +4,27 @@
       <div
         class="machine"
         :class="[
-          status,
-          { alarmed: hasAlarm, online: isOnline, offline: !isOnline },
+          {
+            alarmed: hasAlarm,
+            online: isOnline,
+            offline: !isOnline,
+            running: data.status.green,
+          },
         ]"
       >
         <div class="name">
           <div>{{ data.name }}</div>
           <img class="logo" v-if="data.image" :src="data.image" alt="" />
         </div>
-        <div v-if="!isOnline" class="offline-message">
-          <img :src="offlineImg" alt="" />
-        </div>
-        <div v-else-if="hasAlarm" class="details">
-          <div class="title">
-            {{ data.status.mainProgram }} {{ data.status.mainComment }}
-          </div>
-          <div class="subtitle">
-            <div v-if="showSubtitle">
-              {{ data.status.runningProgram }} {{ data.status.runningComment }}
-            </div>
-          </div>
-          <table>
-            <tr v-for="alarm in alarms" :key="alarm.number">
-              <td class="alarm-number">{{ alarm.number }} -</td>
-              <td>{{ alarm.message }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="details" v-else>
-          <div class="title">
-            {{ data.status.mainProgram }} {{ data.status.mainComment }}
-          </div>
-          <div class="subtitle">
-            <div v-if="showSubtitle">
-              {{ data.status.runningProgram }} {{ data.status.runningComment }}
-            </div>
-          </div>
-          <div>
-            Tool: <span>{{ data.status.tool }}</span>
-          </div>
-          <div>
-            Feed Override: <span>{{ data.status.overrides.feed }}%</span>
-          </div>
-          <div>
-            Rapid Override: <span>{{ rapidOverride }}</span>
-          </div>
-          <div>
-            Parts Count: <span>{{ data.status.parts }}</span>
-          </div>
-          <div>
-            Cycle: <span>{{ cycle }}</span>
-          </div>
-          <div>
-            Last Cycle: <span>{{ lastCycle }}</span>
-          </div>
-          <div>
-            Mode: <span>{{ mode }}</span>
-          </div>
-          <div>
-            Execution: <span>{{ data.status.execution }}</span>
-          </div>
-          <div class="myProgress">
-            <div class="myBar" :style="`width: ${progress}%`"></div>
-          </div>
+        <div class="offline-message">
+          <img v-if="!isOnline" :src="offlineImg" alt="" />
+          <img
+            v-else
+            :src="jamie"
+            alt=""
+            style="height: 200px"
+            :class="{ grayed: !data.status.green && !data.status.red }"
+          />
         </div>
         <div class="timer" v-if="isOnline">
           <div>{{ timer }}</div>
@@ -74,7 +32,7 @@
       </div>
     </div>
 
-    <div v-else class="mobile">
+    <!--    <div v-else class="mobile">
       <div
         :class="[
           status,
@@ -108,7 +66,7 @@
           <div>{{ timer }}</div>
         </div>
       </div>
-    </div>
+    </div>-->
   </main>
 </template>
 
@@ -116,11 +74,11 @@
 import { Duration } from 'luxon';
 import { computed, ref, watch } from 'vue';
 import offlineImg from '@/components/images/offline.png';
-import type { Machine } from '@/types/machine';
+import jamie from '@/components/images/jamie.jpg';
 import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
-  data: Machine;
+  data: ArduinoMachine;
   now: Date;
 }>();
 
@@ -128,41 +86,41 @@ const isOnline = computed(() => {
   return props.data.status.online;
 });
 
-const cycle = computed(() => {
+/*const cycle = computed(() => {
   const seconds = Math.floor(props.data.status.cycle / 1000);
   const dur = Duration.fromObject({ seconds });
   if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
-});
+});*/
 
-const lastCycle = computed(() => {
+/*const lastCycle = computed(() => {
   const seconds = Math.floor(props.data.status.lastCycle / 1000);
   const dur = Duration.fromObject({ seconds });
   if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
-});
+});*/
 
-const rapidOverride = computed(() => {
+/*const rapidOverride = computed(() => {
   const num = props.data.status.overrides.rapid;
   if (num === 0) return '100%';
   if (num === 1) return '50%';
   if (num === 2) return '25%';
   if (num === 3) return 'LOW';
   return '';
-});
+});*/
 
 const hasAlarm = computed(() => {
-  return alarms.value.length > 0;
+  return props.data.status.red;
 });
 
-const status = computed(() => {
+/*const status = computed(() => {
   return `status-${props.data.status.execution}`;
-});
+});*/
 
-const mode = computed(() => {
+/*const mode = computed(() => {
   if (props.data.status.mode === 'MANUAL_DATA_INPUT') return 'MDI';
   return props.data.status.mode;
-});
+});*/
 
 const timer = computed(() => {
   let seconds = Math.floor(
@@ -174,21 +132,21 @@ const timer = computed(() => {
   return dur.toFormat('hh:mm:ss');
 });
 
-const progress = computed(() => {
+/*const progress = computed(() => {
   const value = (props.data.status.cycle / props.data.status.lastCycle) * 100;
   return Math.min(value, 100);
-});
+});*/
 
-const showSubtitle = computed(() => {
+/*const showSubtitle = computed(() => {
   return (
     props.data.status.runningProgram &&
     props.data.status.mainProgram !== props.data.status.runningProgram
   );
-});
+});*/
 
-const alarms = computed(() => {
+/*const alarms = computed(() => {
   return props.data.status.alarms.concat(props.data.status.alarms2);
-});
+});*/
 </script>
 
 <style scoped>
@@ -241,7 +199,8 @@ const alarms = computed(() => {
 }
 
 .status-ACTIVE,
-.status-OPTIONAL_STOP {
+.status-OPTIONAL_STOP,
+.running {
   background: #287428;
 }
 
@@ -341,5 +300,9 @@ const alarms = computed(() => {
 
 .mobile table tr {
   line-height: 10px;
+}
+
+.grayed {
+  filter: grayscale(100%);
 }
 </style>

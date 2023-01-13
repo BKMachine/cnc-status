@@ -1,4 +1,4 @@
-const mappings: Mapping = {
+const focas_mappings: FocasMapping = {
   sweep: {
     'state.data.online': 'online',
   },
@@ -24,4 +24,4 @@ const mappings: Mapping = {
   },
 };
 
-export default mappings;
+export default focas_mappings;
