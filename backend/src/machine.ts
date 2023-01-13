@@ -26,13 +26,11 @@ const initStatus: Status = {
 class Machine {
   private name: string;
   private image: string;
-  private mappings: Mapping;
   private status: Status;
 
-  constructor(name: string, image: string, mappings: Mapping) {
+  constructor(name: string, image: string) {
     this.name = name;
     this.image = baseUrl + '/img/' + image;
-    this.mappings = mappings;
     this.status = { ...initStatus };
   }
 
@@ -44,17 +42,15 @@ class Machine {
     };
   }
 
-  getStatus(): Status {
-    return this.status;
+  getValue(key: string) {
+    return this.status[key];
   }
 
-  getMappings(): Mapping | undefined {
-    return this.mappings;
-  }
-
-  setStatus(key: string, value: any) {
-    this.status[key] = value;
-    emit('change', { name: this.name, key, value });
+  setStatus(changes: { key: string; value: any }[]) {
+    changes.forEach((change) => {
+      this.status[change.key] = change.value;
+    });
+    emit('change', { name: this.name, changes });
   }
 }
 

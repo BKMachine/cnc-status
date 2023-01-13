@@ -23,7 +23,6 @@ interface Status {
 
 interface Mapping {
   [key: string]: {
-    subtopic: string;
-    location: string;
+    [key: string]: string;
   };
 }

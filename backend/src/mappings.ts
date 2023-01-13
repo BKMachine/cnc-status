@@ -1,74 +1,27 @@
-const common: Mapping = {
-  online: {
-    subtopic: 'sweep',
-    location: 'state.data.online',
+const mappings: Mapping = {
+  sweep: {
+    'state.data.online': 'online',
   },
-  mainProgram: {
-    subtopic: 'production/1',
-    location: 'state.data.program.main.number',
+  'production/1': {
+    'state.data.program.main.number': 'mainProgram',
+    'state.data.program.main.comment': 'mainComment',
+    'state.data.program.running.number': 'runningProgram',
+    'state.data.program.running.comment': 'runningComment',
+    'state.data.pieces.produced': 'parts',
+    'state.data.timers.cycle_time_ms': 'cycle',
   },
-  mainComment: {
-    subtopic: 'production/1',
-    location: 'state.data.program.main.comment',
+  'state/1': {
+    'state.data.modal.t': 'tool',
+    'state.data.override': 'overrides',
+    'state.data.mode': 'mode',
+    'state.data.execution': 'execution',
   },
-  runningProgram: {
-    subtopic: 'production/1',
-    location: 'state.data.program.running.number',
+  'alarms/1': {
+    'state.data.alarms': 'alarms',
   },
-  runningComment: {
-    subtopic: 'production/1',
-    location: 'state.data.program.running.comment',
-  },
-  tool: {
-    subtopic: 'state/1',
-    location: 'state.data.modal.t',
-  },
-  overrides: {
-    subtopic: 'state/1',
-    location: 'state.data.override',
-  },
-  alarms: {
-    subtopic: 'alarms/1',
-    location: 'state.data.alarms',
-  },
-  parts: {
-    subtopic: 'production/1',
-    location: 'state.data.pieces.produced',
-  },
-  cycle: {
-    subtopic: 'production/1',
-    location: 'state.data.timers.cycle_time_ms',
-  },
-  mode: {
-    subtopic: 'state/1',
-    location: 'state.data.mode',
-  },
-  execution: {
-    subtopic: 'state/1',
-    location: 'state.data.execution',
+  'alarms/2': {
+    'state.data.alarms': 'alarms2',
   },
 };
 
-export const robodrill: Mapping = {
-  ...common,
-};
-
-export const doosanLathe: Mapping = {
-  ...common,
-  alarms2: {
-    subtopic: 'alarms/2',
-    location: 'state.data.alarms',
-  },
-};
-
-export const doosanMill: Mapping = {
-  ...common,
-};
-
-export const hanwhaSwiss: Mapping = {
-  ...common,
-  alarms2: {
-    subtopic: 'alarms/2',
-    location: 'state.data.alarms',
-  },
-};
+export default mappings;
