@@ -46,7 +46,7 @@ export function processMessage(topic: string, message: Buffer) {
   Object.keys(mappings[subtopic]).forEach((location) => {
     let value: any;
     try {
-      value = data[location];
+      value = get(data, location);
     } catch (e) {
       return;
     }
@@ -69,3 +69,6 @@ export function processMessage(topic: string, message: Buffer) {
     }
   });
 }
+
+const get = (object: any, path: string, defaultValue?: any) =>
+  path.split('.').reduce((o, p) => (o ? o[p] : defaultValue), object);
