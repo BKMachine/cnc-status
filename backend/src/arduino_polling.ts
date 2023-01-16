@@ -34,7 +34,10 @@ function run() {
       .then(({ data }) => {
         const changes = [];
         const online = arduino.machine.getValue('online');
-        if (!online) changes.push({ key: 'online', value: true });
+        if (!online) {
+          changes.push({ key: 'online', value: true });
+          changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
+        }
         for (const key in data) {
           const value = data[key];
           const old = arduino.machine.getValue(key);
