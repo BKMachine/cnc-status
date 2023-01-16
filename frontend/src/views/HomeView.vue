@@ -22,7 +22,7 @@ import { onMounted, reactive, ref } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
 import isMobile from '@/plugins/isMobile';
-import quack from '@/components/sounds/quack.mp3';
+import { useRouter } from 'vue-router';
 
 const state = reactive({
   now: new Date(),
@@ -77,7 +77,7 @@ async function getStatus() {
   });
 }
 
-const audio = new Audio(quack);
+function openDetails(name: string) {
 
 }
 </script>
