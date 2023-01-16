@@ -64,10 +64,10 @@ export function processMessage(topic: string, message: Buffer) {
       }
       changes.push({ key: prop, value: value });
     }
-    if (changes.length) {
-      machine.setStatus(changes);
-    }
   });
+  if (changes.length) {
+    machine.setStatus(changes);
+  }
 }
 
 const get = (object: any, path: string, defaultValue?: any) =>
