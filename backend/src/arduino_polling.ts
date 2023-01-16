@@ -50,7 +50,8 @@ function run() {
           arduino.machine.setStatus(changes);
         }
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e.message);
         arduino.machine.setStatus([{ key: 'online', value: false }]);
       });
   });
