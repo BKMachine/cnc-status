@@ -60,7 +60,6 @@ onMounted(() => {
         if (index !== -1) {
           payload.changes.forEach((change) => {
             machines.value[index].status[change.key] = change.value;
-            doQuack(change);
           });
         }
       },
@@ -80,15 +79,6 @@ async function getStatus() {
 
 const audio = new Audio(quack);
 
-function doQuack(change: { key: string; value: any }) {
-  const { key, value } = change;
-  if (
-    (key === 'execution' && value === 'ACTIVE') ||
-    (key === 'green' && value === true)
-  ) {
-    console.log('quack');
-    audio.play();
-  }
 }
 </script>
 
