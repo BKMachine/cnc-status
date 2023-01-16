@@ -1,6 +1,11 @@
 <template>
   <main class="container" :class="{ mobile: mobile }" v-if="machines.length">
-    <div class="machines" v-for="machine in machines" :key="machine.name">
+    <div
+      class="machines"
+      v-for="machine in machines"
+      :key="machine.name"
+      @dblclick="openDetails(machine.name)"
+    >
       <FocasMachine
         v-if="machine.source === 'focas'"
         :data="machine"
@@ -23,6 +28,8 @@ import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
 import isMobile from '@/plugins/isMobile';
 import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const state = reactive({
   now: new Date(),
@@ -78,7 +85,7 @@ async function getStatus() {
 }
 
 function openDetails(name: string) {
-
+  router.push({ name: 'details', params: { id: name } });
 }
 </script>
 

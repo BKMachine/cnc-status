@@ -9,6 +9,7 @@ async function start(): Promise<void> {
   mqtt.connect();
   server.start();
   arduino.start();
+  require('./elastic');
 }
 
 async function stop(): Promise<void> {
