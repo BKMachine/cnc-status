@@ -3,7 +3,7 @@ import logger from './logger';
 import machines from './machines';
 
 const axios = _axios.create({
-  timeout: 500,
+  timeout: 1000,
 });
 
 const arduinos = [
