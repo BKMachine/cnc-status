@@ -8,8 +8,16 @@ const axios = _axios.create({
 
 const arduinos = [
   {
-    url: 'http://10.40.1.109:8193',
+    url: 'http://10.30.1.25:8193',
     machine: machines.ml1,
+  },
+  {
+    url: 'http://10.30.1.26:8193',
+    machine: machines.ml2,
+  },
+  {
+    url: 'http://10.30.1.27:8193',
+    machine: machines.ml3,
   },
 ];
 
@@ -50,8 +58,7 @@ function run() {
           arduino.machine.setStatus(changes);
         }
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch(() => {
         arduino.machine.setStatus([{ key: 'online', value: false }]);
       });
   });
