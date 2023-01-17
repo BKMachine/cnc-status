@@ -7,10 +7,10 @@ import * as server from './server';
 
 async function start(): Promise<void> {
   // await database.connect();
-  mqtt.connect();
+  await mqtt.connect();
   server.start();
   arduino.start();
-  elastic.start();
+  await elastic.start();
 }
 
 async function stop(): Promise<void> {

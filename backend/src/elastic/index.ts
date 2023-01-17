@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Client } from '@elastic/elasticsearch';
+import logger from '../logger';
 import machines from '../machines';
 
 const client = new Client({
@@ -17,20 +18,24 @@ const client = new Client({
 
 let timer: NodeJS.Timer;
 
-export function start() {
-  client.cat.indices({ h: 'index' }).then((data) => {
-    const indexes = data
-      .toString()
-      .split('\n')
-      .map((x) => x.trim());
-    Object.keys(machines).forEach((machine) => {
-      if (!indexes.includes(getIndex(machine))) {
-        // Add index for new machine? //TODO
-        console.log('missing index', getIndex(machine));
-      }
+export async function start(): Promise<void> {
+  return new Promise((resolve) => {
+    logger.info('Started Elastic collection');
+    client.cat.indices({ h: 'index' }).then((data) => {
+      const indexes = data
+        .toString()
+        .split('\n')
+        .map((x) => x.trim());
+      Object.keys(machines).forEach((machine) => {
+        if (!indexes.includes(getIndex(machine))) {
+          // Add index for new machine? //TODO
+          console.log('missing index', getIndex(machine));
+        }
+      });
+      stop();
+      timer = setInterval(run, 5000);
+      resolve();
     });
-    stop();
-    timer = setInterval(run, 5000);
   });
 }
 

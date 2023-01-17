@@ -7,21 +7,24 @@ import FocasMachine from './machines/FocasMachine';
 
 let client: MqttClient;
 
-export function connect() {
-  client = mqtt.connect(process.env.MQTT_URL);
+export async function connect(): Promise<void> {
+  return new Promise((resolve) => {
+    client = mqtt.connect(process.env.MQTT_URL);
 
-  client.on('connect', () => {
-    logger.info('Connected to MQTT broker');
-    client.subscribe('fanuc/#', (err) => {
-      if (err) logger.error(err);
+    client.on('connect', () => {
+      logger.info('Connected to MQTT broker');
+      client.subscribe('fanuc/#', (err) => {
+        if (err) logger.error(err);
+      });
+      resolve();
     });
-  });
 
-  client.on('disconnect', () => {
-    logger.warn('Disconnected from the MQTT broker');
-  });
+    client.on('disconnect', () => {
+      logger.warn('Disconnected from the MQTT broker');
+    });
 
-  client.on('message', processMessage);
+    client.on('message', processMessage);
+  });
 }
 
 export function disconnect() {
