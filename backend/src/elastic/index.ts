@@ -10,7 +10,7 @@ const client = new Client({
     password: process.env.ELASTIC_PASSWORD,
   },
   tls: {
-    ca: fs.readFileSync(path.resolve(__dirname, './certs/http_ca.crt')),
+    ca: fs.readFileSync(path.resolve(__dirname, '../../certs/http_ca.crt')),
     rejectUnauthorized: false,
   },
 });
