@@ -13,6 +13,9 @@
     "test:coverage": "jest --coverage",
     "performance": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mqtt.messageHandler.performance.test.ts"
   },
+  "engines": {
+    "node": ">=18.13.0"
+  },
   "dependencies": {
     "@elastic/elasticsearch": "8.6.0",
     "axios": "^1.2.2",
