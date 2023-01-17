@@ -3,9 +3,12 @@ import logger from './logger';
 
 logger.info('Application starting...');
 
-app.start().then(() => {
-  logger.info('Startup complete');
-});
+app
+  .start()
+  .then(() => {
+    logger.info('Startup complete');
+  })
+  .catch((e) => console.error(e));
 
 const signals: NodeJS.Signals[] = ['SIGHUP', 'SIGINT', 'SIGTERM'];
 
