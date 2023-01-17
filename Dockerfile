@@ -1,4 +1,4 @@
-FROM node:16.13.2-alpine3.15 as base
+FROM node:18.13.0-alpine3.17 as base
 WORKDIR /app
 
 FROM base AS backend_prod_dependencies
@@ -16,7 +16,6 @@ FROM backend_dev_dependencies as backend_builder
 COPY ./backend .
 RUN yarn prettier
 RUN yarn lint
-#RUN yarn test
 RUN yarn build
 
 FROM frontend_dependencies AS frontend_builder
