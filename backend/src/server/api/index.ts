@@ -20,6 +20,19 @@ router.get('/status', async (req, res, next) => {
   }
 });
 
+router.get('/status/:id', async (req, res, next) => {
+  const id = req.params.id;
+  if (!id || !machines[id]) {
+    res.sendStatus(404);
+    return;
+  }
+  try {
+    res.status(200).json(machines[id].getMachine());
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.post('/refresh', (req, res, next) => {
   const { token } = req.body;
   if (token !== process.env.TOKEN) {
