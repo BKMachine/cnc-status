@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import machines from '../../machines';
 import { emit } from '../socket.io';
+import { getData } from '../../elastic';
 
 const router = Router();
 
@@ -41,6 +42,20 @@ router.post('/refresh', (req, res, next) => {
   }
   emit('refresh');
   res.sendStatus(204);
+});
+
+router.get('/data/:id', async (req, res, next) => {
+  const { id } = req.params;
+  if (!id || !machines[id]) {
+    res.sendStatus(404);
+    return;
+  }
+  try {
+    const data = (await getData(id)).hits.hits.map((x) => x._source);
+    res.status(200).json(data);
+  } catch (e) {
+    next(e);
+  }
 });
 
 export default router;
