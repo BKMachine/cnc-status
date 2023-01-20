@@ -48,7 +48,7 @@ function run() {
   const operations: string[] = Object.keys(machines).map((machine) => {
     const { status, source } = machines[machine].getMachine();
     const meta = { create: { _index: getIndex(machine) } };
-    const body = { online: status.online, '@timestamp': timestamp, running: false, alarmed: false };
+    const body = { '@timestamp': timestamp, online: status.online, running: false, alarmed: false };
     if (status.online) {
       if (source === 'focas') {
         body.running = status.execution === 'ACTIVE';
@@ -69,17 +69,13 @@ function getIndex(machine: string) {
   return `status-${machine}`;
 }
 
-export async function getData(name: string, minutes: string = '5') {
-  const ms = new Date().valueOf() - parseInt(minutes) * 60 * 1000;
+export async function getData(name: string, minutes: number = 15) {
   return client.search({
     index: getIndex(name),
     body: {
-      query: {
-        bool: {
-          filter: [{ range: { '@timestamp': { gt: ms } } }],
-        },
-      },
-      sort: [{ '@timestamp': { order: 'desc' } }],
+      size: 500,
+      query: { range: { '@timestamp': { gte: `now-${minutes}m` } } },
+      sort: [{ '@timestamp': { order: 'asc' } }],
     },
   });
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express';
+import { getData } from '../../elastic';
 import machines from '../../machines';
 import { emit } from '../socket.io';
-import { getData } from '../../elastic';
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.get('/status', async (req, res, next) => {
   try {
     const response = [];
     for (const machine in machines) {
-      response.push(machines[machine].getMachine());
+      response.push({ ...machines[machine].getMachine(), id: machine });
     }
     res.status(200).json(response);
   } catch (e) {
@@ -51,7 +51,8 @@ router.get('/data/:id', async (req, res, next) => {
     return;
   }
   try {
-    const data = (await getData(id)).hits.hits.map((x) => x._source);
+    const response = await getData(id);
+    const data = response.hits.hits.map((x) => x._source);
     res.status(200).json(data);
   } catch (e) {
     next(e);

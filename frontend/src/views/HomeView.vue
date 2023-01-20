@@ -3,8 +3,8 @@
     <div
       class="machines"
       v-for="machine in machines"
-      :key="machine.name"
-      @dblclick="openDetails(machine.name)"
+      :key="machine.id"
+      @dblclick="openDetails(machine.id)"
     >
       <FocasMachine
         v-if="machine.source === 'focas'"
