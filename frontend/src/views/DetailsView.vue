@@ -1,17 +1,21 @@
 <template>
   <h1>{{ route.params.id }}</h1>
   <canvas id="c" width="720" height="20"></canvas>
+  Alarmed {{ alarmedPercent }}% Running {{ runningPercent }}%
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import axios from '@/plugins/axios';
 
 const route = useRoute();
 
 let canvas: CanvasRenderingContext2D | null;
 let timer: ReturnType<typeof setInterval>;
+
+const alarmedPercent = ref(0);
+const runningPercent = ref(0);
 
 onMounted(() => {
   const c = document.getElementById('c') as HTMLCanvasElement | null;
@@ -33,6 +37,7 @@ onUnmounted(() => {
 function getData() {
   axios.get(`/data/${route.params.id}`).then(({ data }) => {
     paint(data);
+    graph(data);
   });
 }
 
@@ -57,6 +62,20 @@ function paint(data: any) {
       canvas.fillRect(startX, 0, endX, height);
     }
   }
+}
+
+function graph(data: any) {
+  const total = data.length;
+  let alarmed = 0;
+  let running = 0;
+  for (let i = 0; i < data.length; i++) {
+    const record = data[i];
+    if (record.online === false) continue;
+    if (record.alarmed === true) alarmed++;
+    else if (record.running === true) running++;
+  }
+  alarmedPercent.value = Math.floor((alarmed / total) * 10000) / 100;
+  runningPercent.value = Math.floor((running / total) * 10000) / 100;
 }
 </script>
 
