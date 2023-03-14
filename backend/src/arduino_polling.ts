@@ -12,7 +12,7 @@ const arduinos = [
     machine: machines.ml1,
   },
   {
-    url: 'http://10.30.1.26:8193',
+    url: 'http://10.30.1.120:8193',
     machine: machines.ml2,
   },
   {
