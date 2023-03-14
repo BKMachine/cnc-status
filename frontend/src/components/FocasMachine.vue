@@ -183,7 +183,7 @@ const timerText = computed(() => {
 });
 
 const blink = computed(() => {
-  return !!(alarms.value.length && seconds.value >= 60 * 15);
+  return !!(isOnline.value && alarms.value.length && seconds.value >= 60 * 15);
 });
 
 const progress = computed(() => {
