@@ -9,6 +9,7 @@
             online: isOnline,
             offline: !isOnline,
             running: data.status.green,
+            'alarmed-blinking': blink,
           },
         ]"
       >
@@ -27,7 +28,7 @@
           />
         </div>
         <div class="timer" v-if="isOnline">
-          <div>{{ timer }}</div>
+          <div>{{ timerText }}</div>
         </div>
       </div>
     </div>
@@ -122,14 +123,22 @@ const hasAlarm = computed(() => {
   return props.data.status.mode;
 });*/
 
-const timer = computed(() => {
+const seconds = computed(() => {
   let seconds = Math.floor(
     (props.now.valueOf() - new Date(props.data.status.lastStateTs).valueOf()) /
       1000,
   );
   if (seconds < 0) seconds = 0;
-  const dur = Duration.fromObject({ seconds });
+  return seconds;
+});
+
+const timerText = computed(() => {
+  const dur = Duration.fromObject({ seconds: seconds.value });
   return dur.toFormat('hh:mm:ss');
+});
+
+const blink = computed(() => {
+  return hasAlarm.value && seconds.value >= 60 * 15;
 });
 
 /*const progress = computed(() => {
@@ -213,6 +222,25 @@ const timer = computed(() => {
 
 .alarmed {
   background: #bd0000;
+}
+
+.alarmed-blinking {
+  animation: blinkingBackground 2s infinite;
+}
+
+@keyframes blinkingBackground {
+  0% {
+    background-color: #bd0000;
+  }
+  50% {
+    background-color: #bd0000;
+  }
+  51% {
+    background-color: #6c6c6c;
+  }
+  100% {
+    background-color: #6c6c6c;
+  }
 }
 
 .offline {

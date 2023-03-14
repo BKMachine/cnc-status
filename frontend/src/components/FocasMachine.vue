@@ -5,7 +5,12 @@
         class="machine"
         :class="[
           status,
-          { alarmed: hasAlarm, online: isOnline, offline: !isOnline },
+          {
+            alarmed: hasAlarm,
+            online: isOnline,
+            offline: !isOnline,
+            'alarmed-blinking': blink,
+          },
         ]"
       >
         <div class="name">
@@ -69,7 +74,7 @@
           </div>
         </div>
         <div class="timer" v-if="isOnline">
-          <div>{{ timer }}</div>
+          <div>{{ timerText }}</div>
         </div>
       </div>
     </div>
@@ -105,7 +110,7 @@
         </div>
         <div class="mobile-subtext" v-if="isOnline">
           <div v-if="!hasAlarm">Parts: {{ data.status.parts }}</div>
-          <div>{{ timer }}</div>
+          <div>{{ timerText }}</div>
         </div>
       </div>
     </div>
@@ -114,7 +119,7 @@
 
 <script setup lang="ts">
 import { Duration } from 'luxon';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import offlineImg from '@/components/images/offline.png';
 import isMobile from '@/plugins/isMobile';
 
@@ -163,14 +168,22 @@ const mode = computed(() => {
   return props.data.status.mode;
 });
 
-const timer = computed(() => {
+const seconds = computed(() => {
   let seconds = Math.floor(
     (props.now.valueOf() - new Date(props.data.status.lastStateTs).valueOf()) /
       1000,
   );
   if (seconds < 0) seconds = 0;
-  const dur = Duration.fromObject({ seconds });
+  return seconds;
+});
+
+const timerText = computed(() => {
+  const dur = Duration.fromObject({ seconds: seconds.value });
   return dur.toFormat('hh:mm:ss');
+});
+
+const blink = computed(() => {
+  return !!(alarms.value.length && seconds.value >= 60 * 15);
 });
 
 const progress = computed(() => {
@@ -253,6 +266,25 @@ const alarms = computed(() => {
 
 .alarmed {
   background: #bd0000;
+}
+
+.alarmed-blinking {
+  animation: blinkingBackground 2s infinite;
+}
+
+@keyframes blinkingBackground {
+  0% {
+    background-color: #bd0000;
+  }
+  50% {
+    background-color: #bd0000;
+  }
+  51% {
+    background-color: #6c6c6c;
+  }
+  100% {
+    background-color: #6c6c6c;
+  }
 }
 
 .offline {
