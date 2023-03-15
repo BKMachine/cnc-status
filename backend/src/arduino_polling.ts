@@ -27,7 +27,7 @@ export function start() {
   stop();
   interval = setInterval(() => {
     run();
-  }, 2000);
+  }, 5000);
   logger.info('Started Arduino polling');
 }
 
@@ -53,6 +53,12 @@ function run() {
             changes.push({ key, value });
             changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
           }
+        }
+        if (arduino.machine.getValue('green')) {
+          const time =
+            new Date().valueOf() - new Date(arduino.machine.getValue('lastStateTs')).valueOf();
+          const lastCycle = arduino.machine.getValue('lastCycle');
+          if (time > lastCycle) changes.push({ key: 'lastCycle', value: time });
         }
         if (changes.length) {
           arduino.machine.setStatus(changes);

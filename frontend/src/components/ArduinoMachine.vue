@@ -27,6 +27,11 @@
             :class="{ grayed: !data.status.green && !data.status.red }"
           />
         </div>
+        <div v-if="isOnline" class="details">
+          <div>
+            Last Cycle: <span>{{ lastCycle }}</span>
+          </div>
+        </div>
         <div class="timer" v-if="isOnline">
           <div>{{ timerText }}</div>
         </div>
@@ -94,12 +99,12 @@ const isOnline = computed(() => {
   return dur.toFormat('m:ss');
 });*/
 
-/*const lastCycle = computed(() => {
+const lastCycle = computed(() => {
   const seconds = Math.floor(props.data.status.lastCycle / 1000);
   const dur = Duration.fromObject({ seconds });
   if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
-});*/
+});
 
 /*const rapidOverride = computed(() => {
   const num = props.data.status.overrides.rapid;

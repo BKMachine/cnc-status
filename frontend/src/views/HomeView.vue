@@ -77,9 +77,11 @@ async function getStatus() {
   });
 }
 
-function openDetails(name: string) {
+setInterval(() => {
+  getStatus();
+}, 1000 * 60 * 5);
 
-}
+function openDetails(name: string) {}
 </script>
 
 <style scoped>
