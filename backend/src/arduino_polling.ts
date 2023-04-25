@@ -58,11 +58,10 @@ function run() {
             changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
           }
         }
-        if (arduino.machine.getValue('green')) {
+        if (changes.find((x) => x.key === 'green' && x.value === false)) {
           const time =
             new Date().valueOf() - new Date(arduino.machine.getValue('lastStateTs')).valueOf();
-          const lastCycle = arduino.machine.getValue('lastCycle');
-          if (time > lastCycle) changes.push({ key: 'lastCycle', value: time });
+          changes.push({ key: 'lastCycle', value: time });
         }
         if (changes.length) {
           arduino.machine.setStatus(changes);
