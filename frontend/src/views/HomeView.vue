@@ -43,7 +43,7 @@ setInterval(() => {
 
 const machines = ref([] as Machines[]);
 
-const shownMachines: Machines[] = computed(() => {
+const shownMachines = computed(() => {
   const hidden = localStorage.getItem('hidden');
   const hiddenArray = hidden ? hidden.split(',') : [];
   return machines.value.filter((x) => !hiddenArray.includes(x.name));
