@@ -19,13 +19,6 @@
         </div>
         <div class="offline-message">
           <img v-if="!isOnline" :src="offlineImg" alt="" />
-          <img
-            v-else
-            :src="jamie"
-            alt=""
-            style="height: 200px"
-            :class="{ grayed: !data.status.green && !data.status.red }"
-          />
         </div>
         <div v-if="isOnline" class="details">
           <div>
@@ -80,7 +73,6 @@
 import { Duration } from 'luxon';
 import { computed, ref, watch } from 'vue';
 import offlineImg from '@/components/images/offline.png';
-import jamie from '@/components/images/jamie.jpg';
 import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
@@ -166,7 +158,7 @@ const blink = computed(() => {
 <style scoped>
 .machine {
   width: 250px;
-  height: 370px;
+  height: 160px;
   color: #ffffff;
   padding: 10px;
   border-radius: 10px;
@@ -181,6 +173,8 @@ const blink = computed(() => {
 .details > div {
   width: 100%;
   font-size: 14px;
+  position: relative;
+  bottom: 7px;
 }
 
 .details > div > span {
@@ -333,9 +327,5 @@ const blink = computed(() => {
 
 .mobile table tr {
   line-height: 10px;
-}
-
-.grayed {
-  filter: grayscale(100%);
 }
 </style>

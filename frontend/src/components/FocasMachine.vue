@@ -46,31 +46,7 @@
             </div>
           </div>
           <div>
-            Tool: <span>{{ data.status.tool }}</span>
-          </div>
-          <div>
-            Feed Override: <span>{{ data.status.overrides.feed }}%</span>
-          </div>
-          <div>
-            Rapid Override: <span>{{ rapidOverride }}</span>
-          </div>
-          <div>
-            Parts Count: <span>{{ data.status.parts }}</span>
-          </div>
-          <div>
-            Cycle: <span>{{ cycle }}</span>
-          </div>
-          <div>
             Last Cycle: <span>{{ lastCycle }}</span>
-          </div>
-          <div>
-            Mode: <span>{{ mode }}</span>
-          </div>
-          <div>
-            Execution: <span>{{ data.status.execution }}</span>
-          </div>
-          <div class="myProgress">
-            <div class="myBar" :style="`width: ${progress}%`"></div>
           </div>
         </div>
         <div class="timer" v-if="isOnline">
@@ -206,7 +182,7 @@ const alarms = computed(() => {
 <style scoped>
 .machine {
   width: 250px;
-  height: 370px;
+  height: 160px;
   color: #ffffff;
   padding: 10px;
   border-radius: 10px;
