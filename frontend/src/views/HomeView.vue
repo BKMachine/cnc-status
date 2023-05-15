@@ -1,6 +1,11 @@
 <template>
   <main class="container" :class="{ mobile: mobile }" v-if="machines.length">
-    <div class="machines" v-for="machine in machines" :key="machine.name">
+    <div
+      class="machines"
+      v-for="machine in shownMachines"
+      :key="machine.name"
+      @dblclick="openDetails(machine.name)"
+    >
       <FocasMachine
         v-if="machine.source === 'focas'"
         :data="machine"
@@ -18,11 +23,13 @@
 <script setup lang="ts">
 import FocasMachine from '@/components/FocasMachine.vue';
 import ArduinoMachine from '@/components/ArduinoMachine.vue';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, computed } from 'vue';
 import socket, { Socket } from 'socket.io-client';
 import axios from '@/plugins/axios';
 import isMobile from '@/plugins/isMobile';
 import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const state = reactive({
   now: new Date(),
@@ -35,6 +42,12 @@ setInterval(() => {
 }, 1000);
 
 const machines = ref([] as Machines[]);
+
+const shownMachines: Machines[] = computed(() => {
+  const hidden = localStorage.getItem('hidden');
+  const hiddenArray = hidden ? hidden.split(',') : [];
+  return machines.value.filter((x) => !hiddenArray.includes(x.name));
+});
 
 let io: Socket;
 
@@ -81,7 +94,9 @@ setInterval(() => {
   getStatus();
 }, 1000 * 60 * 5);
 
-function openDetails(name: string) {}
+function openDetails(name: string) {
+  router.push({ name: 'details', params: { id: name } });
+}
 </script>
 
 <style scoped>
