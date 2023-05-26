@@ -31,7 +31,12 @@ interface ArduinoStatus {
   [key: string]: any;
 }
 
+interface MTConnectStatus {
+  [key: string]: any;
+}
+
 type FocasMachine = import('../backend/src/machines/FocasMachine');
 type ArduinoMachine = import('../backend/src/machines/ArduinoMachine');
+type MTConnectMachine = import('../backend/src/machines/MTConnectMachine');
 
-type Machine = FocasMachine | ArduinoMachine;
+type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
