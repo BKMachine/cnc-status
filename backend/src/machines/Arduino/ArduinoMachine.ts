@@ -1,11 +1,20 @@
-import { emit } from '../server/socket.io';
+import { emit } from '../../server/socket.io';
 
-const initStatus: MTConnectStatus = {};
+const initStatus: ArduinoStatus = {
+  online: false,
+  green: false,
+  yellow: false,
+  red: false,
+  cycle: 0,
+  lastCycle: 0,
+  lastStateTs: new Date().toISOString(),
+};
 
-class MTConnectMachine {
+class ArduinoMachine {
   private readonly name: string;
   private readonly brand: string;
-  private readonly status: MTConnectStatus;
+  private readonly status: ArduinoStatus;
+  private readonly source = 'arduino';
 
   constructor(name: string, brand: string) {
     this.name = name;
@@ -16,7 +25,7 @@ class MTConnectMachine {
   getMachine() {
     return {
       name: this.name,
-      source: 'mtconnect',
+      source: this.source,
       brand: this.brand,
       status: this.status,
     };
@@ -28,10 +37,11 @@ class MTConnectMachine {
 
   setStatus(changes: { key: string; value: any }[]) {
     changes.forEach((change) => {
-      this.status[change.key] = change.value;
+      const { key, value } = change;
+      this.status[key] = value;
     });
     emit('change', { name: this.name, changes });
   }
 }
 
-export default MTConnectMachine;
+export default ArduinoMachine;

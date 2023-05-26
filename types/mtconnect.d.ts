@@ -1,46 +1,93 @@
 interface MTConnect {
-  MTConnectStreams: {
-    Header: {
-      bufferSize: number;
-      creationTime: string;
-      deviceModelChangeTime: string;
-      firstSequence: number;
-      instanceId: number;
-      lastSequence: number;
-      nextSequence: number;
-      schemaVersion: string;
-      sender: string;
-      testIndicator: boolean;
-      version: string;
-    };
-    Streams: {
-      DeviceStream: ComponentStream[]
-    };
-    jsonVersion: number;
+  "MTConnectStreams": {
+    "$": {
+      "xmlns:m": "urn:mtconnect.org:MTConnectStreams:2.0",
+      "xmlns": "urn:mtconnect.org:MTConnectStreams:2.0",
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xsi:schemaLocation": "urn:mtconnect.org:MTConnectStreams:2.0 /schemas/MTConnectStreams_2.0.xsd"
+    },
+    "Header": [
+      {
+        "$": {
+          "creationTime": string,
+          "sender": string,
+          "instanceId": string,
+          "version": string,
+          "deviceModelChangeTime": string,
+          "bufferSize": string,
+          "nextSequence": string,
+          "firstSequence": string,
+          "lastSequence": string
+        }
+      }
+    ],
+    "Streams": [
+      {
+        "DeviceStream": DeviceStream[],
+      }
+    ]
   }
 }
 
-interface ComponentStream {
-  ComponentStream: Component[]
+interface DeviceStream {
+  "$": {
+    "name": string,
+    "uuid": string
+  },
+  "ComponentStream": ComponentStream[]
 }
 
-interface Component {
-  Events: Event,
-  Samples: Sample,
-  Conditions: Condition,
-  component: 'Agent' | 'Adapter',
-  componentId: string,
-  name: string,
+interface ComponentStream {
+  "$": {
+    "component": string,
+    "name": string,
+    "componentId": string
+  },
+  "Samples"?: Sample[],
+  "Events"?: Event[],
+  "Condition"?: Condition[],
 }
 
 interface Event {
- [key: string]: any
+  [key: string]:
+    {
+      "_": string,
+      "$": {
+        "dataItemId": string,
+        "sequence": string,
+        "timestamp": string,
+        name?: string,
+        assetType?: string,
+        count?: string,
+      }
+    }[]
 }
 
 interface Sample {
-  [key: string]: any
+  [key: string]:
+    {
+      "_": string,
+      "$": {
+        "dataItemId": string,
+        "name"?: string,
+        "sequence": string,
+        "statistic"?: string,
+        "timestamp": string,
+        duration?: string,
+        subType?: string,
+      }
+    }[]
+
 }
 
 interface Condition {
-  [key: string]: any
+  [key: string]:
+    {
+      "$": {
+        "dataItemId": string,
+        "sequence": string,
+        "timestamp": string,
+        "type": string
+      }
+    }[]
 }

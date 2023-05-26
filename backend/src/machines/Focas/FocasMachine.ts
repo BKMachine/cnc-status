@@ -1,4 +1,4 @@
-import { emit } from '../server/socket.io';
+import { emit } from '../../server/socket.io';
 
 const initStatus: FocasStatus = {
   online: false,
@@ -19,6 +19,7 @@ class FocasMachine {
   private readonly name: string;
   private readonly brand: string;
   private readonly status: FocasStatus;
+  private readonly source = 'focas';
 
   constructor(name: string, brand: string) {
     this.name = name;
@@ -29,7 +30,7 @@ class FocasMachine {
   getMachine() {
     return {
       name: this.name,
-      source: 'focas',
+      source: this.source,
       brand: this.brand,
       status: this.status,
     };

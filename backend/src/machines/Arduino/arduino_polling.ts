@@ -1,6 +1,6 @@
 import _axios from 'axios';
-import logger from './logger';
-import machines from './machines';
+import logger from '../../logger';
+import { arduinoMachines as machines } from '../index';
 
 const axios = _axios.create({
   timeout: 1000,
@@ -46,18 +46,20 @@ export function stop() {
 
 function run() {
   arduinos.forEach((arduino) => {
+    const machine = arduino.machine;
+
     axios
       .get(arduino.url)
       .then(({ data }) => {
         const changes = [];
-        const online = arduino.machine.getValue('online');
+        const online = machine.getValue('online');
         if (!online) {
           changes.push({ key: 'online', value: true });
           changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
         }
         for (const key in data) {
           const value = data[key];
-          const old = arduino.machine.getValue(key);
+          const old = machine.getValue(key);
           if (value !== old) {
             changes.push({ key, value });
             changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
@@ -69,11 +71,11 @@ function run() {
           changes.push({ key: 'lastCycle', value: time });
         }
         if (changes.length) {
-          arduino.machine.setStatus(changes);
+          machine.setStatus(changes);
         }
       })
       .catch(() => {
-        arduino.machine.setStatus([{ key: 'online', value: false }]);
+        machine.setStatus([{ key: 'online', value: false }]);
       });
   });
 }

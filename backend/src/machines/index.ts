@@ -1,7 +1,8 @@
-import ArduinoMachine from './ArduinoMachine';
-import FocasMachine from './FocasMachine';
+import ArduinoMachine from './Arduino/ArduinoMachine';
+import FocasMachine from './Focas/FocasMachine';
+import MTConnectMachine from './MTConnect/MTConnectMachine';
 
-const machines: { [key: string]: Machine } = {
+export const focasMachines: { [key: string]: FocasMachine } = {
   rd1: new FocasMachine('RD1', 'fanuc'),
   rd2: new FocasMachine('RD2', 'fanuc'),
   rd3: new FocasMachine('RD3', 'fanuc'),
@@ -11,11 +12,25 @@ const machines: { [key: string]: Machine } = {
   s1: new FocasMachine('S1', 'hanwha'),
   s2: new FocasMachine('S2', 'hanwha'),
   s3: new FocasMachine('S3', 'hanwha'),
+};
+
+export const arduinoMachines: { [key: string]: ArduinoMachine } = {
   ml1: new ArduinoMachine('ML1', 'mori'),
   ml2: new ArduinoMachine('ML2', 'mori'),
   ml3: new ArduinoMachine('ML3', 'mori'),
   me1: new ArduinoMachine('ME1', 'mitsubishi'),
   l1: new ArduinoMachine('L1', 'mazak'),
+};
+
+export const mtconnectMachines: { [key: string]: MTConnectMachine } = {
+  nhx: new MTConnectMachine('NHX', 'mori'),
+  dv1: new MTConnectMachine('DV1', 'mori'),
+};
+
+const machines: { [key: string]: Machine } = {
+  ...focasMachines,
+  ...arduinoMachines,
+  ...mtconnectMachines,
 };
 
 export default machines;
