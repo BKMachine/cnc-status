@@ -1,7 +1,7 @@
 import ArduinoMachine from './ArduinoMachine';
 import FocasMachine from './FocasMachine';
 
-const machines = {
+const machines: { [key: string]: Machine } = {
   rd1: new FocasMachine('RD1', 'fanuc'),
   rd2: new FocasMachine('RD2', 'fanuc'),
   rd3: new FocasMachine('RD3', 'fanuc'),

@@ -6,26 +6,19 @@ const initStatus: FocasStatus = {
   mainComment: '',
   runningProgram: '',
   runningComment: '',
-  tool: '',
   mode: '',
   execution: '',
-  overrides: {
-    feed: 0,
-    rapid: 0,
-    spindle: 0,
-  },
   alarms: [],
   alarms2: [],
-  parts: 0,
   cycle: 0,
   lastCycle: 0,
   lastStateTs: new Date().toISOString(),
 };
 
 class FocasMachine {
-  private name: string;
-  private brand: string;
-  private status: FocasStatus;
+  private readonly name: string;
+  private readonly brand: string;
+  private readonly status: FocasStatus;
 
   constructor(name: string, brand: string) {
     this.name = name;

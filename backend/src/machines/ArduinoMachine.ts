@@ -11,9 +11,9 @@ const initStatus: ArduinoStatus = {
 };
 
 class ArduinoMachine {
-  private name: string;
-  private brand: string;
-  private status: ArduinoStatus;
+  private readonly name: string;
+  private readonly brand: string;
+  private readonly status: ArduinoStatus;
 
   constructor(name: string, brand: string) {
     this.name = name;
