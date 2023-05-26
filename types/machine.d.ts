@@ -4,17 +4,10 @@ interface FocasStatus {
   mainComment: string;
   runningProgram: string;
   runningComment: string;
-  tool: string;
   mode: string;
   execution: string;
-  overrides: {
-    feed: number;
-    rapid: number;
-    spindle: number;
-  };
   alarms: any[];
   alarms2: any[];
-  parts: number;
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
@@ -38,7 +31,7 @@ interface ArduinoStatus {
   [key: string]: any;
 }
 
-type FocasMachine = import('../machines/FocasMachine');
-type ArduinoMachine = import('../machines/ArduinoMachine');
+type FocasMachine = import('../backend/src/machines/FocasMachine');
+type ArduinoMachine = import('../backend/src/machines/ArduinoMachine');
 
 type Machine = FocasMachine | ArduinoMachine;
