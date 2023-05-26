@@ -6,15 +6,15 @@ import * as server from './server';
 
 async function start(): Promise<void> {
   // await database.connect();
-  mqtt.connect();
-  server.start();
+  await mqtt.connect();
   arduino.start();
+  server.start();
 }
 
 async function stop(): Promise<void> {
   const shutdownSequence = [
-    arduino.stop,
     server.stop,
+    arduino.stop,
     mqtt.disconnect,
     // database.disconnect,
   ];
