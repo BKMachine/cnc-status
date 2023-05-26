@@ -22,7 +22,7 @@ router.get('/status', async (req, res, next) => {
 
 router.post('/refresh', (req, res, next) => {
   const { token } = req.body;
-  if (token !== process.env.TOKEN) {
+  if (!process.env.TOKEN || !token || token !== process.env.TOKEN) {
     res.sendStatus(401);
     return;
   }
