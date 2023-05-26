@@ -41,6 +41,7 @@ export function start() {
 
 export function stop() {
   if (interval) clearInterval(interval);
+  logger.info('Stopped Arduino polling');
 }
 
 function run() {
