@@ -15,7 +15,12 @@
       >
         <div class="name">
           <div>{{ data.name }}</div>
-          <img class="logo" v-if="data.image" :src="data.image" alt="" />
+          <img
+            class="logo"
+            v-if="data.brand"
+            :src="getLogoUrl(data.brand)"
+            :alt="data.brand"
+          />
         </div>
         <div v-if="!isOnline" class="offline-message">
           <img :src="offlineImg" alt="" />
@@ -71,9 +76,14 @@
             class="mobile-offline"
             v-if="!isOnline"
             :src="offlineImg"
-            alt=""
+            alt="OFFLINE"
           />
-          <img class="logo" v-if="data.image" :src="data.image" alt="" />
+          <img
+            class="logo"
+            v-if="data.brand"
+            :src="getLogoUrl(data.brand)"
+            :alt="data.brand"
+          />
         </div>
         <div v-if="!isOnline"></div>
         <div v-else-if="hasAlarm">
@@ -96,13 +106,19 @@
 <script setup lang="ts">
 import { Duration } from 'luxon';
 import { computed } from 'vue';
-import offlineImg from '@/components/images/offline.png';
+import offlineImg from '@/assets/offline.png';
 import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
   data: FocasMachine;
   now: Date;
 }>();
+
+function getLogoUrl(brand: string) {
+  return brand
+    ? new URL('../assets/logos/' + brand + '.png', import.meta.url).href
+    : '';
+}
 
 const isOnline = computed(() => {
   return props.data.status.online;

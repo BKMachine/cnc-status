@@ -1,6 +1,6 @@
 interface Machine {
   name: string;
-  image: string;
+  brand: string;
 }
 
 interface FocasMachine extends Machine {

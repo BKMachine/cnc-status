@@ -1,4 +1,3 @@
-import { baseUrl } from '../config';
 import { emit } from '../server/socket.io';
 
 const initStatus: FocasStatus = {
@@ -25,12 +24,12 @@ const initStatus: FocasStatus = {
 
 class FocasMachine {
   private name: string;
-  private image: string;
+  private brand: string;
   private status: FocasStatus;
 
-  constructor(name: string, image: string) {
+  constructor(name: string, brand: string) {
     this.name = name;
-    this.image = baseUrl + '/img/' + image;
+    this.brand = brand;
     this.status = { ...initStatus };
   }
 
@@ -38,7 +37,7 @@ class FocasMachine {
     return {
       name: this.name,
       source: 'focas',
-      image: this.image,
+      brand: this.brand,
       status: this.status,
     };
   }

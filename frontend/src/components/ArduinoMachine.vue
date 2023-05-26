@@ -9,13 +9,19 @@
             online: isOnline,
             offline: !isOnline,
             running: data.status.green,
+            yellow: data.status.yellow,
             'alarmed-blinking': blink,
           },
         ]"
       >
         <div class="name">
           <div>{{ data.name }}</div>
-          <img class="logo" v-if="data.image" :src="data.image" alt="" />
+          <img
+            class="logo"
+            v-if="data.brand"
+            :src="getLogoUrl(data.brand)"
+            :alt="data.brand"
+          />
         </div>
         <div class="offline-message">
           <img v-if="!isOnline" :src="offlineImg" alt="" />
@@ -72,13 +78,19 @@
 <script setup lang="ts">
 import { Duration } from 'luxon';
 import { computed, ref, watch } from 'vue';
-import offlineImg from '@/components/images/offline.png';
+import offlineImg from '@/assets/offline.png';
 import isMobile from '@/plugins/isMobile';
 
 const props = defineProps<{
   data: ArduinoMachine;
   now: Date;
 }>();
+
+function getLogoUrl(brand: string) {
+  return brand
+    ? new URL('../assets/logos/' + brand + '.png', import.meta.url).href
+    : '';
+}
 
 const isOnline = computed(() => {
   return props.data.status.online;
@@ -215,8 +227,9 @@ const blink = computed(() => {
 .status-STOPPED,
 .status-INTERRUPTED,
 .status-READY,
-.status-UNAVAILABLE {
-  background: #6c6c6c;
+.status-UNAVAILABLE,
+.yellow {
+  background: #d3ac28;
 }
 
 .alarmed {

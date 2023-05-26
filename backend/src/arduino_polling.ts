@@ -23,6 +23,10 @@ const arduinos = [
     url: 'http://10.30.1.28:8193',
     machine: machines.me1,
   },
+  {
+    url: 'http://10.30.1.29:8193',
+    machine: machines.l1,
+  },
 ];
 
 let interval: NodeJS.Timer;
