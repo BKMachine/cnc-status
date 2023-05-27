@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { parseString } from 'xml2js';
+import { XMLParser } from 'fast-xml-parser';
 import logger from '../../logger';
 import { mtconnectMachines as machines } from '../../machines';
 
 let interval: NodeJS.Timer;
+const parser = new XMLParser();
 
 export function start() {
   if (!process.env.MTCONNECT_URL) throw new Error('Missing MTCONNECT_URL environment variable.');
@@ -15,8 +16,10 @@ export function start() {
 }
 
 export function stop() {
-  if (interval) clearInterval(interval);
-  logger.info('Stopped MTConnect polling');
+  if (interval) {
+    clearInterval(interval);
+    logger.info('Stopped MTConnect polling');
+  }
 }
 
 function run() {
@@ -24,10 +27,11 @@ function run() {
     .get(process.env.MTCONNECT_URL, { headers: { Accept: 'application/xml' } })
     .then(({ data }) => {
       // Parse XML string to json
-      parseString(data, function (err, result: MTConnect) {
-        if (err) logger.error(err);
-        else processJSON(result);
-      });
+      try {
+        processJSON(parser.parse(data));
+      } catch (e) {
+        // Do Nothing - Wait until next query
+      }
     })
     .catch(() => {
       // MTConnect not responding - set all mtconnect machines to offline
@@ -40,7 +44,7 @@ function run() {
 
 function processJSON(data: MTConnect) {
   // Filter out DeviceStreams that are not the "Agent"
-  const streams = data.MTConnectStreams.Streams[0].DeviceStream.filter((x) => x.$.name !== 'Agent');
+  /*const streams = data.MTConnectStreams.Streams[0].DeviceStream.filter((x) => x.$.name !== 'Agent');
   const machineNames = Object.keys(machines);
   streams.forEach((stream) => {
     const name = stream.$.name;
@@ -51,5 +55,5 @@ function processJSON(data: MTConnect) {
     // MORE THINGS
 
     if (changes.length) machine.setStatus(changes);
-  });
+  });*/
 }
