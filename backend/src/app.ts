@@ -1,6 +1,6 @@
 // import * as database from './database';
-import * as arduino from './machines/Arduino/arduino_polling';
 import logger from './logger';
+import * as arduino from './machines/Arduino/arduino_polling';
 import * as mqtt from './machines/Focas/mqtt';
 import * as mtconnect from './machines/MTConnect/mtconnect_polling';
 import * as server from './server';
