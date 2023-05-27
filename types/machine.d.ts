@@ -41,3 +41,28 @@ type ArduinoMachine = import('../backend/src/machines/Arduino/ArduinoMachine');
 type MTConnectMachine = import('../backend/src/machines/MTConnect/MTConnectMachine');
 
 type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
+
+type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
+
+interface Focas {
+  name: string;
+  brand: MachineBrand;
+  source: 'focas';
+  status: FocasStatus;
+}
+
+interface Arduino {
+  name: string;
+  brand: MachineBrand;
+  source: 'arduino';
+  status: ArduinoStatus;
+}
+
+interface MTConnect {
+  name: string;
+  brand: MachineBrand;
+  source: 'mtconnect';
+  status: MTConnectStatus;
+}
+
+type MachineStatus = Focas | Arduino | MTConnect;

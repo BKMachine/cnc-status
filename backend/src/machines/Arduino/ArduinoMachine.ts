@@ -12,11 +12,11 @@ const initStatus: ArduinoStatus = {
 
 class ArduinoMachine {
   private readonly name: string;
-  private readonly brand: string;
+  private readonly brand: MachineBrand;
   private readonly status: ArduinoStatus;
   private readonly source = 'arduino';
 
-  constructor(name: string, brand: string) {
+  constructor(name: string, brand: MachineBrand) {
     this.name = name;
     this.brand = brand;
     this.status = { ...initStatus };

@@ -6,11 +6,11 @@ const initStatus: MTConnectStatus = {
 
 class MTConnectMachine {
   private readonly name: string;
-  private readonly brand: string;
+  private readonly brand: MachineBrand;
   private readonly status: MTConnectStatus;
   private readonly source = 'mtconnect';
 
-  constructor(name: string, brand: string) {
+  constructor(name: string, brand: MachineBrand) {
     this.name = name;
     this.brand = brand;
     this.status = { ...initStatus };

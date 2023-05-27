@@ -17,11 +17,11 @@ const initStatus: FocasStatus = {
 
 class FocasMachine {
   private readonly name: string;
-  private readonly brand: string;
+  private readonly brand: MachineBrand;
   private readonly status: FocasStatus;
   private readonly source = 'focas';
 
-  constructor(name: string, brand: string) {
+  constructor(name: string, brand: MachineBrand) {
     this.name = name;
     this.brand = brand;
     this.status = { ...initStatus };
