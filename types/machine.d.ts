@@ -33,6 +33,7 @@ interface ArduinoStatus {
 
 interface MTConnectStatus {
   online: boolean;
+  lastStateTs: string;
   [key: string]: any;
 }
 

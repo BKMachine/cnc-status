@@ -37,6 +37,7 @@ export function processMessage(topic: string, message: Buffer) {
   const machineName = topic.split('/')[1];
   if (!machineName || !machines[machineName]) return;
   const machine = machines[machineName];
+  if (!machine) return;
   let data: any = {};
   try {
     data = JSON.parse(message.toString());

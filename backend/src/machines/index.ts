@@ -19,12 +19,16 @@ export const arduinoMachines: { [key: string]: ArduinoMachine } = {
   ml2: new ArduinoMachine('ML2', 'mori'),
   ml3: new ArduinoMachine('ML3', 'mori'),
   me1: new ArduinoMachine('ME1', 'mitsubishi'),
-  l1: new ArduinoMachine('L1', 'mazak'),
+  mz1: new ArduinoMachine('MZ1', 'mazak'),
+  mz2: new ArduinoMachine('MZ2', 'mazak'),
+  dmu: new ArduinoMachine('DMU', 'mori'),
+  h1: new ArduinoMachine('H1', 'haas'),
+  h2: new ArduinoMachine('H2', 'haas'),
 };
 
 export const mtconnectMachines: { [key: string]: MTConnectMachine } = {
   nhx: new MTConnectMachine('NHX', 'mori'),
-  dv1: new MTConnectMachine('DV1', 'mori'),
+  dv1: new MTConnectMachine('DV', 'mori'),
 };
 
 const machines: { [key: string]: Machine } = {

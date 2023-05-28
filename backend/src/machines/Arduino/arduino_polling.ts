@@ -25,7 +25,7 @@ const arduinos = [
   },
   {
     url: 'http://10.30.1.29:8193',
-    machine: machines.l1,
+    machine: machines.mz1,
   },
 ];
 
@@ -34,7 +34,11 @@ let interval: NodeJS.Timer;
 export function start() {
   stop();
   interval = setInterval(() => {
-    run();
+    try {
+      run();
+    } catch ({ message }) {
+      if (message) logger.error(message);
+    }
   }, 5000);
   logger.info('Started Arduino polling');
 }
@@ -49,6 +53,7 @@ export function stop() {
 function run() {
   arduinos.forEach((arduino) => {
     const machine = arduino.machine;
+    if (!machine) return;
 
     axios
       .get(arduino.url)

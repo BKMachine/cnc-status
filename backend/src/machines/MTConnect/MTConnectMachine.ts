@@ -2,6 +2,7 @@ import { emit } from '../../server/socket.io';
 
 const initStatus: MTConnectStatus = {
   online: false,
+  lastStateTs: '',
 };
 
 class MTConnectMachine {

@@ -37,6 +37,7 @@ function run() {
       // MTConnect not responding - set all mtconnect machines to offline
       for (const key in machines) {
         const machine = machines[key];
+        if (!machine) continue;
         machine.setStatus([{ key: 'online', value: false }]);
       }
     });
