@@ -33,7 +33,7 @@ const machines = ref([] as MachineStatus[]);
 const visibleMachines = computed(() => {
   const hidden = localStorage.getItem('hidden');
   const hiddenArray = hidden ? hidden.split(',') : [];
-  return machines.value.filter((x: Machine) => !hiddenArray.includes(x.name));
+  return machines.value.filter((x) => !hiddenArray.includes(x.name));
 });
 
 function openMachine(name: string) {
