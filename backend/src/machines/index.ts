@@ -37,4 +37,4 @@ const machines: { [key: string]: Machine } = {
   ...mtconnectMachines,
 };
 
-export default machines;
+export default machines as { [key: string]: Machine };

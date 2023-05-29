@@ -1,19 +1,22 @@
-<template>
-  <main class="container" v-if="visibleMachines.length">
-    <div
-      class="machine"
-      v-for="machine in visibleMachines"
-      :key="machine.name"
-      @dblclick="openMachine(machine.name)"
-    >
-      <MachineTile :data="machine" :now="state.now" />
-    </div>
+<template v-cloak>
+  <main v-if="visibleMachines.length">
+    <VueDraggable v-model="visibleMachines" class="container" @end="saveOrder">
+      <div
+        v-for="item in visibleMachines"
+        :key="item.name"
+        class="machine"
+        @dblclick="openMachine(item.name)"
+      >
+        <MachineTile :data="item" :now="state.now" />
+      </div>
+    </VueDraggable>
   </main>
 </template>
 
 <script setup lang="ts">
+import { VueDraggable } from 'vue-draggable-plus';
 import MachineTile from '@/components/MachineTile.vue';
-import { onMounted, computed, ref, reactive, onBeforeUnmount } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from '@/plugins/axios';
 import { io, Socket } from 'socket.io-client';
@@ -30,11 +33,31 @@ let nowInterval: NodeJS.Timer | null = setInterval(() => {
 
 const machines = ref([] as MachineStatus[]);
 
-const visibleMachines = computed(() => {
+const orderedMachines = computed((): Machine[] => {
+  const order = localStorage.getItem('order');
+  const orderArray = order ? order.split(',').map((x) => parseInt(x)) : [];
+  const results: Machine[] = [];
+  const remaining: Machine[] = [...machines.value];
+  for (let i = 0; i < orderArray.length; i++) {
+    const index = remaining.findIndex((x) => x.index === orderArray[i]);
+    if (index !== -1) {
+      const [machine] = remaining.splice(index, 1);
+      results.push(machine);
+    }
+  }
+  return [...results, ...remaining];
+});
+
+const visibleMachines = computed((): Machine[] => {
   const hidden = localStorage.getItem('hidden');
   const hiddenArray = hidden ? hidden.split(',') : [];
-  return machines.value.filter((x) => !hiddenArray.includes(x.name));
+  return orderedMachines.value.filter((x) => !hiddenArray.includes(x.name));
 });
+
+function saveOrder() {
+  const indexes = visibleMachines.value.map((x) => x.index);
+  localStorage.setItem('order', indexes.join(','));
+}
 
 function openMachine(name: string) {
   router.push({ name: 'machine', params: { id: name } });

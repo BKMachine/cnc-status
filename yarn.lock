@@ -1539,6 +1539,7 @@ __metadata:
     typescript: 4.9.5
     vite: ^4.3.5
     vue: ^3.3.2
+    vue-draggable-plus: ^0.2.0-beta.1
     vue-router: ^4.2.0
     vue-tsc: ^1.6.4
   languageName: unknown
@@ -5638,6 +5639,16 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 8c45a516278d1e0425fac00c0877336790f71484a851a318346a70e0d2aef9f3b9651deb2f9f002c791ceb920eda7d6a3cda753bdefd657321c99f448b02dd25
+  languageName: node
+  linkType: hard
+
+"vue-draggable-plus@npm:^0.2.0-beta.1":
+  version: 0.2.0-beta.1
+  resolution: "vue-draggable-plus@npm:0.2.0-beta.1"
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+  checksum: 716dbce0fa4bd3e1966e910bac5fa2fc1ecb6dbc3d416bebebc27a8c132801629b6147a6abc6bc50b5346da88c27462c381951534365430ce3745f9401ebb7e3
   languageName: node
   linkType: hard
 

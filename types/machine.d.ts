@@ -50,6 +50,7 @@ interface Focas {
   brand: MachineBrand;
   source: 'focas';
   status: FocasStatus;
+  index?: number;
 }
 
 interface Arduino {
@@ -57,6 +58,7 @@ interface Arduino {
   brand: MachineBrand;
   source: 'arduino';
   status: ArduinoStatus;
+  index?: number;
 }
 
 interface MTConnect {
@@ -64,6 +66,7 @@ interface MTConnect {
   brand: MachineBrand;
   source: 'mtconnect';
   status: MTConnectStatus;
+  index?: number;
 }
 
 type MachineStatus = Focas | Arduino | MTConnect;
