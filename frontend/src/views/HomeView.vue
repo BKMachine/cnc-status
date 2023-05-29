@@ -10,6 +10,7 @@
         <MachineTile :data="item" :now="state.now" />
       </div>
     </VueDraggable>
+    <Settings class="cog" @clear-order="refresh" />
   </main>
 </template>
 
@@ -20,12 +21,19 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from '@/plugins/axios';
 import { io, Socket } from 'socket.io-client';
+import Settings from '@/components/HomeViewSettingsCog.vue';
 
 const router = useRouter();
 
 const state = reactive({
   now: new Date(),
 });
+
+const refreshKey = ref(0);
+
+function refresh() {
+  refreshKey.value++;
+}
 
 let nowInterval: NodeJS.Timer | null = setInterval(() => {
   state.now = new Date();
@@ -45,6 +53,7 @@ const orderedMachines = computed((): Machine[] => {
       results.push(machine);
     }
   }
+  refreshKey.value; // Force recompute
   return [...results, ...remaining];
 });
 
@@ -125,5 +134,12 @@ onBeforeUnmount(() => {
 
 .machine {
   margin: 5px;
+}
+
+.cog {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 </style>
