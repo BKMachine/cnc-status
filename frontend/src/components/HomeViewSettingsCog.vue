@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import logo from '@/assets/bk-logo.png';
-import { defineEmits } from 'vue';
 
 const emits = defineEmits(['clear-order']);
 
