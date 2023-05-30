@@ -1,5 +1,5 @@
 <template>
-  <div class="machine" :class="[{ online: isOnline, blink }]">
+  <div class="machine" :class="[status, { online: isOnline, alarmed: hasAlarm, blink }]">
     <div class="header">
       <div>{{ data.name }}</div>
       <img class="logo" :src="getLogoUrl(data.brand)" :alt="data.brand" />
@@ -9,16 +9,16 @@
     </div>
     <div v-else>
       <div class="details">
-        <div class="main-program">{{ data.status.mainProgram }} {{ data.status.mainComment }}</div>
+        <!--        <div class="main-program">{{ data.status.mainProgram }} {{ data.status.mainComment }}</div>
         <div class="sub-program">
           {{ data.status.runningProgram }} {{ data.status.runningComment }}
-        </div>
-        <div>
+        </div>-->
+        <!--        <div>
           Last Cycle: <span>{{ lastCycle }}</span>
-        </div>
-        <div v-if="hasAlarm" class="alarm">
+        </div>-->
+        <!--        <div v-if="hasAlarm" class="alarm">
           {{ alarms[0] }}
-        </div>
+        </div>-->
       </div>
       <div v-if="isOnline" class="timer">
         <div>{{ timerText }}</div>
@@ -64,16 +64,38 @@ const lastCycle = computed(() => {
   return dur.toFormat('m:ss');
 });
 
-const alarms = computed(() => {
+/*const alarms = computed(() => {
   return props.data.status.alarms.concat(props.data.status.alarms2);
-});
+});*/
 
 const hasAlarm = computed(() => {
-  return alarms.value.length > 0;
+  if (props.data.source === 'focas') {
+    const alarms = props.data.status.alarms.concat(props.data.status.alarms2);
+    return alarms.length > 0;
+  } else if (props.data.source === 'arduino') {
+    return props.data.status.red;
+  }
+  return false;
 });
 
 const blink = computed(() => {
   return isOnline.value && hasAlarm.value && seconds.value >= 60 * 15;
+});
+
+const status = computed(() => {
+  if (props.data.source === 'focas') {
+    return `status-${props.data.status.execution} status-${props.data.status.execution2}`;
+  } else if (props.data.source === 'arduino') {
+    if (props.data.status.green) {
+      return 'status-GREEN';
+    } else if (props.data.status.yellow) {
+      return 'status-YELLOW';
+    } else if (props.data.status.red) {
+      return 'status-RED';
+    }
+    return '';
+  }
+  return '';
 });
 </script>
 
@@ -119,5 +141,43 @@ const blink = computed(() => {
 
 .offline img {
   height: 70px;
+}
+
+.machine .status-ACTIVE,
+.machine .status-OPTIONAL_STOP,
+.machine .status-GREEN {
+  background: #287428;
+}
+
+.machine .status-STOPPED,
+.machine .status-INTERRUPTED,
+/*.machine .status-READY,*/
+.machine .status-UNAVAILABLE,
+.machine .status-YELLOW {
+  background: #e89a23;
+}
+
+.machine .alarmed,
+.machine .status-RED {
+  background: #bd0000;
+}
+
+.machine .blink {
+  animation: blinkingAlarm 2s infinite;
+}
+
+@keyframes blinkingAlarm {
+  0% {
+    background-color: #bd0000;
+  }
+  50% {
+    background-color: #bd0000;
+  }
+  51% {
+    background-color: #6c6c6c;
+  }
+  100% {
+    background-color: #6c6c6c;
+  }
 }
 </style>

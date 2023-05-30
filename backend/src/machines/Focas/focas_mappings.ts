@@ -13,6 +13,10 @@ const focas_mappings: FocasMapping = {
     'state.data.mode': 'mode',
     'state.data.execution': 'execution',
   },
+  'state/2': {
+    'state.data.mode': 'mode2',
+    'state.data.execution': 'execution2',
+  },
   'alarms/1': {
     'state.data.alarms': 'alarms',
   },

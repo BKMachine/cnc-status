@@ -5,7 +5,9 @@ interface FocasStatus {
   runningProgram: string;
   runningComment: string;
   mode: string;
+  mode2: string;
   execution: string;
+  execution2: string;
   alarms: any[];
   alarms2: any[];
   cycle: number;
