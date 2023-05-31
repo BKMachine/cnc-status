@@ -2,14 +2,14 @@ FROM node:16.13.2-alpine3.15 as base
 WORKDIR /app
 
 FROM base AS backend_prod_dependencies
-COPY ./backend/package.json ./backend/yarn.lock ./
+COPY ./backend/package.json ./yarn.lock ./
 RUN yarn --production=true
 
 FROM backend_prod_dependencies as backend_dev_dependencies
 RUN yarn --production=false
 
 FROM base as frontend_dependencies
-COPY ./frontend/package.json ./frontend/yarn.lock ./
+COPY ./frontend/package.json ./yarn.lock ./
 RUN yarn --production=false
 
 FROM backend_dev_dependencies as backend_builder

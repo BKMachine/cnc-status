@@ -1,6 +1,7 @@
 .github
 .idea
 .git
+.yarn
 .editorconfig
 README.md
 
