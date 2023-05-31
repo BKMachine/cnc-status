@@ -43,6 +43,7 @@ function run() {
     });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function processJSON(data: MTConnect) {
   // Filter out DeviceStreams that are not the "Agent"
   /*const streams = data.MTConnectStreams.Streams[0].DeviceStream.filter((x) => x.$.name !== 'Agent');
