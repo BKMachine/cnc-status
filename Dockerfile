@@ -1,4 +1,4 @@
-FROM node:16.13.2-alpine3.15 as base
+FROM node:18.16.0-alpine3.16 as base
 WORKDIR /app
 
 FROM base AS backend_prod_dependencies
