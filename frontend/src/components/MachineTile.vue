@@ -16,12 +16,13 @@
         <!--        <div>
           Last Cycle: <span>{{ lastCycle }}</span>
         </div>-->
-        <!--        <div v-if="hasAlarm" class="alarm">
-          {{ alarms[0] }}
-        </div>-->
-      </div>
-      <div v-if="isOnline" class="timer">
-        <div>{{ timerText }}</div>
+
+        <div v-if="isOnline" class="timer">
+          <div>{{ timerText }}</div>
+        </div>
+        <div v-if="hasAlarm" class="alarm">
+          {{ alarms[0].message.replace(/\*/, ' ', 'g') }}
+        </div>
       </div>
     </div>
   </div>
@@ -64,9 +65,13 @@ const lastCycle = computed(() => {
   return dur.toFormat('m:ss');
 });
 
-/*const alarms = computed(() => {
-  return props.data.status.alarms.concat(props.data.status.alarms2);
-});*/
+const alarms = computed(() => {
+  if (props.data.source === 'focas') {
+    return props.data.status.alarms.concat(props.data.status.alarms2);
+  } else {
+    return [];
+  }
+});
 
 const hasAlarm = computed(() => {
   if (props.data.source === 'focas') {
@@ -84,7 +89,7 @@ const blink = computed(() => {
 
 const status = computed(() => {
   if (props.data.source === 'focas') {
-    return `status-${props.data.status.execution} status-${props.data.status.execution2}`;
+    return `status-${props.data.status.execution} status-${props.data.status.execution2} mode-${props.data.status.mode} mode-${props.data.status.mode2}`;
   } else if (props.data.source === 'arduino') {
     if (props.data.status.green) {
       return 'status-GREEN';
@@ -149,9 +154,9 @@ const status = computed(() => {
   background: #287428;
 }
 
-.machine .status-STOPPED,
+/*.machine .status-STOPPED,*/
 .machine .status-INTERRUPTED,
-/*.machine .status-READY,*/
+.machine .status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
 .machine .status-UNAVAILABLE,
 .machine .status-YELLOW {
   background: #e89a23;

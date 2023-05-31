@@ -8,12 +8,24 @@ interface FocasStatus {
   mode2: string;
   execution: string;
   execution2: string;
-  alarms: any[];
-  alarms2: any[];
+  alarms: Alarm[];
+  alarms2: Alarm[];
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
   [key: string]: any;
+}
+
+interface Alarm {
+  path: number;
+  axis_code: number;
+  axis: string;
+  number: number;
+  message: string;
+  type_code: number;
+  type: string;
+  id: string;
+  is_triggered: boolean;
 }
 
 interface FocasMapping {
