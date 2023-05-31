@@ -1,27 +1,30 @@
 import _ from 'lodash';
 import mqtt, { MqttClient } from 'mqtt';
-import logger from './logger';
-import machines from './machines';
-import mappings from './machines/focas_mappings';
-import FocasMachine from './machines/FocasMachine';
+import logger from '../../logger';
+import { focasMachines as machines } from '../index';
+import mappings from './focas_mappings';
 
 let client: MqttClient;
 
-export function connect() {
-  client = mqtt.connect(process.env.MQTT_URL);
+export function connect(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (!process.env.MQTT_URL) throw new Error('Missing MQTT_URL environment variable.');
+    client = mqtt.connect(process.env.MQTT_URL);
 
-  client.on('connect', () => {
-    logger.info('Connected to MQTT broker');
-    client.subscribe('fanuc/#', (err) => {
-      if (err) logger.error(err);
+    client.on('connect', () => {
+      logger.info('Connected to MQTT broker');
+      client.subscribe('fanuc/#', (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
     });
-  });
 
-  client.on('disconnect', () => {
-    logger.warn('Disconnected from the MQTT broker');
-  });
+    client.on('disconnect', () => {
+      logger.warn('Disconnected from the MQTT broker');
+    });
 
-  client.on('message', processMessage);
+    client.on('message', processMessage);
+  });
 }
 
 export function disconnect() {
@@ -33,7 +36,8 @@ export function disconnect() {
 export function processMessage(topic: string, message: Buffer) {
   const machineName = topic.split('/')[1];
   if (!machineName || !machines[machineName]) return;
-  const machine: FocasMachine = machines[machineName];
+  const machine = machines[machineName];
+  if (!machine) return;
   let data: any = {};
   try {
     data = JSON.parse(message.toString());
@@ -52,7 +56,7 @@ export function processMessage(topic: string, message: Buffer) {
     }
     if (value === undefined) return;
     const prop = mappings[subtopic][location];
-    const old = machines[machineName].getValue(prop);
+    const old = machine.getValue(prop);
     if (!_.isEqual(old, value)) {
       if (prop === 'cycle') {
         if (old > value) changes.push({ key: 'lastCycle', value: old });

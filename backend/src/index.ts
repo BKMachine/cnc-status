@@ -3,9 +3,14 @@ import logger from './logger';
 
 logger.info('Application starting...');
 
-app.start().then(() => {
-  logger.info('Startup complete');
-});
+app
+  .start()
+  .then(() => {
+    logger.info('Startup complete');
+  })
+  .catch((e) => {
+    logger.error(e.message);
+  });
 
 const signals: NodeJS.Signals[] = ['SIGHUP', 'SIGINT', 'SIGTERM'];
 
@@ -32,6 +37,7 @@ process.on('unhandledRejection', (err: Error) => {
 });
 
 function logException(type: string, err: Error) {
+  // TODO: better logging
   if (err) {
     logger.error(err);
     if (err.stack) {

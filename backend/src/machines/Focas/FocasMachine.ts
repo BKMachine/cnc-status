@@ -1,5 +1,4 @@
-import { baseUrl } from '../config';
-import { emit } from '../server/socket.io';
+import { emit } from '../../server/socket.io';
 
 const initStatus: FocasStatus = {
   online: false,
@@ -7,38 +6,34 @@ const initStatus: FocasStatus = {
   mainComment: '',
   runningProgram: '',
   runningComment: '',
-  tool: '',
   mode: '',
+  mode2: '',
   execution: '',
-  overrides: {
-    feed: 0,
-    rapid: 0,
-    spindle: 0,
-  },
+  execution2: '',
   alarms: [],
   alarms2: [],
-  parts: 0,
   cycle: 0,
   lastCycle: 0,
   lastStateTs: new Date().toISOString(),
 };
 
 class FocasMachine {
-  private name: string;
-  private image: string;
-  private status: FocasStatus;
+  private readonly name: string;
+  private readonly brand: MachineBrand;
+  private readonly status: FocasStatus;
+  private readonly source = 'focas';
 
-  constructor(name: string, image: string) {
+  constructor(name: string, brand: MachineBrand) {
     this.name = name;
-    this.image = baseUrl + '/img/' + image;
+    this.brand = brand;
     this.status = { ...initStatus };
   }
 
   getMachine() {
     return {
       name: this.name,
-      source: 'focas',
-      image: this.image,
+      source: this.source,
+      brand: this.brand,
       status: this.status,
     };
   }

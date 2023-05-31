@@ -1,5 +1,5 @@
 import now from 'performance-now';
-import { processMessage } from '../mqtt';
+import { processMessage } from '../machines/Focas/mqtt';
 
 const message: Buffer = getMessage();
 const count = 100000;

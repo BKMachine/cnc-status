@@ -11,8 +11,10 @@ router.get('/', (req, res, next) => {
 router.get('/status', async (req, res, next) => {
   try {
     const response = [];
+    let id = 0;
     for (const machine in machines) {
-      response.push(machines[machine].getMachine());
+      const status = machines[machine].getMachine();
+      response.push({ ...status, index: id++ });
     }
     res.status(200).json(response);
   } catch (e) {
@@ -22,7 +24,7 @@ router.get('/status', async (req, res, next) => {
 
 router.post('/refresh', (req, res, next) => {
   const { token } = req.body;
-  if (token !== process.env.TOKEN) {
+  if (!process.env.TOKEN || !token || token !== process.env.TOKEN) {
     res.sendStatus(401);
     return;
   }

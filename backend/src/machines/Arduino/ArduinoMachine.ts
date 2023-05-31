@@ -1,5 +1,4 @@
-import { baseUrl } from '../config';
-import { emit } from '../server/socket.io';
+import { emit } from '../../server/socket.io';
 
 const initStatus: ArduinoStatus = {
   online: false,
@@ -12,21 +11,22 @@ const initStatus: ArduinoStatus = {
 };
 
 class ArduinoMachine {
-  private name: string;
-  private image: string;
-  private status: ArduinoStatus;
+  private readonly name: string;
+  private readonly brand: MachineBrand;
+  private readonly status: ArduinoStatus;
+  private readonly source = 'arduino';
 
-  constructor(name: string, image: string) {
+  constructor(name: string, brand: MachineBrand) {
     this.name = name;
-    this.image = baseUrl + '/img/' + image;
+    this.brand = brand;
     this.status = { ...initStatus };
   }
 
   getMachine() {
     return {
       name: this.name,
-      source: 'arduino',
-      image: this.image,
+      source: this.source,
+      brand: this.brand,
       status: this.status,
     };
   }

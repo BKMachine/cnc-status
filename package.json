@@ -1,9 +1,12 @@
 {
   "name": "cnc-status",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/BKMachine/cnc-status.git",
   "author": "Dave <dave@bkmachine.net>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
 }
