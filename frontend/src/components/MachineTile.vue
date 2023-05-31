@@ -20,7 +20,7 @@
         <div v-if="isOnline" class="timer">
           <div>{{ timerText }}</div>
         </div>
-        <div v-if="hasAlarm" class="alarm">
+        <div v-if="hasAlarm && data.source !== 'mtconnect'" class="alarm">
           {{ alarms[0].message.replace(/\*/, ' ', 'g') }}
         </div>
       </div>
@@ -79,6 +79,8 @@ const hasAlarm = computed(() => {
     return alarms.length > 0;
   } else if (props.data.source === 'arduino') {
     return props.data.status.red;
+  } else if (props.data.source === 'mtconnect') {
+    return props.data.status.eStop === 'TRIGGERED';
   }
   return false;
 });

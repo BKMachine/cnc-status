@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import logger from '../../logger';
-import { mtconnectMachines as machines } from '../../machines';
+import { mtConnectMachines as machines } from '../../machines';
+import fs from 'fs';
+import { filter } from 'lodash';
 
 let interval: NodeJS.Timer;
-const parser = new XMLParser();
+const parser = new XMLParser({ ignoreAttributes: false });
 
 export function start() {
   if (!process.env.MTCONNECT_URL) throw new Error('Missing MTCONNECT_URL environment variable.');
@@ -43,9 +45,38 @@ function run() {
     });
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function processJSON(data: MTConnect) {
+function processJSON(data: MTConnectResponse) {
   // Filter out DeviceStreams that are not the "Agent"
+  // fs.writeFileSync('example', JSON.stringify(data, null, 2), { encoding: 'utf-8' });
+
+  const machUUID: string[] = [];
+  for (let machine in machines) {
+    machUUID.push(machines[machine].getUUID());
+  }
+  const filteredStreams = data.MTConnectStreams.Streams.DeviceStream.filter((x) =>
+    machUUID.includes(x['@_uuid']),
+  );
+
+  const names = filteredStreams.map((x) => x['@_name']);
+  const uuids = filteredStreams.map((x) => x['@_uuid']);
+  // console.log(names);
+  // console.log(uuids);
+
+  filteredStreams.forEach((x) => {
+    // find the matching machine
+    const n = x['@_name'];
+    const u = x['@_uuid'];
+    const m = machines[n];
+    if (!m) return;
+    if (m.getUUID() !== u) return;
+    const changes = [];
+    const a = x.ComponentStream.Events.Availability['#text'];
+    changes.push({ key: 'online', value: a === 'AVAILABLE' });
+    const e = x.ComponentStream.Events.EmergencyStop['#text'];
+    changes.push({ key: 'eStop', value: e });
+    m.setStatus(changes);
+  });
+
   /*const streams = data.MTConnectStreams.Streams[0].DeviceStream.filter((x) => x.$.name !== 'Agent');
   const machineNames = Object.keys(machines);
   streams.forEach((stream) => {

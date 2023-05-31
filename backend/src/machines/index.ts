@@ -26,15 +26,15 @@ export const arduinoMachines: { [key: string]: ArduinoMachine } = {
   h2: new ArduinoMachine('H2', 'haas'),
 };
 
-export const mtconnectMachines: { [key: string]: MTConnectMachine } = {
-  nhx: new MTConnectMachine('NHX', 'mori'),
-  dv1: new MTConnectMachine('DV', 'mori'),
+export const mtConnectMachines: { [key: string]: MTConnectMachine } = {
+  nhx: new MTConnectMachine('NHX', 'mori', '000'),
+  dv: new MTConnectMachine('DV', 'mori', '001'),
 };
 
 const machines: { [key: string]: Machine } = {
   ...focasMachines,
   ...arduinoMachines,
-  ...mtconnectMachines,
+  ...mtConnectMachines,
 };
 
 export default machines as { [key: string]: Machine };

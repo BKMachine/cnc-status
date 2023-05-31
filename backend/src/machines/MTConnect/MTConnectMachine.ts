@@ -2,19 +2,22 @@ import { emit } from '../../server/socket.io';
 
 const initStatus: MTConnectStatus = {
   online: false,
-  lastStateTs: '',
+  eStop: 'ARMED',
+  lastStateTs: new Date().toISOString(),
 };
 
 class MTConnectMachine {
   private readonly name: string;
   private readonly brand: MachineBrand;
   private readonly status: MTConnectStatus;
+  private readonly uuid;
   private readonly source = 'mtconnect';
 
-  constructor(name: string, brand: MachineBrand) {
+  constructor(name: string, brand: MachineBrand, uuid: string) {
     this.name = name;
     this.brand = brand;
     this.status = { ...initStatus };
+    this.uuid = uuid;
   }
 
   getMachine() {
@@ -28,6 +31,10 @@ class MTConnectMachine {
 
   getValue(key: string) {
     return this.status[key];
+  }
+
+  getUUID() {
+    return this.uuid;
   }
 
   setStatus(changes: { key: string; value: any }[]) {
