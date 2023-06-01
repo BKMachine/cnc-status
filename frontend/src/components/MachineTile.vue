@@ -119,12 +119,12 @@ const status = computed(() => {
   flex-direction: column;
 }
 
-.machine:not(.online) {
-  background: #282828;
-}
-
 .machine .online {
   background: #6c6c6c;
+}
+
+.machine:not(.online) {
+  background: #282828;
 }
 
 .header {
@@ -152,22 +152,22 @@ const status = computed(() => {
   height: 70px;
 }
 
-.machine .status-ACTIVE,
-.machine .status-OPTIONAL_STOP,
-.machine .status-GREEN {
+.machine .online .status-ACTIVE,
+.machine .online .status-OPTIONAL_STOP,
+.machine .online .status-GREEN {
   background: #287428;
 }
 
 /*.machine .status-STOPPED,*/
-.machine .status-INTERRUPTED,
-.machine .status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
-.machine .status-UNAVAILABLE,
-.machine .status-YELLOW {
+.machine .online .status-INTERRUPTED,
+.machine .online .status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
+.machine .online .status-UNAVAILABLE,
+.machine .online .status-YELLOW {
   background: #e89a23;
 }
 
-.machine .alarmed,
-.machine .status-RED {
+.machine .online .alarmed,
+.machine .online .status-RED {
   background: #bd0000;
 }
 
