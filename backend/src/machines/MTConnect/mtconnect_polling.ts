@@ -57,12 +57,13 @@ function processJSON(data: MTConnectResponse) {
     Object.keys(mappings).forEach((location) => {
       let value: any;
       try {
-        value = get(data, location);
+        value = get(x, location);
       } catch (e) {
         return;
       }
       const prop = mappings[location];
       const old = machine.getValue(prop);
+      if (prop === 'online') value = value === 'AVAILABLE';
       if (!_.isEqual(old, value)) {
         changes.push({ key: prop, value: value });
       }
