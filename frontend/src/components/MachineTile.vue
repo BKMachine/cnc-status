@@ -20,7 +20,7 @@
         <div v-if="isOnline" class="timer">
           <div>{{ timerText }}</div>
         </div>
-        <div v-if="hasAlarm && data.source !== 'mtconnect'" class="alarm">
+        <div v-if="hasAlarm && data.source === 'focus'" class="alarm">
           {{ alarms[0].message.replace(/\*/g, ' ') }}
         </div>
       </div>
