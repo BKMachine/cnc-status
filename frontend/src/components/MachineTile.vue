@@ -75,7 +75,9 @@ const alarms = computed(() => {
 
 const hasAlarm = computed(() => {
   if (props.data.source === 'focas') {
-    const alarms = props.data.status.alarms.concat(props.data.status.alarms2);
+    const a1 = props.data.status.alarms || [];
+    const a2 = props.data.status.alarms2 || [];
+    const alarms = a1.concat(a2);
     return alarms.length > 0;
   } else if (props.data.source === 'arduino') {
     return props.data.status.red;
