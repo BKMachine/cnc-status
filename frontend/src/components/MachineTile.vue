@@ -152,23 +152,23 @@ const status = computed(() => {
   height: 70px;
 }
 
-.machine .online .status-ACTIVE,
-.machine .online .status-OPTIONAL_STOP,
-.machine .online .status-GREEN {
-  background: #287428;
+.machine.online.status-ACTIVE,
+.machine.online.status-OPTIONAL_STOP,
+.machine.online.status-GREEN {
+  background: #287428 !important;
 }
 
 /*.machine .status-STOPPED,*/
-.machine .online .status-INTERRUPTED,
-.machine .online .status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
-.machine .online .status-UNAVAILABLE,
-.machine .online .status-YELLOW {
-  background: #e89a23;
+.machine.online.status-INTERRUPTED,
+.machine.online.status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
+.machine.online.status-UNAVAILABLE,
+.machine.online.status-YELLOW {
+  background: #e89a23 !important;
 }
 
-.machine .online .alarmed,
-.machine .online .status-RED {
-  background: #bd0000;
+.machine.online.alarmed,
+.machine.online.status-RED {
+  background: #bd0000 !important;
 }
 
 .machine .blink {
