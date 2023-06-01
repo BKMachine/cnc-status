@@ -5,10 +5,10 @@ interface FocasStatus {
   runningProgram: string;
   runningComment: string;
   mode: string;
-  mode2: string;
   execution: string;
-  execution2: string;
   alarms: Alarm[];
+  mode2: string;
+  execution2: string;
   alarms2: Alarm[];
   cycle: number;
   lastCycle: number;
@@ -52,6 +52,10 @@ interface MTConnectStatus {
   [key: string]: any;
 }
 
+interface MTConnectMappings {
+  [key: string]: string;
+}
+
 type FocasMachine = import('../backend/src/machines/Focas/FocasMachine');
 type ArduinoMachine = import('../backend/src/machines/Arduino/ArduinoMachine');
 type MTConnectMachine = import('../backend/src/machines/MTConnect/MTConnectMachine');
@@ -85,3 +89,12 @@ interface MTConnect {
 }
 
 type MachineStatus = Focas | Arduino | MTConnect;
+
+type TestStatus = FocasStatus | ArduinoStatus | MTConnectStatus;
+
+interface Change {
+  key: string;
+  value: any;
+}
+
+type Changes = Change[];

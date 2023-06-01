@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
+import _ from 'lodash';
 import logger from '../../logger';
 import { mtConnectMachines as machines } from '../../machines';
-import fs from 'fs';
-import { filter } from 'lodash';
+import mappings from './mtconnect_mappings';
 
 let interval: NodeJS.Timer;
 const parser = new XMLParser({ ignoreAttributes: false });
@@ -46,47 +46,32 @@ function run() {
 }
 
 function processJSON(data: MTConnectResponse) {
-  // Filter out DeviceStreams that are not the "Agent"
-  // fs.writeFileSync('example', JSON.stringify(data, null, 2), { encoding: 'utf-8' });
+  const streams = data.MTConnectStreams.Streams.DeviceStream;
 
-  const machUUID: string[] = [];
-  for (let machine in machines) {
-    machUUID.push(machines[machine].getUUID());
-  }
-  const filteredStreams = data.MTConnectStreams.Streams.DeviceStream.filter((x) =>
-    machUUID.includes(x['@_uuid']),
-  );
-
-  const names = filteredStreams.map((x) => x['@_name']);
-  const uuids = filteredStreams.map((x) => x['@_uuid']);
-  // console.log(names);
-  // console.log(uuids);
-
-  filteredStreams.forEach((x) => {
+  streams.forEach((x) => {
     // find the matching machine
-    const n = x['@_name'];
-    const u = x['@_uuid'];
-    const m = machines[n];
-    if (!m) return;
-    if (m.getUUID() !== u) return;
-    const changes = [];
-    const a = x.ComponentStream.Events.Availability['#text'];
-    changes.push({ key: 'online', value: a === 'AVAILABLE' });
-    const e = x.ComponentStream.Events.EmergencyStop['#text'];
-    changes.push({ key: 'eStop', value: e });
-    m.setStatus(changes);
+    const deviceName = x['@_name'];
+    const machine = machines[deviceName];
+    if (!machine) return;
+    const changes: Changes = [];
+    Object.keys(mappings).forEach((location) => {
+      let value: any;
+      try {
+        value = get(data, location);
+      } catch (e) {
+        return;
+      }
+      const prop = mappings[location];
+      const old = machine.getValue(prop);
+      if (!_.isEqual(old, value)) {
+        changes.push({ key: prop, value: value });
+      }
+    });
+    if (changes.length) {
+      machine.setStatus(changes);
+    }
   });
-
-  /*const streams = data.MTConnectStreams.Streams[0].DeviceStream.filter((x) => x.$.name !== 'Agent');
-  const machineNames = Object.keys(machines);
-  streams.forEach((stream) => {
-    const name = stream.$.name;
-    if (!machineNames.includes(name)) return;
-    const machine = machines[name];
-    const changes: { key: string; value: any }[] = [];
-    if (machine.getValue('online') === false) changes.push({ key: 'online', value: true });
-    // MORE THINGS
-
-    if (changes.length) machine.setStatus(changes);
-  });*/
 }
+
+const get = (object: any, path: string, defaultValue?: any) =>
+  path.split('.').reduce((o, p) => (o ? o[p] : defaultValue), object);

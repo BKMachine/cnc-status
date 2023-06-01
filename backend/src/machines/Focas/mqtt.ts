@@ -46,7 +46,7 @@ export function processMessage(topic: string, message: Buffer) {
   }
   const subtopic = topic.split('/').slice(2).join('/');
   if (!mappings[subtopic]) return;
-  const changes: { key: string; value: string }[] = [];
+  const changes: Changes = [];
   Object.keys(mappings[subtopic]).forEach((location) => {
     let value: any;
     try {

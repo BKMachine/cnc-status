@@ -58,7 +58,7 @@ function run() {
     axios
       .get(arduino.url)
       .then(({ data }) => {
-        const changes = [];
+        const changes: Changes = [];
         const online = machine.getValue('online');
         if (!online) {
           changes.push({ key: 'online', value: true });
