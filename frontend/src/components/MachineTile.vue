@@ -2,7 +2,7 @@
   <div class="machine" :class="[status, { online: isOnline, alarmed: hasAlarm, blink }]">
     <div class="header">
       <div>{{ data.name }}</div>
-      <img class="logo" :src="getLogoUrl(data.brand)" :alt="data.brand" />
+      <img class="logo" :src="data.logo" :alt="data.brand" />
     </div>
     <div v-if="!isOnline" class="offline">
       <img :src="offlineImg" alt="OFFLINE" />
@@ -38,9 +38,9 @@ const props = defineProps<{
   now: Date;
 }>();
 
-function getLogoUrl(brand: MachineBrand) {
-  return new URL('../assets/machine_logos/' + brand + '.png', import.meta.url).href;
-}
+/*function getLogoUrl(brand: MachineBrand) {
+  // return new URL('../assets/machine_logos/' + brand + '.png', import.meta.url).href;
+}*/
 
 const isOnline = computed(() => {
   return props.data.status.online;

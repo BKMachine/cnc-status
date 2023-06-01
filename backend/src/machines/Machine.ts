@@ -1,3 +1,4 @@
+import { baseUrl } from '../config';
 import { emit } from '../server/socket.io';
 
 class Machine {
@@ -5,12 +6,14 @@ class Machine {
   private readonly brand: MachineBrand;
   private readonly status: TestStatus;
   private readonly source: string;
+  private readonly logo: string;
 
   constructor(name: string, brand: MachineBrand, status: TestStatus, source: string) {
     this.name = name;
     this.brand = brand;
     this.status = status;
     this.source = source;
+    this.logo = `${baseUrl}/img/machine_logos/${this.brand}.png`;
   }
 
   getMachine() {
@@ -18,6 +21,7 @@ class Machine {
       name: this.name,
       source: this.source,
       brand: this.brand,
+      logo: this.logo,
       status: this.status,
     };
   }

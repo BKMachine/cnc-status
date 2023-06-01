@@ -68,6 +68,7 @@ interface Focas {
   name: string;
   brand: MachineBrand;
   source: 'focas';
+  logo: string;
   status: FocasStatus;
   index?: number;
 }
@@ -76,6 +77,7 @@ interface Arduino {
   name: string;
   brand: MachineBrand;
   source: 'arduino';
+  logo: string;
   status: ArduinoStatus;
   index?: number;
 }
@@ -84,6 +86,7 @@ interface MTConnect {
   name: string;
   brand: MachineBrand;
   source: 'mtconnect';
+  logo: string;
   status: MTConnectStatus;
   index?: number;
 }
