@@ -1,4 +1,4 @@
-import http from 'http';
+import type http from 'http';
 import { Server } from 'socket.io';
 import logger from '../logger';
 

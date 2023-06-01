@@ -36,8 +36,8 @@ export function start() {
   interval = setInterval(() => {
     try {
       run();
-    } catch ({ message }) {
-      if (message) logger.error(message);
+    } catch (e) {
+      // Do Nothing
     }
   }, 5000);
   logger.info('Started Arduino polling');

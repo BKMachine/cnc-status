@@ -21,7 +21,7 @@
           <div>{{ timerText }}</div>
         </div>
         <div v-if="hasAlarm && data.source !== 'mtconnect'" class="alarm">
-          {{ alarms[0].message.replace(/\*/, ' ', 'g') }}
+          {{ alarms[0].message.replace(/\*/g, ' ') }}
         </div>
       </div>
     </div>
