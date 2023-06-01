@@ -9,7 +9,7 @@ interface MTConnectResponse {
 interface DeviceStream {
   '@_name': string;
   '@_uuid': string;
-  ComponentStream: ComponentStream;
+  ComponentStream: ComponentStream | ComponentStream[];
 }
 
 interface ComponentStream {

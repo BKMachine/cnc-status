@@ -46,18 +46,22 @@ function run() {
 }
 
 function processJSON(data: MTConnectResponse) {
-  const streams = data.MTConnectStreams.Streams.DeviceStream;
+  const deviceStreams = data.MTConnectStreams.Streams.DeviceStream;
 
-  streams.forEach((x) => {
+  deviceStreams.forEach((deviceStream) => {
     // find the matching machine
-    const deviceName = x['@_name'];
+    const deviceName = deviceStream['@_name'];
     const machine = machines[deviceName];
     if (!machine) return;
     const changes: Changes = [];
+    let componentStream = deviceStream.ComponentStream;
+    if (!Array.isArray(componentStream)) {
+      componentStream = [componentStream];
+    }
     Object.keys(mappings).forEach((location) => {
       let value: any;
       try {
-        value = get(x, location);
+        value = get(deviceStream, location);
       } catch (e) {
         return;
       }
