@@ -35,7 +35,7 @@ function refresh() {
   refreshKey.value++;
 }
 
-let nowInterval: NodeJS.Timer | null = setInterval(() => {
+let nowInterval = setInterval(() => {
   state.now = new Date();
 }, 1000);
 
@@ -78,7 +78,7 @@ async function getStatus() {
   });
 }
 
-let statusInterval: NodeJS.Timer | null = setInterval(() => {
+let statusInterval = setInterval(() => {
   getStatus();
 }, 1000 * 60 * 5);
 
@@ -116,11 +116,9 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (nowInterval) {
     clearInterval(nowInterval);
-    nowInterval = null;
   }
   if (statusInterval) {
     clearInterval(statusInterval);
-    statusInterval = null;
   }
 });
 </script>
