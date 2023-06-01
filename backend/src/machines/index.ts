@@ -27,8 +27,8 @@ export const arduinoMachines: { [key: string]: ArduinoMachine } = {
 };
 
 export const mtConnectMachines: { [key: string]: MTConnectMachine } = {
-  nhx: new MTConnectMachine('NHX', 'mori', '000'),
-  dv: new MTConnectMachine('DV', 'mori', '001'),
+  nhx: new MTConnectMachine('NHX', 'mori'),
+  dv: new MTConnectMachine('DV', 'mori'),
 };
 
 const machines: { [key: string]: Machine } = {

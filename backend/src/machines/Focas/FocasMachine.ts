@@ -1,4 +1,4 @@
-import { emit } from '../../server/socket.io';
+import Machine from '../Machine';
 
 const initStatus: FocasStatus = {
   online: false,
@@ -7,46 +7,19 @@ const initStatus: FocasStatus = {
   runningProgram: '',
   runningComment: '',
   mode: '',
-  mode2: '',
   execution: '',
-  execution2: '',
   alarms: [],
+  mode2: '',
+  execution2: '',
   alarms2: [],
   cycle: 0,
   lastCycle: 0,
   lastStateTs: new Date().toISOString(),
 };
 
-class FocasMachine {
-  private readonly name: string;
-  private readonly brand: MachineBrand;
-  private readonly status: FocasStatus;
-  private readonly source = 'focas';
-
+class FocasMachine extends Machine {
   constructor(name: string, brand: MachineBrand) {
-    this.name = name;
-    this.brand = brand;
-    this.status = { ...initStatus };
-  }
-
-  getMachine() {
-    return {
-      name: this.name,
-      source: this.source,
-      brand: this.brand,
-      status: this.status,
-    };
-  }
-
-  getValue(key: string) {
-    return this.status[key];
-  }
-
-  setStatus(changes: { key: string; value: any }[]) {
-    changes.forEach((change) => {
-      this.status[change.key] = change.value;
-    });
-    emit('change', { name: this.name, changes });
+    super(name, brand, { ...initStatus }, 'focas');
   }
 }
 

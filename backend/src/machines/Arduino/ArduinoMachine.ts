@@ -1,4 +1,4 @@
-import { emit } from '../../server/socket.io';
+import Machine from '../Machine';
 
 const initStatus: ArduinoStatus = {
   online: false,
@@ -10,37 +10,9 @@ const initStatus: ArduinoStatus = {
   lastStateTs: new Date().toISOString(),
 };
 
-class ArduinoMachine {
-  private readonly name: string;
-  private readonly brand: MachineBrand;
-  private readonly status: ArduinoStatus;
-  private readonly source = 'arduino';
-
+class ArduinoMachine extends Machine {
   constructor(name: string, brand: MachineBrand) {
-    this.name = name;
-    this.brand = brand;
-    this.status = { ...initStatus };
-  }
-
-  getMachine() {
-    return {
-      name: this.name,
-      source: this.source,
-      brand: this.brand,
-      status: this.status,
-    };
-  }
-
-  getValue(key: string) {
-    return this.status[key];
-  }
-
-  setStatus(changes: { key: string; value: any }[]) {
-    changes.forEach((change) => {
-      const { key, value } = change;
-      this.status[key] = value;
-    });
-    emit('change', { name: this.name, changes });
+    super(name, brand, { ...initStatus }, 'arduino');
   }
 }
 
