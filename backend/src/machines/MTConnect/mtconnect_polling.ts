@@ -71,6 +71,9 @@ function processJSON(data: MTConnectResponse) {
         if (prop === 'online') value = value === 'AVAILABLE';
         if (!_.isEqual(old, value)) {
           changes.push({ key: prop, value: value });
+          if (prop === 'online' && value === true) {
+            changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
+          }
         }
       });
       if (changes.length) {
