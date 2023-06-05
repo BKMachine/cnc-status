@@ -22,7 +22,7 @@ const arduinos = [
     machine: machines.mz1,
   },
   {
-    url: 'http://10.30.1.30:8193',
+    url: 'http://10.1.1.30:8193',
     machine: machines.mz2,
   },
 ];
