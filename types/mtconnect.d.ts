@@ -23,4 +23,16 @@ interface Event {
   EmergencyStop?: {
     '@_text': 'UNAVAILABLE' | 'ARMED' | 'TRIGGERED';
   };
+  Mode?: {
+    '@_text': 'AUTOMATIC' | string;
+  };
+  Execution?: {
+    '@_text': 'READY' | string;
+  };
+  Program?: {
+    '@_text': string;
+  };
+  Motion?: {
+    '@_text': 'NORMAL' | 'FAULT';
+  };
 }

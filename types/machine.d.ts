@@ -51,6 +51,7 @@ interface MTConnectStatus {
   mode: string;
   execution: string;
   program: string;
+  motion: string;
   lastStateTs: string;
   [key: string]: any;
 }

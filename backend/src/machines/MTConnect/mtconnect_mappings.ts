@@ -4,6 +4,7 @@ const mtconnect_mappings: MTConnectMappings = {
   'Events.Mode.#text': 'mode',
   'Events.Execution.#text': 'execution',
   'Events.Program.#text': 'program',
+  'Events.Motion.#text': 'motion',
 };
 
 export default mtconnect_mappings;
