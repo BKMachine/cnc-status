@@ -48,6 +48,9 @@ interface ArduinoStatus {
 interface MTConnectStatus {
   online: boolean;
   eStop: 'ARMED' | 'TRIGGERED';
+  mode: string;
+  execution: string;
+  program: string;
   lastStateTs: string;
   [key: string]: any;
 }

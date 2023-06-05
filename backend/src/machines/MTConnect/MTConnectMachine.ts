@@ -3,6 +3,9 @@ import Machine from '../Machine';
 const initStatus: MTConnectStatus = {
   online: false,
   eStop: 'ARMED',
+  mode: '',
+  execution: '',
+  program: '',
   lastStateTs: new Date().toISOString(),
 };
 
