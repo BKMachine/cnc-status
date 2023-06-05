@@ -6,7 +6,7 @@ const initStatus: MTConnectStatus = {
   mode: '',
   execution: '',
   program: '',
-  motion: '',
+  motion: 'NORMAL',
   lastStateTs: new Date().toISOString(),
 };
 
