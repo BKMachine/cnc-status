@@ -54,27 +54,29 @@ function processJSON(data: MTConnectResponse) {
     const machine = machines[deviceName];
     if (!machine) return;
     const changes: Changes = [];
-    let componentStream = deviceStream.ComponentStream;
-    if (!Array.isArray(componentStream)) {
-      componentStream = [componentStream];
+    let componentStreams = deviceStream.ComponentStream;
+    if (!Array.isArray(componentStreams)) {
+      componentStreams = [componentStreams];
     }
-    Object.keys(mappings).forEach((location) => {
-      let value: any;
-      try {
-        value = get(deviceStream, location);
-      } catch (e) {
-        return;
-      }
-      const prop = mappings[location];
-      const old = machine.getValue(prop);
-      if (prop === 'online') value = value === 'AVAILABLE';
-      if (!_.isEqual(old, value)) {
-        changes.push({ key: prop, value: value });
+    componentStreams.forEach((componentStream) => {
+      Object.keys(mappings).forEach((location) => {
+        let value: any;
+        try {
+          value = get(componentStream, location);
+        } catch (e) {
+          return;
+        }
+        const prop = mappings[location];
+        const old = machine.getValue(prop);
+        if (prop === 'online') value = value === 'AVAILABLE';
+        if (!_.isEqual(old, value)) {
+          changes.push({ key: prop, value: value });
+        }
+      });
+      if (changes.length) {
+        machine.setStatus(changes);
       }
     });
-    if (changes.length) {
-      machine.setStatus(changes);
-    }
   });
 }
 
