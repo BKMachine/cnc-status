@@ -83,7 +83,11 @@ const hasAlarm = computed(() => {
   } else if (props.data.source === 'arduino') {
     return props.data.status.red;
   } else if (props.data.source === 'mtconnect') {
-    return props.data.status.eStop === 'TRIGGERED' || props.data.status.motion === 'FAULT';
+    return (
+      props.data.status.eStop === 'TRIGGERED' ||
+      props.data.status.motion === 'FAULT' ||
+      props.data.status.motion === 'WARNING'
+    );
   }
   return false;
 });

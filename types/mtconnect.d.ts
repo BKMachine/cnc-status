@@ -33,6 +33,6 @@ interface Event {
     '@_text': string;
   };
   Motion?: {
-    '@_text': 'NORMAL' | 'FAULT';
+    '@_text': 'NORMAL' | 'WARNING' | 'FAULT';
   };
 }

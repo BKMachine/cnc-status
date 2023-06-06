@@ -49,7 +49,7 @@ interface MTConnectStatus {
   mode: 'UNAVAILABLE' | string;
   execution: 'UNAVAILABLE' | string;
   program: string;
-  motion: 'UNAVAILABLE' | 'NORMAL' | 'FAULT';
+  motion: 'UNAVAILABLE' | 'NORMAL' | 'WARNING' | 'FAULT';
   lastCycle: number;
   lastStateTs: string;
 }
