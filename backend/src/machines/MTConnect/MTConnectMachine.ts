@@ -7,6 +7,7 @@ const initStatus: MTConnectStatus = {
   execution: 'UNAVAILABLE',
   program: '',
   motion: 'UNAVAILABLE',
+  lastCycle: 0,
   lastStateTs: new Date().toISOString(),
 };
 

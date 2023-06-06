@@ -106,7 +106,7 @@ onMounted(() => {
       const index = machines.value.findIndex((x) => x.name === payload.name);
       if (index !== -1) {
         payload.changes.forEach((change) => {
-          machines.value[index].status[change.key] = change.value;
+          machines.value[index].status[change.key as keyof Status] = change.value as never;
         });
       }
     });

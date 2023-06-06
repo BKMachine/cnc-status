@@ -50,6 +50,7 @@ interface MTConnectStatus {
   execution: 'UNAVAILABLE' | string;
   program: string;
   motion: 'UNAVAILABLE' | 'NORMAL' | 'FAULT';
+  lastCycle: number;
   lastStateTs: string;
 }
 
