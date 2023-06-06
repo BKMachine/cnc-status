@@ -104,6 +104,8 @@ const status = computed(() => {
       return 'status-RED';
     }
     return '';
+  } else if (props.data.source === 'mtconnect') {
+    return `status-${props.data.status.execution} mode-${props.data.status.mode}`;
   }
   return '';
 });
