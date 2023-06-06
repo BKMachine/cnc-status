@@ -2,39 +2,39 @@ import ArduinoMachine from './Arduino/ArduinoMachine';
 import FocasMachine from './Focas/FocasMachine';
 import MTConnectMachine from './MTConnect/MTConnectMachine';
 
-export const focasMachines: { [key: string]: FocasMachine } = {
-  rd1: new FocasMachine('RD1', 'fanuc'),
-  rd2: new FocasMachine('RD2', 'fanuc'),
-  rd3: new FocasMachine('RD3', 'fanuc'),
-  rd4: new FocasMachine('RD4', 'fanuc'),
-  dl1: new FocasMachine('DL1', 'doosan'),
-  dm1: new FocasMachine('DM1', 'doosan'),
-  s1: new FocasMachine('S1', 'hanwha'),
-  s2: new FocasMachine('S2', 'hanwha'),
-  s3: new FocasMachine('S3', 'hanwha'),
+export const focasMachines = {
+  rd1: new FocasMachine('RD1', 'fanuc', 'mill'),
+  rd2: new FocasMachine('RD2', 'fanuc', 'mill'),
+  rd3: new FocasMachine('RD3', 'fanuc', 'mill'),
+  rd4: new FocasMachine('RD4', 'fanuc', 'mill'),
+  dl1: new FocasMachine('DL1', 'doosan', 'lathe'),
+  dm1: new FocasMachine('DM1', 'doosan', 'mill'),
+  s1: new FocasMachine('S1', 'hanwha', 'swiss'),
+  s2: new FocasMachine('S2', 'hanwha', 'swiss'),
+  s3: new FocasMachine('S3', 'hanwha', 'swiss'),
 };
 
-export const arduinoMachines: { [key: string]: ArduinoMachine } = {
-  ml1: new ArduinoMachine('ML1', 'mori'),
-  ml2: new ArduinoMachine('ML2', 'mori'),
-  ml3: new ArduinoMachine('ML3', 'mori'),
-  me1: new ArduinoMachine('ME1', 'mitsubishi'),
-  mz1: new ArduinoMachine('MZ1', 'mazak'),
-  mz2: new ArduinoMachine('MZ2', 'mazak'),
-  dmu: new ArduinoMachine('DMU', 'mori'),
-  h1: new ArduinoMachine('H1', 'haas'),
-  h2: new ArduinoMachine('H2', 'haas'),
+export const arduinoMachines = {
+  ml1: new ArduinoMachine('ML1', 'mori', 'lathe'),
+  ml2: new ArduinoMachine('ML2', 'mori', 'lathe'),
+  ml3: new ArduinoMachine('ML3', 'mori', 'lathe'),
+  me1: new ArduinoMachine('ME1', 'mitsubishi', 'lathe'),
+  mz1: new ArduinoMachine('MZ1', 'mazak', 'lathe'),
+  mz2: new ArduinoMachine('MZ2', 'mazak', 'mill'),
+  dmu: new ArduinoMachine('DMU', 'mori', 'mill'),
+  h1: new ArduinoMachine('H1', 'haas', 'mill'),
+  h2: new ArduinoMachine('H2', 'haas', 'mill'),
 };
 
-export const mtConnectMachines: { [key: string]: MTConnectMachine } = {
-  nhx: new MTConnectMachine('NHX', 'mori'),
-  dv: new MTConnectMachine('DV', 'mori'),
+export const mtConnectMachines = {
+  nhx: new MTConnectMachine('NHX', 'mori', 'mill'),
+  dv: new MTConnectMachine('DV', 'mori', 'mill'),
 };
 
-const machines: { [key: string]: Machine } = {
+const machines = {
   ...focasMachines,
   ...arduinoMachines,
   ...mtConnectMachines,
 };
 
-export default machines as { [key: string]: Machine };
+export default machines;

@@ -2,17 +2,17 @@ import Machine from '../Machine';
 
 const initStatus: MTConnectStatus = {
   online: false,
-  eStop: 'ARMED',
-  mode: '',
-  execution: '',
+  eStop: 'UNAVAILABLE',
+  mode: 'UNAVAILABLE',
+  execution: 'UNAVAILABLE',
   program: '',
-  motion: 'NORMAL',
+  motion: 'UNAVAILABLE',
   lastStateTs: new Date().toISOString(),
 };
 
 class MTConnectMachine extends Machine {
-  constructor(name: string, brand: MachineBrand) {
-    super(name, brand, { ...initStatus }, 'focas');
+  constructor(name: string, brand: MachineBrand, type: MachineType) {
+    super(name, 'mtconnect', brand, type, { ...initStatus });
   }
 }
 

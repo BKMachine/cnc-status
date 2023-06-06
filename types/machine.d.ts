@@ -13,7 +13,6 @@ interface FocasStatus {
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
-  [key: string]: any;
 }
 
 interface Alarm {
@@ -42,23 +41,28 @@ interface ArduinoStatus {
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
-  [key: string]: any;
 }
 
 interface MTConnectStatus {
   online: boolean;
-  eStop: 'ARMED' | 'TRIGGERED';
-  mode: string;
-  execution: string;
+  eStop: 'UNAVAILABLE' | 'ARMED' | 'TRIGGERED';
+  mode: 'UNAVAILABLE' | string;
+  execution: 'UNAVAILABLE' | string;
   program: string;
-  motion: 'NORMAL' | 'FAULT';
+  motion: 'UNAVAILABLE' | 'NORMAL' | 'FAULT';
   lastStateTs: string;
-  [key: string]: any;
 }
 
 interface MTConnectMappings {
   [key: string]: string;
 }
+
+type Status = FocasStatus | ArduinoStatus | MTConnectStatus;
+
+type Changes = {
+  key: string;
+  value: any;
+}[];
 
 type FocasMachine = import('../backend/src/machines/Focas/FocasMachine');
 type ArduinoMachine = import('../backend/src/machines/Arduino/ArduinoMachine');
@@ -67,6 +71,8 @@ type MTConnectMachine = import('../backend/src/machines/MTConnect/MTConnectMachi
 type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
 
 type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
+type MachineType = 'lathe' | 'mill' | 'swiss';
+type MachineSource = 'focas' | 'arduino' | 'mtconnect';
 
 interface Focas {
   name: string;
@@ -96,12 +102,3 @@ interface MTConnect {
 }
 
 type MachineStatus = Focas | Arduino | MTConnect;
-
-type TestStatus = FocasStatus | ArduinoStatus | MTConnectStatus;
-
-interface Change {
-  key: string;
-  value: any;
-}
-
-type Changes = Change[];

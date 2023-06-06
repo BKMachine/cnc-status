@@ -13,7 +13,7 @@ router.get('/status', async (req, res, next) => {
     const response = [];
     let id = 0;
     for (const machine in machines) {
-      const status = machines[machine].getMachine();
+      const status = machines[machine as keyof typeof machines].getMachine();
       response.push({ ...status, index: id++ });
     }
     res.status(200).json(response);
@@ -25,7 +25,7 @@ router.get('/status', async (req, res, next) => {
 router.get('/data/:name', (req, res, next) => {
   try {
     const { name } = req.params;
-    const machine = machines[name];
+    const machine = machines[name as keyof typeof machines];
     if (!machine) {
       res.sendStatus(404);
       return;

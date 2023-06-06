@@ -3,17 +3,25 @@ import { emit } from '../server/socket.io';
 
 class Machine {
   private readonly name: string;
+  private readonly source: MachineSource;
   private readonly brand: MachineBrand;
-  private readonly status: TestStatus;
-  private readonly source: string;
+  private readonly type: MachineType;
   private readonly logo: string;
+  private readonly status: Status;
 
-  constructor(name: string, brand: MachineBrand, status: TestStatus, source: string) {
+  constructor(
+    name: string,
+    source: MachineSource,
+    brand: MachineBrand,
+    type: MachineType,
+    status: Status,
+  ) {
     this.name = name;
-    this.brand = brand;
-    this.status = status;
     this.source = source;
+    this.brand = brand;
+    this.type = type;
     this.logo = `${baseUrl}/img/machine_logos/${this.brand}.png`;
+    this.status = status;
   }
 
   getMachine() {
@@ -21,19 +29,20 @@ class Machine {
       name: this.name,
       source: this.source,
       brand: this.brand,
+      type: this.type,
       logo: this.logo,
       status: this.status,
     };
   }
 
-  getValue(key: string) {
-    return this.status[key];
+  getStatus() {
+    return this.status;
   }
 
   setStatus(changes: { key: string; value: any }[]) {
     changes.forEach((change) => {
       const { key, value } = change;
-      this.status[key] = value;
+      this.status[key as keyof Status] = value as never;
     });
     emit('change', { name: this.name, changes });
   }

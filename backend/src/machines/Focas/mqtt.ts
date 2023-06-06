@@ -34,41 +34,60 @@ export function disconnect() {
 }
 
 export function processMessage(topic: string, message: Buffer) {
+  // Extract the machine name from the mqtt topic
   const machineName = topic.split('/')[1];
-  if (!machineName || !machines[machineName]) return;
-  const machine = machines[machineName];
+
+  // Ensure we have a registered machine
+  if (!machineName || !machines[machineName as keyof typeof machines]) return;
+  const machine = machines[machineName as keyof typeof machines];
   if (!machine) return;
+
+  // Try to parse the message buffer to JSON
   let data: any = {};
   try {
     data = JSON.parse(message.toString());
   } catch (e) {
     return;
   }
+
+  // Extract the subtopic from the mqtt topic
   const subtopic = topic.split('/').slice(2).join('/');
+  // Only process subtopics we have mapped
   if (!mappings[subtopic]) return;
+
+  // Loop through the mapped subtopics and see if any data values have changed
   const changes: Changes = [];
   Object.keys(mappings[subtopic]).forEach((location) => {
     let value: any;
+    // Try to get the nested value via the mapped subtopic
     try {
       value = get(data, location);
     } catch (e) {
       return;
     }
     if (value === undefined) return;
+
+    // Compare the old property value to the new property value
     const prop = mappings[subtopic][location];
-    const old = machine.getValue(prop);
+    const old = machine.getStatus()[prop as keyof Status];
+    if (old === undefined) return;
     if (!_.isEqual(old, value)) {
+      // If the current cycle time is smaller than previously seen
+      // then a new part has been started and the old cycle time is considered the 'last' cycle time
       if (prop === 'cycle') {
         if (old > value) changes.push({ key: 'lastCycle', value: old });
       }
+      // If the execution mode has changed the push a new lastStateTs value
       if (prop === 'execution') {
-        if (value === 'OPTIONAL_STOP') return;
-        const date = new Date().toISOString();
-        changes.push({ key: 'lastStateTs', value: date });
+        // if (value === 'OPTIONAL_STOP') return; // TODO: is this needed???
+        changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
       }
+      // Push the newly changed value
       changes.push({ key: prop, value: value });
     }
   });
+
+  // Update machine status if there are any changes
   if (changes.length) {
     machine.setStatus(changes);
   }

@@ -11,8 +11,8 @@ const initStatus: ArduinoStatus = {
 };
 
 class ArduinoMachine extends Machine {
-  constructor(name: string, brand: MachineBrand) {
-    super(name, brand, { ...initStatus }, 'arduino');
+  constructor(name: string, brand: MachineBrand, type: MachineType) {
+    super(name, 'arduino', brand, type, { ...initStatus });
   }
 }
 

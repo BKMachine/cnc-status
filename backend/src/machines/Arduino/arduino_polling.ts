@@ -36,22 +36,24 @@ function run() {
       .get(arduino.url)
       .then(({ data }) => {
         const changes: Changes = [];
-        const online = machine.getValue('online');
+        const online = machine.getStatus().online;
         if (!online) {
           changes.push({ key: 'online', value: true });
           changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
         }
         for (const key in data) {
           const value = data[key];
-          const old = machine.getValue(key);
+          const old = machine.getStatus()[key as keyof Status];
+          if (old === undefined) continue;
           if (value !== old) {
             changes.push({ key, value });
             changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
           }
         }
         if (changes.find((x) => x.key === 'green' && x.value === false)) {
-          const time =
-            new Date().valueOf() - new Date(arduino.machine.getValue('lastStateTs')).valueOf();
+          const now = new Date().valueOf();
+          const lastState = new Date(arduino.machine.getStatus().lastStateTs).valueOf();
+          const time = now - lastState;
           changes.push({ key: 'lastCycle', value: time });
         }
         if (changes.length) {

@@ -38,7 +38,7 @@ function run() {
     .catch(() => {
       // MTConnect not responding - set all mtconnect machines to offline
       for (const key in machines) {
-        const machine = machines[key];
+        const machine = machines[key as keyof typeof machines];
         if (!machine) continue;
         machine.setStatus([{ key: 'online', value: false }]);
       }
@@ -51,7 +51,7 @@ function processJSON(data: MTConnectResponse) {
   deviceStreams.forEach((deviceStream) => {
     // find the matching machine
     const deviceName = deviceStream['@_name'];
-    const machine = machines[deviceName];
+    const machine = machines[deviceName as keyof typeof machines];
     if (!machine) return;
     const changes: Changes = [];
     let componentStreams = deviceStream.ComponentStream;
@@ -67,7 +67,8 @@ function processJSON(data: MTConnectResponse) {
           return;
         }
         const prop = mappings[location];
-        const old = machine.getValue(prop);
+        const old = machine.getStatus()[prop as keyof Status];
+        if (old === undefined) return;
         if (prop === 'online') value = value === 'AVAILABLE';
         if (!_.isEqual(old, value)) {
           changes.push({ key: prop, value: value });
