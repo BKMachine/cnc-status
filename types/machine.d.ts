@@ -4,16 +4,27 @@ interface FocasStatus {
   mainComment: string;
   runningProgram: string;
   runningComment: string;
-  mode: string;
-  execution: string;
+  mode: Mode;
+  execution: Execution;
   alarms: Alarm[];
-  mode2: string;
-  execution2: string;
+  mode2: Mode;
+  execution2: Execution;
   alarms2: Alarm[];
   cycle: number;
   lastCycle: number;
   lastStateTs: string;
 }
+
+type Mode = 'AUTOMATIC' | 'EDIT' | 'MANUAL' | 'MANUAL_DATA_INPUT' | 'UNAVAILABLE';
+type Execution =
+  | 'ACTIVE'
+  | 'FEED_HOLD'
+  | 'INTERRUPTED'
+  | 'OPTIONAL_STOP'
+  | 'PROGRAM_STOPPED'
+  | 'READY'
+  | 'STOPPED'
+  | 'UNAVAILABLE';
 
 interface Alarm {
   path: number;
@@ -46,8 +57,8 @@ interface ArduinoStatus {
 interface MTConnectStatus {
   online: boolean;
   eStop: 'UNAVAILABLE' | 'ARMED' | 'TRIGGERED';
-  mode: 'UNAVAILABLE' | string;
-  execution: 'UNAVAILABLE' | string;
+  mode: Mode;
+  execution: Execution;
   program: string;
   motion: 'UNAVAILABLE' | 'NORMAL' | 'WARNING' | 'FAULT';
   lastCycle: number;

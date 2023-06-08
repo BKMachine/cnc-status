@@ -68,7 +68,7 @@ export function processMessage(topic: string, message: Buffer) {
     if (value === undefined) return;
 
     // Compare the old property value to the new property value
-    const prop = mappings[subtopic][location];
+    const prop = mappings[subtopic][location] as keyof FocasStatus;
     const old = machine.getStatus()[prop as keyof Status];
     if (old === undefined) return;
     if (!_.isEqual(old, value)) {
