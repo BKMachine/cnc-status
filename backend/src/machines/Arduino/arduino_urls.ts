@@ -25,6 +25,10 @@ const arduinos = [
     url: 'http://10.30.1.30:8193',
     machine: machines.mz2,
   },
+  {
+    url: 'http://10.30.1.31:8193',
+    machine: machines.h1,
+  },
 ];
 
 export default arduinos;

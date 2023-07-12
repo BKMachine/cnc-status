@@ -20,6 +20,7 @@
         <div v-if="isOnline" class="timer">
           <div>{{ timerText }}</div>
           <div v-if="data.status.lastCycle">Last Cycle: {{ lastCycle }}</div>
+          <div v-else>Last Cycle: ---</div>
         </div>
         <div v-if="hasAlarm && data.source === 'focas'" class="alarm">
           {{ alarms[0].message.replace(/\*/g, ' ') }}
@@ -164,7 +165,7 @@ const status = computed(() => {
 /*.machine .status-STOPPED,*/
 .machine.online.status-INTERRUPTED,
 .machine.online.status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
-.machine.online.status-UNAVAILABLE,
+/*.machine.online.status-UNAVAILABLE,*/
 .machine.online.status-YELLOW {
   background: #e89a23 !important;
 }

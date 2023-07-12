@@ -1518,33 +1518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cnc-status-frontend@workspace:frontend":
-  version: 0.0.0-use.local
-  resolution: "cnc-status-frontend@workspace:frontend"
-  dependencies:
-    "@rushstack/eslint-patch": ^1.2.0
-    "@types/luxon": ^3.3.0
-    "@types/node": ^18.16.8
-    "@vitejs/plugin-vue": ^4.2.3
-    "@vue/eslint-config-prettier": ^7.1.0
-    "@vue/eslint-config-typescript": ^11.0.3
-    "@vue/tsconfig": ^0.1.3
-    axios: ^1.4.0
-    eslint: ^8.39.0
-    eslint-plugin-vue: ^9.11.0
-    luxon: ^3.3.0
-    npm-run-all: ^4.1.5
-    prettier: ^2.8.8
-    socket.io-client: ^4.6.1
-    typescript: 4.9.5
-    vite: ^4.3.5
-    vue: ^3.3.2
-    vue-draggable-plus: ^0.2.0-beta.1
-    vue-router: ^4.2.0
-    vue-tsc: ^1.6.4
-  languageName: unknown
-  linkType: soft
-
 "cnc-status@workspace:.":
   version: 0.0.0-use.local
   resolution: "cnc-status@workspace:."
@@ -2702,6 +2675,33 @@ __metadata:
   checksum: 13ea8b08f91e669a64e3ba3a20eb79d7ca5379a81f1ff7f4310d54e2320645503cc0c78daedc93dfb6191287295f6479544a649c64d8e41a1c0fb0c221552346
   languageName: node
   linkType: hard
+
+"frontend-49f5f2@workspace:frontend":
+  version: 0.0.0-use.local
+  resolution: "frontend-49f5f2@workspace:frontend"
+  dependencies:
+    "@rushstack/eslint-patch": ^1.2.0
+    "@types/luxon": ^3.3.0
+    "@types/node": ^18.16.8
+    "@vitejs/plugin-vue": ^4.2.3
+    "@vue/eslint-config-prettier": ^7.1.0
+    "@vue/eslint-config-typescript": ^11.0.3
+    "@vue/tsconfig": ^0.1.3
+    axios: ^1.4.0
+    eslint: ^8.39.0
+    eslint-plugin-vue: ^9.11.0
+    luxon: ^3.3.0
+    npm-run-all: ^4.1.5
+    prettier: ^2.8.8
+    socket.io-client: ^4.6.1
+    typescript: 4.9.5
+    vite: ^4.3.5
+    vue: ^3.3.2
+    vue-draggable-plus: ^0.2.0-beta.1
+    vue-router: ^4.2.0
+    vue-tsc: ^1.6.4
+  languageName: unknown
+  linkType: soft
 
 "fs-minipass@npm:^2.0.0, fs-minipass@npm:^2.1.0":
   version: 2.1.0
