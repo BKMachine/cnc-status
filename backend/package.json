@@ -11,7 +11,7 @@
     "performance:mtconnect": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mtconnect.performance.test.ts"
   },
   "engines": {
-    "node": ">=18.0.16"
+    "node": ">=18.16.0"
   },
   "engineStrict": true,
   "dependencies": {

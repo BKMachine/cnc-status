@@ -9,7 +9,7 @@
     "prettier": "prettier --write \"**/*.{js,ts,md,*rc,json,vue,cjs}\" --ignore-path .gitignore"
   },
   "engines": {
-    "node": ">=18.0.16"
+    "node": ">=18.16.0"
   },
   "engineStrict": true,
   "dependencies": {
