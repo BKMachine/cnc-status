@@ -1246,9 +1246,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"backend@workspace:backend":
+"backend-0a1d4c@workspace:backend":
   version: 0.0.0-use.local
-  resolution: "backend@workspace:backend"
+  resolution: "backend-0a1d4c@workspace:backend"
   dependencies:
     "@types/express": ^4.17.17
     "@types/lodash": ^4.14.195
