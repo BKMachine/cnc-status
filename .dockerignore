@@ -4,8 +4,6 @@
 .editorconfig
 README.md
 
-**/.yarn
-**/node_modules
 **/dist
 **/coverage
 **/logs
