@@ -18,8 +18,8 @@ const initStatus: FocasStatus = {
 };
 
 class FocasMachine extends Machine {
-  constructor(name: string, brand: MachineBrand, type: MachineType) {
-    super(name, 'focas', brand, type, { ...initStatus });
+  constructor(name: string, brand: MachineBrand, type: MachineType, paths = 1) {
+    super(name, 'focas', brand, type, { ...initStatus }, paths);
   }
 }
 

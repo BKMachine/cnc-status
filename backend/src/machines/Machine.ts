@@ -8,6 +8,7 @@ class Machine {
   private readonly type: MachineType;
   private readonly logo: string;
   private readonly status: Status;
+  private readonly paths: number;
 
   constructor(
     name: string,
@@ -15,6 +16,7 @@ class Machine {
     brand: MachineBrand,
     type: MachineType,
     status: Status,
+    paths = 1,
   ) {
     this.name = name;
     this.source = source;
@@ -22,6 +24,7 @@ class Machine {
     this.type = type;
     this.logo = `${baseUrl}/img/machine_logos/${this.brand}.png`;
     this.status = status;
+    this.paths = paths;
   }
 
   getMachine() {
@@ -32,6 +35,7 @@ class Machine {
       type: this.type,
       logo: this.logo,
       status: this.status,
+      paths: this.paths,
     };
   }
 

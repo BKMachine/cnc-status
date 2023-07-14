@@ -93,6 +93,7 @@ interface Focas {
   logo: string;
   status: FocasStatus;
   index?: number;
+  paths: number;
 }
 
 interface Arduino {
@@ -102,6 +103,7 @@ interface Arduino {
   logo: string;
   status: ArduinoStatus;
   index?: number;
+  paths: number;
 }
 
 interface MTConnect {
@@ -111,6 +113,7 @@ interface MTConnect {
   logo: string;
   status: MTConnectStatus;
   index?: number;
+  paths: number;
 }
 
 type MachineStatus = Focas | Arduino | MTConnect;

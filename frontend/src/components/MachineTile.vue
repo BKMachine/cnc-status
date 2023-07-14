@@ -95,7 +95,11 @@ const blink = computed(() => {
 
 const status = computed(() => {
   if (props.data.source === 'focas') {
-    return `status-${props.data.status.execution} status-${props.data.status.execution2} mode-${props.data.status.mode} mode-${props.data.status.mode2}`;
+    let statusString = `status-${props.data.status.execution} mode-${props.data.status.mode}`;
+    if (props.data.paths === 2) {
+      statusString += `status-${props.data.status.execution2}  mode-${props.data.status.mode2}`;
+    }
+    return statusString;
   } else if (props.data.source === 'arduino') {
     if (props.data.status.green) {
       return 'status-GREEN';

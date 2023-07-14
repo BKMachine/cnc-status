@@ -9,9 +9,9 @@ export const focasMachines = {
   rd4: new FocasMachine('RD4', 'fanuc', 'mill'),
   dl1: new FocasMachine('DL1', 'doosan', 'lathe'),
   dm1: new FocasMachine('DM1', 'doosan', 'mill'),
-  s1: new FocasMachine('S1', 'hanwha', 'swiss'),
-  s2: new FocasMachine('S2', 'hanwha', 'swiss'),
-  s3: new FocasMachine('S3', 'hanwha', 'swiss'),
+  s1: new FocasMachine('S1', 'hanwha', 'swiss', 2),
+  s2: new FocasMachine('S2', 'hanwha', 'swiss', 2),
+  s3: new FocasMachine('S3', 'hanwha', 'swiss', 2),
 };
 
 export const arduinoMachines = {
