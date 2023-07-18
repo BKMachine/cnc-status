@@ -1,6 +1,5 @@
 import express from 'express';
 import MachineService from '../../database/lib/machine';
-import getMachines from '../../machines';
 
 const router = express.Router();
 

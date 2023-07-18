@@ -9,7 +9,6 @@ module.exports = {
   },
   plugins: ['import', '@typescript-eslint'],
   extends: ['plugin:import/typescript', 'plugin:prettier/recommended'],
-  ignorePatterns: ['dist'],
   // add your custom rules here
   rules: {
     'max-len': 0,
