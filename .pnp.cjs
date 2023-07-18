@@ -3465,7 +3465,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["vue", "npm:3.3.4"],\
             ["vue-draggable-plus", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:0.2.0-beta.2"],\
             ["vue-router", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.2.2"],\
-            ["vue-tsc", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:1.7.8"]\
+            ["vue-tsc", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:1.7.8"],\
+            ["vuetify", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.8"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -6899,6 +6900,44 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@types/typescript",\
             "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["vuetify", [\
+        ["npm:3.3.8", {\
+          "packageLocation": "./.yarn/cache/vuetify-npm-3.3.8-e424e23e7a-a3287b1189.zip/node_modules/vuetify/",\
+          "packageDependencies": [\
+            ["vuetify", "npm:3.3.8"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.8", {\
+          "packageLocation": "./.yarn/__virtual__/vuetify-virtual-1878cdcf9f/0/cache/vuetify-npm-3.3.8-e424e23e7a-a3287b1189.zip/node_modules/vuetify/",\
+          "packageDependencies": [\
+            ["vuetify", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.8"],\
+            ["@types/typescript", null],\
+            ["@types/vite-plugin-vuetify", null],\
+            ["@types/vue", null],\
+            ["@types/vue-i18n", null],\
+            ["@types/webpack-plugin-vuetify", null],\
+            ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
+            ["vite-plugin-vuetify", null],\
+            ["vue", "npm:3.3.4"],\
+            ["vue-i18n", null],\
+            ["webpack-plugin-vuetify", null]\
+          ],\
+          "packagePeers": [\
+            "@types/typescript",\
+            "@types/vite-plugin-vuetify",\
+            "@types/vue-i18n",\
+            "@types/vue",\
+            "@types/webpack-plugin-vuetify",\
+            "typescript",\
+            "vite-plugin-vuetify",\
+            "vue-i18n",\
+            "vue",\
+            "webpack-plugin-vuetify"\
           ],\
           "linkType": "HARD"\
         }]\

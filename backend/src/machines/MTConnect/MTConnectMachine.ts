@@ -1,6 +1,7 @@
+import { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: MTConnectStatus = {
+const initStatus: MTConnectState = {
   online: false,
   eStop: 'UNAVAILABLE',
   mode: 'UNAVAILABLE',
@@ -12,8 +13,8 @@ const initStatus: MTConnectStatus = {
 };
 
 class MTConnectMachine extends Machine {
-  constructor(name: string, brand: MachineBrand, type: MachineType) {
-    super(name, 'mtconnect', brand, type, { ...initStatus });
+  constructor(doc: MachineDoc) {
+    super(doc, { ...initStatus });
   }
 }
 

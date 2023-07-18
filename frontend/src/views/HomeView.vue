@@ -3,7 +3,7 @@
     <VueDraggable v-model="visibleMachines" class="container" @end="saveOrder">
       <div
         v-for="item in visibleMachines"
-        :key="item.name"
+        :key="item.id"
         class="machine"
         @dblclick="openMachine(item.name)"
       >
@@ -103,10 +103,10 @@ onMounted(() => {
     });
 
     socket.on('change', (payload) => {
-      const index = machines.value.findIndex((x) => x.name === payload.name);
+      const index = machines.value.findIndex((x) => x.id === payload.id);
       if (index !== -1) {
         payload.changes.forEach((change) => {
-          machines.value[index].status[change.key as keyof Status] = change.value as never;
+          machines.value[index].state[change.key as keyof MachineState] = change.value as never;
         });
       }
     });
@@ -119,6 +119,9 @@ onBeforeUnmount(() => {
   }
   if (statusInterval) {
     clearInterval(statusInterval);
+  }
+  if (socket) {
+    socket.close();
   }
 });
 </script>

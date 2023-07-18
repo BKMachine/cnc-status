@@ -1,4 +1,4 @@
-interface FocasStatus {
+interface FocasState {
   online: boolean;
   mainProgram: string;
   mainComment: string;
@@ -44,7 +44,7 @@ interface FocasMapping {
   };
 }
 
-interface ArduinoStatus {
+interface ArduinoState {
   online: boolean;
   green: boolean;
   yellow: boolean;
@@ -54,7 +54,14 @@ interface ArduinoStatus {
   lastStateTs: string;
 }
 
-interface MTConnectStatus {
+interface ArduinoResponse {
+  online: boolean;
+  green: boolean;
+  yellow: boolean;
+  red: boolean;
+}
+
+interface MTConnectState {
   online: boolean;
   eStop: 'UNAVAILABLE' | 'ARMED' | 'TRIGGERED';
   mode: Mode;
@@ -69,10 +76,11 @@ interface MTConnectMappings {
   [key: string]: string;
 }
 
-type Status = FocasStatus | ArduinoStatus | MTConnectStatus;
+type MachineState = FocasState | ArduinoState | MTConnectState;
+type MachineKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState;
 
 type Changes = {
-  key: string;
+  key: MachineKey;
   value: any;
 }[];
 
@@ -87,33 +95,45 @@ type MachineType = 'lathe' | 'mill' | 'swiss';
 type MachineSource = 'focas' | 'arduino' | 'mtconnect';
 
 interface Focas {
-  name: string;
-  brand: MachineBrand;
-  source: 'focas';
-  logo: string;
-  status: FocasStatus;
+  id: string,
+  name: string,
+  serialNumber: string,
+  brand: MachineBrand,
+  source: 'focas',
+  type: MachineType,
+  paths: 1 | 2,
+  location: string,
+  logo: string,
+  state: FocasState,
   index?: number;
-  paths: number;
 }
 
 interface Arduino {
-  name: string;
-  brand: MachineBrand;
-  source: 'arduino';
-  logo: string;
-  status: ArduinoStatus;
+  id: string,
+  name: string,
+  serialNumber: string,
+  brand: MachineBrand,
+  source: 'arduino',
+  type: MachineType,
+  paths: 1 | 2,
+  location: string,
+  logo: string,
+  state: ArduinoState,
   index?: number;
-  paths: number;
 }
 
 interface MTConnect {
-  name: string;
-  brand: MachineBrand;
-  source: 'mtconnect';
-  logo: string;
-  status: MTConnectStatus;
+  id: string,
+  name: string,
+  serialNumber: string,
+  brand: MachineBrand,
+  source: "mtconnect",
+  type: MachineType,
+  paths: 1 | 2,
+  location: string,
+  logo: string,
+  state: MTConnectState,
   index?: number;
-  paths: number;
 }
 
 type MachineStatus = Focas | Arduino | MTConnect;

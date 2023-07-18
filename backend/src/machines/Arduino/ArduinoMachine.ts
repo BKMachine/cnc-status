@@ -1,6 +1,7 @@
+import { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: ArduinoStatus = {
+const initStatus: ArduinoState = {
   online: false,
   green: false,
   yellow: false,
@@ -11,8 +12,8 @@ const initStatus: ArduinoStatus = {
 };
 
 class ArduinoMachine extends Machine {
-  constructor(name: string, brand: MachineBrand, type: MachineType) {
-    super(name, 'arduino', brand, type, { ...initStatus });
+  constructor(doc: MachineDoc) {
+    super(doc, { ...initStatus });
   }
 }
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import _ from 'lodash';
 import logger from '../../logger';
-import { mtConnectMachines as machines } from '../../machines';
+import { getMTConnectMachines } from '../index';
 import mappings from './mtconnect_mappings';
 
 let interval: NodeJS.Timer;
@@ -37,10 +37,9 @@ function run() {
     })
     .catch(() => {
       // MTConnect not responding - set all mtconnect machines to offline
-      for (const key in machines) {
-        const machine = machines[key as keyof typeof machines];
-        if (!machine) continue;
-        machine.setStatus([{ key: 'online', value: false }]);
+      const machines = getMTConnectMachines();
+      for (const [, value] of machines) {
+        value.setState([{ key: 'online', value: false }]);
       }
     });
 }
@@ -51,7 +50,8 @@ function processJSON(data: MTConnectResponse) {
   deviceStreams.forEach((deviceStream) => {
     // find the matching machine
     const deviceName = deviceStream['@_name'];
-    const machine = machines[deviceName as keyof typeof machines];
+    const machines = getMTConnectMachines();
+    const machine = machines.get(deviceName);
     if (!machine) return;
     const changes: Changes = [];
     let componentStreams = deviceStream.ComponentStream;
@@ -66,8 +66,9 @@ function processJSON(data: MTConnectResponse) {
         } catch (e) {
           return;
         }
-        const prop = mappings[location];
-        const old = machine.getStatus()[prop as keyof Status];
+        const prop = mappings[location] as keyof MTConnectState;
+        const state = machine.getState() as MTConnectState;
+        const old = state[prop as keyof MTConnectState];
         if (old === undefined) return;
         if (prop === 'online') value = value === 'AVAILABLE';
         if (!_.isEqual(old, value)) {
@@ -80,7 +81,7 @@ function processJSON(data: MTConnectResponse) {
         }
       });
       if (changes.length) {
-        machine.setStatus(changes);
+        machine.setState(changes);
       }
     });
   });

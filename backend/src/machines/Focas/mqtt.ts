@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import mqtt, { MqttClient } from 'mqtt';
 import logger from '../../logger';
-import { focasMachines as machines } from '../index';
+import { getFocasMachines } from '../index';
 import mappings from './focas_mappings';
 
 let client: MqttClient;
@@ -35,11 +35,12 @@ export function disconnect() {
 
 export function processMessage(topic: string, message: Buffer) {
   // Extract the machine name from the mqtt topic
-  const machineName = topic.split('/')[1];
+  const machineLocation = topic.split('/')[1];
+  if (!machineLocation) return;
 
   // Ensure we have a registered machine
-  if (!machineName || !machines[machineName as keyof typeof machines]) return;
-  const machine = machines[machineName as keyof typeof machines];
+  const machines = getFocasMachines();
+  const machine = machines.get(machineLocation);
   if (!machine) return;
 
   // Try to parse the message buffer to JSON
@@ -68,8 +69,9 @@ export function processMessage(topic: string, message: Buffer) {
     if (value === undefined) return;
 
     // Compare the old property value to the new property value
-    const prop = mappings[subtopic][location] as keyof FocasStatus;
-    const old = machine.getStatus()[prop as keyof Status];
+    const prop = mappings[subtopic][location] as keyof FocasState;
+    const state = machine.getState() as FocasState;
+    const old = state[prop];
     if (old === undefined) return;
     if (!_.isEqual(old, value)) {
       // If the current cycle time is smaller than previously seen
@@ -89,7 +91,7 @@ export function processMessage(topic: string, message: Buffer) {
 
   // Update machine status if there are any changes
   if (changes.length) {
-    machine.setStatus(changes);
+    machine.setState(changes);
   }
 }
 

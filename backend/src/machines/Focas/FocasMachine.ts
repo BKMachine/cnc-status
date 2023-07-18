@@ -1,6 +1,7 @@
+import { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: FocasStatus = {
+const initStatus: FocasState = {
   online: false,
   mainProgram: '',
   mainComment: '',
@@ -18,8 +19,8 @@ const initStatus: FocasStatus = {
 };
 
 class FocasMachine extends Machine {
-  constructor(name: string, brand: MachineBrand, type: MachineType, paths = 1) {
-    super(name, 'focas', brand, type, { ...initStatus }, paths);
+  constructor(doc: MachineDoc) {
+    super(doc, { ...initStatus });
   }
 }
 

@@ -1,54 +1,43 @@
 import { baseUrl } from '../config';
+import { MachineDoc } from '../database/lib/machine/machine_model';
 import { emit } from '../server/socket.io';
 
 class Machine {
-  private readonly name: string;
-  private readonly source: MachineSource;
-  private readonly brand: MachineBrand;
-  private readonly type: MachineType;
+  private readonly doc: MachineDoc;
   private readonly logo: string;
-  private readonly status: Status;
-  private readonly paths: number;
+  private readonly state: MachineState;
 
-  constructor(
-    name: string,
-    source: MachineSource,
-    brand: MachineBrand,
-    type: MachineType,
-    status: Status,
-    paths = 1,
-  ) {
-    this.name = name;
-    this.source = source;
-    this.brand = brand;
-    this.type = type;
-    this.logo = `${baseUrl}/img/machine_logos/${this.brand}.png`;
-    this.status = status;
-    this.paths = paths;
+  constructor(doc: MachineDoc, state: MachineState) {
+    this.doc = doc;
+    this.logo = `${baseUrl}/img/machine_logos/${this.doc.brand}.png`;
+    this.state = state;
   }
 
   getMachine() {
     return {
-      name: this.name,
-      source: this.source,
-      brand: this.brand,
-      type: this.type,
+      id: this.doc._id,
+      name: this.doc.name,
+      serialNumber: this.doc.serialNumber,
+      brand: this.doc.brand,
+      source: this.doc.source,
+      type: this.doc.type,
+      paths: this.doc.paths,
+      location: this.doc.location,
       logo: this.logo,
-      status: this.status,
-      paths: this.paths,
+      state: this.state,
     };
   }
 
-  getStatus() {
-    return this.status;
+  getState() {
+    return this.state;
   }
 
-  setStatus(changes: { key: string; value: any }[]) {
+  setState(changes: Changes) {
     changes.forEach((change) => {
       const { key, value } = change;
-      this.status[key as keyof Status] = value as never;
+      this.state[key as keyof MachineState] = value as never;
     });
-    emit('change', { name: this.name, changes });
+    emit('change', { id: this.doc.id, changes });
   }
 }
 

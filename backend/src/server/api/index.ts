@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import machines from '../../machines';
+import getMachines from '../../machines';
 import { emit } from '../socket.io';
+import MachineRoutes from './machine';
 
 const router = Router();
+
+router.use('/machine', MachineRoutes);
 
 router.get('/', (req, res, next) => {
   res.status(200).json({ message: 'Welcome to the API' });
@@ -12,25 +15,11 @@ router.get('/status', async (req, res, next) => {
   try {
     const response = [];
     let id = 0;
-    for (const machine in machines) {
-      const status = machines[machine as keyof typeof machines].getMachine();
+    const machines = getMachines();
+    for (const [, value] of machines) {
+      const status = value.getMachine();
       response.push({ ...status, index: id++ });
     }
-    res.status(200).json(response);
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/data/:name', (req, res, next) => {
-  try {
-    const { name } = req.params;
-    const machine = machines[name as keyof typeof machines];
-    if (!machine) {
-      res.sendStatus(404);
-      return;
-    }
-    const response = machine.getMachine();
     res.status(200).json(response);
   } catch (e) {
     next(e);
