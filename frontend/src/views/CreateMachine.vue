@@ -82,7 +82,7 @@ const form = ref({
 });
 
 const rules = [
-  (value) => {
+  (value: string) => {
     if (value) return true;
     return 'Required';
   },

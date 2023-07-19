@@ -44,16 +44,12 @@ const props = defineProps<{
   // return new URL('../assets/machine_logos/' + brand + '.png', import.meta.url).href;
 }*/
 
-const state = computed(() => {
-  return props.data.state;
-});
-
 const isOnline = computed(() => {
-  return state.value.online;
+  return props.data.state.online;
 });
 
 const seconds = computed(() => {
-  const now = new Date(state.value.lastStateTs).valueOf();
+  const now = new Date(props.data.state.lastStateTs).valueOf();
   let seconds = Math.floor((props.now.valueOf() - now) / 1000);
   if (seconds < 0) seconds = 0;
   return seconds;
@@ -65,7 +61,7 @@ const timerText = computed(() => {
 });
 
 const lastCycle = computed(() => {
-  const seconds = Math.floor(state.value.lastCycle / 1000);
+  const seconds = Math.floor(props.data.state.lastCycle / 1000);
   const dur = Duration.fromObject({ seconds });
   if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
   return dur.toFormat('m:ss');
@@ -73,7 +69,7 @@ const lastCycle = computed(() => {
 
 const alarms = computed(() => {
   if (props.data.source === 'focas') {
-    return state.value.alarms.concat(state.value.alarms2);
+    return props.data.state.alarms.concat(props.data.state.alarms2);
   } else {
     return [];
   }
@@ -81,14 +77,14 @@ const alarms = computed(() => {
 
 const hasAlarm = computed(() => {
   if (props.data.source === 'focas') {
-    const a1 = state.value.alarms || [];
-    const a2 = state.value.alarms2 || [];
+    const a1 = props.data.state.alarms || [];
+    const a2 = props.data.state.alarms2 || [];
     const alarms = a1.concat(a2);
     return alarms.length > 0;
   } else if (props.data.source === 'arduino') {
-    return state.value.red;
+    return props.data.state.red;
   } else if (props.data.source === 'mtconnect') {
-    return state.value.eStop === 'TRIGGERED' || state.value.motion === 'FAULT';
+    return props.data.state.eStop === 'TRIGGERED' || props.data.state.motion === 'FAULT';
   }
   return false;
 });
@@ -99,22 +95,22 @@ const blink = computed(() => {
 
 const status = computed(() => {
   if (props.data.source === 'focas') {
-    let statusString = `status-${state.value.execution} mode-${state.value.mode}`;
+    let statusString = `status-${props.data.state.execution} mode-${props.data.state.mode}`;
     if (props.data.paths === 2) {
-      statusString += `status-${state.value.execution2}  mode-${state.value.mode2}`;
+      statusString += `status-${props.data.state.execution2}  mode-${props.data.state.mode2}`;
     }
     return statusString;
   } else if (props.data.source === 'arduino') {
-    if (state.value.green) {
+    if (props.data.state.green) {
       return 'status-GREEN';
-    } else if (state.value.yellow) {
+    } else if (props.data.state.yellow) {
       return 'status-YELLOW';
-    } else if (state.value.red) {
+    } else if (props.data.state.red) {
       return 'status-RED';
     }
     return '';
   } else if (props.data.source === 'mtconnect') {
-    return `status-${state.value.execution} mode-${state.value.mode}`;
+    return `status-${props.data.state.execution} mode-${props.data.state.mode}`;
   }
   return '';
 });

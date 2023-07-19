@@ -1,7 +1,8 @@
 <template>
   <h1>Machine List</h1>
-  <button @click="router.push({ name: 'machineCreate' })">Add Machine</button>
-  <div v-for="item in machines" :key="item.id" class="machine">
+  <v-btn color="primary" @click="router.push({ name: 'machineCreate' })">Add Machine</v-btn>
+
+  <div v-for="item in store.state.machines" :key="item.id" class="machine">
     <span class="name">{{ item.name }}</span>
     <img :src="item.logo" alt="logo" />
     <span>{{ item.location }}</span>
@@ -12,18 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import axios from '@/plugins/axios';
 import { useRouter } from 'vue-router';
+import { useStore } from '@/store';
 
 const router = useRouter();
-const machines = ref([] as MachineStatus[]);
-
-onMounted(() => {
-  axios.get('/status').then(({ data }) => {
-    machines.value = data;
-  });
-});
+const store = useStore();
 </script>
 
 <style scoped>
