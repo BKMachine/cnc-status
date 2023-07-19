@@ -39,7 +39,7 @@ function run() {
       // MTConnect not responding - set all mtconnect machines to offline
       const machines = getMTConnectMachines();
       for (const [, value] of machines) {
-        value.setState([{ key: 'online', value: false }]);
+        value.setState(new Map([['online', false]]));
       }
     });
 }
@@ -53,7 +53,7 @@ function processJSON(data: MTConnectResponse) {
     const machines = getMTConnectMachines();
     const machine = machines.get(deviceName);
     if (!machine) return;
-    const changes: Changes = [];
+    const changes: Changes = new Map();
     let componentStreams = deviceStream.ComponentStream;
     if (!Array.isArray(componentStreams)) {
       componentStreams = [componentStreams];
@@ -72,15 +72,15 @@ function processJSON(data: MTConnectResponse) {
         if (old === undefined) return;
         if (prop === 'online') value = value === 'AVAILABLE';
         if (!_.isEqual(old, value)) {
-          changes.push({ key: prop, value: value });
+          changes.set(prop, value);
           if (prop === 'execution') {
             if (value === 'OPTIONAL_STOP') return;
             const date = new Date().toISOString();
-            changes.push({ key: 'lastStateTs', value: date });
+            changes.set('lastStateTs', date);
           }
         }
       });
-      if (changes.length) {
+      if (changes.size) {
         machine.setState(changes);
       }
     });

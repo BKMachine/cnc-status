@@ -57,7 +57,7 @@ export function processMessage(topic: string, message: Buffer) {
   if (!mappings[subtopic]) return;
 
   // Loop through the mapped subtopics and see if any data values have changed
-  const changes: Changes = [];
+  const changes: Changes = new Map();
   Object.keys(mappings[subtopic]).forEach((location) => {
     let value: any;
     // Try to get the nested value via the mapped subtopic
@@ -77,20 +77,22 @@ export function processMessage(topic: string, message: Buffer) {
       // If the current cycle time is smaller than previously seen
       // then a new part has been started and the old cycle time is considered the 'last' cycle time
       if (prop === 'cycle') {
-        if (old > value) changes.push({ key: 'lastCycle', value: old });
+        if (old > value) changes.set('lastCycle', old);
       }
       // If the execution mode has changed the push a new lastStateTs value
       if (prop === 'execution') {
-        // if (value === 'OPTIONAL_STOP') return; // TODO: is this needed???
-        changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
+        if (value === 'OPTIONAL_STOP') return;
+        changes.set('lastStateTs', new Date().toISOString());
       }
       // Push the newly changed value
-      changes.push({ key: prop, value: value });
+      if (prop !== 'cycle') {
+        changes.set(prop, value);
+      }
     }
   });
 
   // Update machine status if there are any changes
-  if (changes.length) {
+  if (changes.size) {
     machine.setState(changes);
   }
 }

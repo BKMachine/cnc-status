@@ -5,7 +5,7 @@ import { emit } from '../server/socket.io';
 class Machine {
   private readonly doc: MachineDoc;
   private readonly logo: string;
-  private readonly state: MachineState;
+  private state: MachineState;
 
   constructor(doc: MachineDoc, state: MachineState) {
     this.doc = doc;
@@ -33,11 +33,9 @@ class Machine {
   }
 
   setState(changes: Changes) {
-    changes.forEach((change) => {
-      const { key, value } = change;
-      this.state[key as keyof MachineState] = value as never;
-    });
-    emit('change', { id: this.doc.id, changes });
+    const changeObj = Object.fromEntries(changes);
+    this.state = Object.assign({}, this.getState(), changeObj);
+    emit('change', { id: this.doc.id, changes: changeObj });
   }
 }
 

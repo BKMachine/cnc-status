@@ -19,7 +19,8 @@
     "vue": "^3.3.2",
     "vue-draggable-plus": "^0.2.0-beta.1",
     "vue-router": "^4.2.0",
-    "vuetify": "^3.3.8"
+    "vuetify": "^3.3.8",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

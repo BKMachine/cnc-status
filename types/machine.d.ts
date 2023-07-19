@@ -79,16 +79,13 @@ interface MTConnectMappings {
 type MachineState = FocasState | ArduinoState | MTConnectState;
 type MachineKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState;
 
-type Changes = {
-  key: MachineKey;
-  value: any;
-}[];
+type Changes  = Map<MachineKey, any>
 
 type FocasMachine = import('../backend/src/machines/Focas/FocasMachine');
 type ArduinoMachine = import('../backend/src/machines/Arduino/ArduinoMachine');
 type MTConnectMachine = import('../backend/src/machines/MTConnect/MTConnectMachine');
 
-type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
+// type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
 
 type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
 type MachineType = 'lathe' | 'mill' | 'swiss';

@@ -1,4 +1,5 @@
 import _axios from 'axios';
+import _ from 'lodash';
 import logger from '../../logger';
 import { getArduinoMachines } from '../index';
 
@@ -30,37 +31,42 @@ export function stop() {
 function run() {
   const machines = getArduinoMachines();
   machines.forEach((machine, location) => {
+    const changes: Changes = new Map();
     axios
       .get(location)
       .then(({ data }: { data: ArduinoResponse }) => {
-        const changes: Changes = [];
         const state = machine.getState() as ArduinoState;
         const online = state.online;
         if (!online) {
-          changes.push({ key: 'online', value: true });
-          changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
+          changes.set('online', true);
+          changes.set('lastStateTs', new Date().toISOString());
         }
         for (const key in data) {
           const value = data[key as keyof ArduinoResponse];
           const old = state[key as keyof ArduinoState];
           if (old === undefined) continue;
-          if (value !== old) {
-            changes.push({ key: key as keyof ArduinoState, value });
-            changes.push({ key: 'lastStateTs', value: new Date().toISOString() });
+          if (!_.isEqual(old, value)) {
+            changes.set(key as MachineKey, value);
+            changes.set('lastStateTs', new Date().toISOString());
           }
         }
-        if (changes.find((x) => x.key === 'green' && x.value === false)) {
-          const now = new Date().valueOf();
-          const lastState = new Date(machine.getState().lastStateTs).valueOf();
-          const time = now - lastState;
-          changes.push({ key: 'lastCycle', value: time });
-        }
-        if (changes.length) {
-          machine.setState(changes);
+        if (changes.has('green')) {
+          const isGreen = changes.get('green');
+          if (!isGreen) {
+            const now = new Date().valueOf();
+            const lastState = new Date(machine.getState().lastStateTs).valueOf();
+            const time = now - lastState;
+            changes.set('lastCycle', time);
+          }
         }
       })
       .catch(() => {
-        machine.setState([{ key: 'online', value: false }]);
+        if (machine.getState().online) changes.set('online', false);
+      })
+      .finally(() => {
+        if (changes.size) {
+          machine.setState(changes);
+        }
       });
   });
 }

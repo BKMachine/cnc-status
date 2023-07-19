@@ -3485,7 +3485,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["vue-draggable-plus", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:0.2.2"],\
             ["vue-router", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.2.4"],\
             ["vue-tsc", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:1.8.5"],\
-            ["vuetify", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.9"]\
+            ["vuetify", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.9"],\
+            ["vuex", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.1.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -6975,6 +6976,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "vue-i18n",\
             "vue",\
             "webpack-plugin-vuetify"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["vuex", [\
+        ["npm:4.1.0", {\
+          "packageLocation": "./.yarn/cache/vuex-npm-4.1.0-c1d51099be-f5e375a9c1.zip/node_modules/vuex/",\
+          "packageDependencies": [\
+            ["vuex", "npm:4.1.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/vuex-virtual-89c320567b/0/cache/vuex-npm-4.1.0-c1d51099be-f5e375a9c1.zip/node_modules/vuex/",\
+          "packageDependencies": [\
+            ["vuex", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.1.0"],\
+            ["@types/vue", null],\
+            ["@vue/devtools-api", "npm:6.5.0"],\
+            ["vue", "npm:3.3.4"]\
+          ],\
+          "packagePeers": [\
+            "@types/vue",\
+            "vue"\
           ],\
           "linkType": "HARD"\
         }]\
