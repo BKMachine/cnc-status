@@ -4,13 +4,13 @@ function list(): Promise<MachineDoc[]> {
   return Machine.find().sort('-1');
 }
 
-async function create(data: any): Promise<void> {
+async function create(data: any): Promise<MachineDoc> {
   const doc = new Machine(data);
-  await doc.save();
+  return await doc.save();
 }
 
-async function update(data: any): Promise<void> {
-  await Machine.findByIdAndUpdate(data._id, data, { upsert: true });
+async function update(id: string, data: any): Promise<MachineDoc | null> {
+  return Machine.findByIdAndUpdate(id, data, { new: true });
 }
 
 async function remove(id: string): Promise<void> {

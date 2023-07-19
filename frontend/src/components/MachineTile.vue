@@ -96,7 +96,7 @@ const blink = computed(() => {
 const status = computed(() => {
   if (props.data.source === 'focas') {
     let statusString = `status-${props.data.state.execution} mode-${props.data.state.mode}`;
-    if (props.data.paths === 2) {
+    if (props.data.paths === '2') {
       statusString += `status-${props.data.state.execution2}  mode-${props.data.state.mode2}`;
     }
     return statusString;

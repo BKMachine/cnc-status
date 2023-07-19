@@ -4,9 +4,10 @@ const schema = new Schema({
   name: String,
   serialNumber: String,
   brand: String,
+  model: String,
   source: String,
   type: String,
-  paths: Number,
+  paths: String,
   location: String,
 });
 
@@ -14,9 +15,10 @@ export interface MachineDoc extends Document {
   name: string;
   serialNumber: string;
   brand: MachineBrand;
+  model: string;
   source: MachineSource;
   type: MachineType;
-  paths: 1 | 2;
+  paths: '1' | '2';
   location: string;
 }
 

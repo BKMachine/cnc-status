@@ -27,10 +27,22 @@ export const store = createStore<State>({
       const machines = store.state.machines;
       const index = machines.findIndex((x) => x.id === id);
       if (index !== -1) {
-        console.log(changes);
         const currentState = machines[index].state;
         state.machines[index].state = Object.assign({}, currentState, changes);
       }
+    },
+    deleteMachine(state: State, index: number) {
+      state.machines.splice(index, 1);
+    },
+    addMachine(state: State, payload: MachineStatus) {
+      state.machines.push(payload);
+    },
+    updateMachine(state: State, payload: { index: number; data: MachineStatus }) {
+      state.machines[payload.index] = Object.assign(
+        {},
+        state.machines[payload.index],
+        payload.data,
+      );
     },
   },
 });

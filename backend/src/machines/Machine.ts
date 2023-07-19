@@ -35,6 +35,9 @@ class Machine {
   setState(changes: Changes) {
     const changeObj = Object.fromEntries(changes);
     this.state = Object.assign({}, this.getState(), changeObj);
+    // Remove cycle property before sending changes over websocket
+    delete changeObj.cycle;
+    if (Object.keys(changeObj).length === 0) return;
     emit('change', { id: this.doc.id, changes: changeObj });
   }
 }

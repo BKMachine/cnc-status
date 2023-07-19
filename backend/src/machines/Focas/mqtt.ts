@@ -85,9 +85,7 @@ export function processMessage(topic: string, message: Buffer) {
         changes.set('lastStateTs', new Date().toISOString());
       }
       // Push the newly changed value
-      if (prop !== 'cycle') {
-        changes.set(prop, value);
-      }
+      changes.set(prop, value);
     }
   });
 
