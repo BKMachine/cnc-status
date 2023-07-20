@@ -157,6 +157,7 @@ const valid = ref(false);
 
 const headers = [
   { title: 'Name', align: 'start', key: 'name' },
+  { title: 'Model', key: 'model' },
   { title: 'Brand', key: 'brand' },
   { title: 'Source', key: 'source' },
   { title: 'Type', key: 'type' },

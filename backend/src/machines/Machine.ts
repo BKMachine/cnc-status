@@ -20,6 +20,7 @@ class Machine {
       serialNumber: this.doc.serialNumber,
       brand: this.doc.brand,
       source: this.doc.source,
+      model: this.doc.model,
       type: this.doc.type,
       paths: this.doc.paths,
       location: this.doc.location,
