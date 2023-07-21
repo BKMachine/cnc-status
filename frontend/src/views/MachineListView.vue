@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
       :headers="headers"
-      :items="store.state.machines"
+      :items="machines"
       class="elevation-1"
       hover
       items-per-page="-1"
@@ -138,7 +138,11 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template #[`item.hidden`]="{ item }">
+        <v-checkbox @change="toggleHide($event, item.raw.id)">{{ item.columns.hidden }}</v-checkbox>
+      </template>
       <template #[`item.actions`]="{ item }">
+        <v-icon size="small" class="me-2" @click="openMachine(item.raw)"> mdi-open-in-app </v-icon>
         <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
         <v-icon size="small" @click="deleteItem(item.raw)"> mdi-delete </v-icon>
       </template>
@@ -151,8 +155,11 @@ import { useStore } from '@/store';
 import { VDataTable } from 'vuetify/labs/VDataTable';
 import { nextTick, computed, watch, ref } from 'vue';
 import axios from '@/plugins/axios';
+import { useRouter } from 'vue-router';
+import { isHidden, hide, unHide } from '@/plugins/hide_machine';
 
 const store = useStore();
+const router = useRouter();
 const valid = ref(false);
 
 const headers = [
@@ -161,6 +168,7 @@ const headers = [
   { title: 'Brand', key: 'brand' },
   { title: 'Source', key: 'source' },
   { title: 'Type', key: 'type' },
+  { title: 'Hidden', key: 'hidden' },
   { title: 'Actions', key: 'actions', sortable: false, align: 'end' },
 ];
 
@@ -168,6 +176,15 @@ const dialog = ref(false);
 const dialogDelete = ref(false);
 const editedIndex = ref(-1);
 const editedItem = ref({} as MachineStatus);
+
+const machines = computed(() => {
+  return store.state.machines.map((x) => {
+    return {
+      ...x,
+      hidden: isHidden(x.id),
+    };
+  });
+});
 
 watch(dialog, (open) => {
   if (!open) close();
@@ -286,6 +303,19 @@ const locationMessage = computed(() => {
     return 'Enter the device id found in the mtconnect Devices.xml file.';
   return '';
 });
+
+function openMachine(item: MachineStatus) {
+  router.push({ name: 'machine', params: { id: item.id } });
+}
+
+function toggleHide(e: Event, id: string) {
+  /*const target = e.target as
+  if (e.target?.checked) {
+    hide(id);
+  } else {
+    unHide(id);
+  }*/
+}
 </script>
 
 <style scoped>

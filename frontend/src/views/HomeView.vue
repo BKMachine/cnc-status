@@ -5,7 +5,7 @@
         v-for="item in visibleMachines"
         :key="item.id"
         class="machine"
-        @dblclick="openMachine(item.name)"
+        @dblclick="openMachine(item.id)"
       >
         <MachineTile :data="item" />
       </div>
@@ -21,6 +21,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
 import { useStore } from '@/store';
+import { isHidden } from '@/plugins/hide_machine';
 
 const router = useRouter();
 const store = useStore();
@@ -48,9 +49,7 @@ const orderedMachines = computed((): MachineStatus[] => {
 });
 
 const visibleMachines = computed((): MachineStatus[] => {
-  const hidden = localStorage.getItem('hidden');
-  const hiddenArray = hidden ? hidden.split(',') : [];
-  return orderedMachines.value.filter((x) => !hiddenArray.includes(x.name));
+  return orderedMachines.value.filter((x) => !isHidden(x.id));
 });
 
 function saveOrder() {
@@ -58,8 +57,8 @@ function saveOrder() {
   localStorage.setItem('order', indexes.join(','));
 }
 
-function openMachine(name: string) {
-  router.push({ name: 'machine', params: { id: name } });
+function openMachine(id: string) {
+  router.push({ name: 'machine', params: { id } });
 }
 </script>
 
