@@ -7,7 +7,7 @@
         class="machine"
         @dblclick="openMachine(item.name)"
       >
-        <MachineTile :data="item" :now="state.now" />
+        <MachineTile :data="item" />
       </div>
     </VueDraggable>
     <Settings class="cog" @clear-order="refresh" />
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { VueDraggable } from 'vue-draggable-plus';
 import MachineTile from '@/components/MachineTile.vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
 import { useStore } from '@/store';
@@ -25,19 +25,11 @@ import { useStore } from '@/store';
 const router = useRouter();
 const store = useStore();
 
-const state = reactive({
-  now: new Date(),
-});
-
 const refreshKey = ref(0);
 
 function refresh() {
   refreshKey.value++;
 }
-
-let nowInterval = setInterval(() => {
-  state.now = new Date();
-}, 1000);
 
 const orderedMachines = computed((): MachineStatus[] => {
   const order = localStorage.getItem('order');
@@ -83,6 +75,7 @@ function openMachine(name: string) {
 }
 
 .cog {
+  display: block;
   position: absolute;
   bottom: 10px;
   right: 10px;

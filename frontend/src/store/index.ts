@@ -3,6 +3,7 @@ import type { InjectionKey } from 'vue';
 
 export interface State {
   machines: MachineStatus[];
+  now: Date;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -16,6 +17,7 @@ export const store = createStore<State>({
   state() {
     return {
       machines: [],
+      now: new Date(),
     };
   },
   mutations: {
@@ -44,5 +46,12 @@ export const store = createStore<State>({
         payload.data,
       );
     },
+    now(state: State) {
+      state.now = new Date();
+    },
   },
 });
+
+setInterval(() => {
+  store.commit('now');
+}, 1000);
