@@ -33,5 +33,8 @@ function resetOrder() {
 <style scoped>
 img {
   height: 50px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 </style>

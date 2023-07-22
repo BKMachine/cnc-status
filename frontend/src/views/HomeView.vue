@@ -10,7 +10,7 @@
         <MachineTile :data="item" />
       </div>
     </VueDraggable>
-    <Settings class="cog" @clear-order="refresh" />
+    <Settings @clear-order="refresh" />
   </main>
 </template>
 
@@ -25,7 +25,6 @@ import { isHidden } from '@/plugins/hide_machine';
 
 const router = useRouter();
 const store = useStore();
-
 const refreshKey = ref(0);
 
 function refresh() {
@@ -71,13 +70,5 @@ function openMachine(id: string) {
 
 .machine {
   margin: 5px;
-}
-
-.cog {
-  display: block;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  cursor: pointer;
 }
 </style>
