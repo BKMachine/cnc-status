@@ -18,14 +18,12 @@
 <script setup lang="ts">
 import logo from '@/assets/bk-logo.png';
 import { useRouter } from 'vue-router';
-import { unHideAll } from '@/plugins/hide_machine';
 
 const router = useRouter();
 const emits = defineEmits(['clear-order']);
 
 function resetOrder() {
   localStorage.removeItem('order');
-  unHideAll();
   emits('clear-order');
 }
 </script>
@@ -36,5 +34,11 @@ img {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+</style>
+
+<style>
+.v-list-item__prepend > .v-icon {
+  margin-inline-end: 16px !important;
 }
 </style>
