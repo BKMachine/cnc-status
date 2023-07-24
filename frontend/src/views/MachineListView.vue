@@ -1,4 +1,7 @@
 <template>
+  <v-btn color="blue" @click="router.push({ name: 'home' })">
+    <v-icon> mdi-home </v-icon>
+  </v-btn>
   <v-container>
     <v-data-table
       :headers="headers"
@@ -6,6 +9,8 @@
       class="elevation-1"
       hover
       items-per-page="-1"
+      fixed-header
+      height="700"
     >
       <template #top>
         <v-toolbar flat>
@@ -13,7 +18,15 @@
           <v-spacer />
           <v-dialog v-model="dialog" max-width="800px">
             <template #activator="{ props }">
-              <v-btn color="primary" class="mb-2" v-bind="props"> New Machine </v-btn>
+              <v-btn
+                color="primary"
+                class=""
+                v-bind="props"
+                variant="elevated"
+                prepend-icon="mdi-plus-circle-outline"
+              >
+                New Machine
+              </v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -138,8 +151,14 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template #[`item.brand`]="{ item }">
+        <img :src="`http://127.0.0.1:3000/img/machine_logos/${item.brand}.png`" alt="" />
+      </template>
       <template #[`item.hidden`]="{ item }">
-        <v-checkbox @change="toggleHide($event, item.raw.id)">{{ item.columns.hidden }}</v-checkbox>
+        <v-checkbox-btn
+          v-model="item.columns.hidden"
+          @change="toggleHide($event, item.raw.id)"
+        ></v-checkbox-btn>
       </template>
       <template #[`item.actions`]="{ item }">
         <v-icon size="small" class="me-2" @click="openMachine(item.raw)"> mdi-open-in-app </v-icon>
@@ -164,11 +183,11 @@ const valid = ref(false);
 
 const headers = [
   { title: 'Name', align: 'start', key: 'name' },
-  { title: 'Model', key: 'model' },
   { title: 'Brand', key: 'brand' },
+  { title: 'Model', key: 'model' },
   { title: 'Source', key: 'source' },
   { title: 'Type', key: 'type' },
-  { title: 'Hidden', key: 'hidden' },
+  { title: 'Hidden', key: 'hidden', sortable: false },
   { title: 'Actions', key: 'actions', sortable: false, align: 'end' },
 ];
 
@@ -308,13 +327,12 @@ function openMachine(item: MachineStatus) {
   router.push({ name: 'machine', params: { id: item.id } });
 }
 
-function toggleHide(e: Event, id: string) {
-  /*const target = e.target as
-  if (e.target?.checked) {
+function toggleHide(e, id: string) {
+  if (e.target.checked) {
     hide(id);
   } else {
     unHide(id);
-  }*/
+  }
 }
 </script>
 

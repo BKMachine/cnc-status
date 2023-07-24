@@ -54,6 +54,7 @@ const visibleMachines = computed((): MachineStatus[] => {
 function saveOrder() {
   const indexes = visibleMachines.value.map((x) => x.index);
   localStorage.setItem('order', indexes.join(','));
+  refreshKey.value++;
 }
 
 function openMachine(id: string) {
