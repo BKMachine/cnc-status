@@ -2,7 +2,7 @@
   <div class="machine" :class="[status, { online: isOnline, alarmed: hasAlarm, blink }]">
     <div class="header">
       <div>{{ data.name }}</div>
-      <img class="logo" :src="data.logo" :alt="data.brand" />
+      <img class="logo" :src="logos.brand[data.brand]" :alt="data.brand" />
     </div>
     <div v-if="!isOnline" class="offline">
       <img :src="offlineImg" alt="OFFLINE" />
@@ -35,6 +35,7 @@ import { computed } from 'vue';
 import offlineImg from '@/assets/offline.png';
 import { Duration } from 'luxon';
 import { useStore } from '@/store';
+import logos from '@/plugins/dynamic_logos';
 
 const props = defineProps<{
   data: MachineStatus;

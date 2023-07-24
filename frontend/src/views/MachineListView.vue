@@ -59,7 +59,7 @@
                           <span class="mr-3">Brand</span>
                           <img
                             v-if="editedItem.brand"
-                            :src="`http://127.0.0.1:3000/img/machine_logos/${editedItem.brand}.png`"
+                            :src="logos.brand[editedItem.brand]"
                             alt=""
                           />
                         </template>
@@ -80,7 +80,7 @@
                           <span class="mr-3">Source</span>
                           <img
                             v-if="editedItem.source"
-                            :src="`http://127.0.0.1:3000/img/${editedItem.source}.png`"
+                            :src="logos.source[editedItem.source]"
                             alt=""
                           />
                         </template>
@@ -103,11 +103,7 @@
                       <v-radio-group v-model="editedItem.type" inline label="Type" :rules="rules">
                         <template #label>
                           <span class="mr-3">Type</span>
-                          <img
-                            v-if="editedItem.type"
-                            :src="`http://127.0.0.1:3000/img/${editedItem.type}.png`"
-                            alt=""
-                          />
+                          <img v-if="editedItem.type" :src="logos.type[editedItem.type]" alt="" />
                         </template>
                         <v-radio label="Mill" value="mill"></v-radio>
                         <v-radio label="Lathe" value="lathe"></v-radio>
@@ -152,7 +148,7 @@
         </v-toolbar>
       </template>
       <template #[`item.brand`]="{ item }">
-        <img :src="`http://127.0.0.1:3000/img/machine_logos/${item.brand}.png`" alt="" />
+        <img :src="logos.brand[item.brand]" alt="" />
       </template>
       <template #[`item.hidden`]="{ item }">
         <v-checkbox-btn
@@ -176,6 +172,7 @@ import { nextTick, computed, watch, ref } from 'vue';
 import axios from '@/plugins/axios';
 import { useRouter } from 'vue-router';
 import { isHidden, hide, unHide } from '@/plugins/hide_machine';
+import logos from '@/plugins/dynamic_logos';
 
 const store = useStore();
 const router = useRouter();
