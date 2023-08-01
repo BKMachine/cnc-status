@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import getMachines from '../../machines';
+import machines from '../../machines';
 import { emit } from '../socket.io';
 import MachineRoutes from './machine';
 
@@ -15,12 +15,24 @@ router.get('/status', async (req, res, next) => {
   try {
     const response = [];
     let id = 0;
-    const machines = getMachines();
     for (const [, value] of machines) {
       const status = value.getMachine();
       response.push({ ...status, index: id++ });
     }
     res.status(200).json(response);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/status/:id', (req, res, next) => {
+  try {
+    const machine = machines.get(req.params.id);
+    if (!machine) {
+      res.sendStatus(404);
+      return;
+    }
+    res.status(200).json(machine.getMachine());
   } catch (e) {
     next(e);
   }

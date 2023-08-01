@@ -15,7 +15,7 @@ class Machine {
 
   getMachine() {
     return {
-      id: this.doc._id,
+      id: this.doc.id,
       name: this.doc.name,
       serialNumber: this.doc.serialNumber,
       brand: this.doc.brand,

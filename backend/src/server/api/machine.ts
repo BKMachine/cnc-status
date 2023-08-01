@@ -35,20 +35,3 @@ router.put('/:id', async (req, res, next) => {
 });
 
 export default router;
-
-/*
-router.get('/data/:name', (req, res, next) => {
-  try {
-    const { name } = req.params;
-    const machines = getMachines();
-    const machine = machines[name];
-    if (!machine) {
-      res.sendStatus(404);
-      return;
-    }
-    const response = machine.getMachine();
-    res.status(200).json(response);
-  } catch (e) {
-    next(e);
-  }
-});*/

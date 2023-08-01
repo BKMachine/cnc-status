@@ -1,4 +1,5 @@
 import * as database from './database';
+import * as elastic from './elastic';
 import logger from './logger';
 import * as machines from './machines';
 import * as arduino from './machines/Arduino/arduino_polling';
@@ -9,6 +10,7 @@ import * as server from './server';
 async function start(): Promise<void> {
   await database.connect();
   await machines.initMachines();
+  await elastic.connect();
   await mqtt.connect();
   arduino.start();
   mtconnect.start();
@@ -21,6 +23,7 @@ async function stop(): Promise<void> {
     mtconnect.stop,
     arduino.stop,
     mqtt.disconnect,
+    elastic.disconnect,
     database.disconnect,
   ];
 

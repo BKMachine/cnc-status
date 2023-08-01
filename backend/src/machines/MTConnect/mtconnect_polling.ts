@@ -2,7 +2,7 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import _ from 'lodash';
 import logger from '../../logger';
-import { getMTConnectMachines } from '../index';
+import { mtConnectMachines as machines } from '../index';
 import mappings from './mtconnect_mappings';
 
 let interval: NodeJS.Timer;
@@ -37,7 +37,6 @@ function run() {
     })
     .catch(() => {
       // MTConnect not responding - set all mtconnect machines to offline
-      const machines = getMTConnectMachines();
       for (const [, value] of machines) {
         value.setState(new Map([['online', false]]));
       }
@@ -50,7 +49,6 @@ function processJSON(data: MTConnectResponse) {
   deviceStreams.forEach((deviceStream) => {
     // find the matching machine
     const deviceName = deviceStream['@_name'];
-    const machines = getMTConnectMachines();
     const machine = machines.get(deviceName);
     if (!machine) return;
     const changes: Changes = new Map();

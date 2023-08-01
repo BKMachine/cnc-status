@@ -3,40 +3,35 @@ import ArduinoMachine from './Arduino/ArduinoMachine';
 import FocasMachine from './Focas/FocasMachine';
 import MTConnectMachine from './MTConnect/MTConnectMachine';
 
-const focasMachines = new Map<string, FocasMachine>();
-const arduinoMachines = new Map<string, ArduinoMachine>();
-const mtConnectMachines = new Map<string, MTConnectMachine>();
+const machines = new Map<string, FocasMachine | ArduinoMachine | MTConnectMachine>();
+export const focasMachines = new Map<string, FocasMachine>();
+export const arduinoMachines = new Map<string, ArduinoMachine>();
+export const mtConnectMachines = new Map<string, MTConnectMachine>();
 
-export async function initMachines() {
-  const machines = await Machine.list();
-  focasMachines.clear();
-  arduinoMachines.clear();
-  mtConnectMachines.clear();
-  machines.forEach((machine) => {
-    if (machine.source === 'focas') {
-      focasMachines.set(machine.location, new FocasMachine(machine));
-    } else if (machine.source === 'arduino') {
-      arduinoMachines.set(machine.location, new ArduinoMachine(machine));
-    } else if (machine.source === 'mtconnect') {
-      mtConnectMachines.set(machine.location, new MTConnectMachine(machine));
-    }
+export function initMachines(): Promise<void> {
+  return new Promise(async (resolve) => {
+    const machineDocs = await Machine.list();
+    machines.clear();
+    focasMachines.clear();
+    arduinoMachines.clear();
+    mtConnectMachines.clear();
+    machineDocs.forEach((doc) => {
+      if (doc.source === 'focas') {
+        const machine = new FocasMachine(doc);
+        machines.set(machine.doc._id.toString(), machine);
+        focasMachines.set(doc.location, machine);
+      } else if (doc.source === 'arduino') {
+        const machine = new ArduinoMachine(doc);
+        machines.set(machine.doc._id.toString(), machine);
+        arduinoMachines.set(doc.location, machine);
+      } else if (doc.source === 'mtconnect') {
+        const machine = new MTConnectMachine(doc);
+        machines.set(machine.doc._id.toString(), machine);
+        mtConnectMachines.set(doc.location, machine);
+      }
+    });
+    resolve();
   });
 }
 
-function getMachines(): Map<string, FocasMachine | ArduinoMachine | MTConnectMachine> {
-  return new Map([...focasMachines, ...arduinoMachines, ...mtConnectMachines]);
-}
-
-export function getFocasMachines() {
-  return focasMachines;
-}
-
-export function getArduinoMachines() {
-  return arduinoMachines;
-}
-
-export function getMTConnectMachines() {
-  return mtConnectMachines;
-}
-
-export default getMachines;
+export default machines;

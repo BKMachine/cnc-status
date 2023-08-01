@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import mqtt, { MqttClient } from 'mqtt';
 import logger from '../../logger';
-import { getFocasMachines } from '../index';
+import { focasMachines as machines } from '../index';
 import mappings from './focas_mappings';
 
 let client: MqttClient;
@@ -39,7 +39,6 @@ export function processMessage(topic: string, message: Buffer) {
   if (!machineLocation) return;
 
   // Ensure we have a registered machine
-  const machines = getFocasMachines();
   const machine = machines.get(machineLocation);
   if (!machine) return;
 

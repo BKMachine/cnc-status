@@ -1,7 +1,7 @@
 import _axios from 'axios';
 import _ from 'lodash';
 import logger from '../../logger';
-import { getArduinoMachines } from '../index';
+import { arduinoMachines as machines } from '../index';
 
 const axios = _axios.create({
   timeout: 1000,
@@ -29,7 +29,6 @@ export function stop() {
 }
 
 function run() {
-  const machines = getArduinoMachines();
   machines.forEach((machine, location) => {
     const changes: Changes = new Map();
     axios
