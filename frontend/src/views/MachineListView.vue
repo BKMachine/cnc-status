@@ -39,7 +39,7 @@
                       <v-text-field
                         v-model="editedItem.name"
                         label="Name"
-                        :rules="rules"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="4">
@@ -54,7 +54,7 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <v-radio-group v-model="editedItem.brand" inline :rules="rules">
+                      <v-radio-group v-model="editedItem.brand" inline :rules="[rules.required]">
                         <template #label>
                           <span class="mr-3">Brand</span>
                           <img
@@ -75,7 +75,7 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <v-radio-group v-model="editedItem.source" inline :rules="rules">
+                      <v-radio-group v-model="editedItem.source" inline :rules="[rules.required]">
                         <template #label>
                           <span class="mr-3">Source</span>
                           <img
@@ -93,14 +93,19 @@
                       <v-text-field
                         v-model="editedItem.location"
                         :label="locationLabel"
-                        :rules="[...rules, ...duplicateLocation]"
+                        :rules="[rules.required, rules.duplicateLocation]"
                         :messages="[locationMessage]"
                       ></v-text-field>
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col>
-                      <v-radio-group v-model="editedItem.type" inline label="Type" :rules="rules">
+                      <v-radio-group
+                        v-model="editedItem.type"
+                        inline
+                        label="Type"
+                        :rules="[rules.required]"
+                      >
                         <template #label>
                           <span class="mr-3">Type</span>
                           <img v-if="editedItem.type" :src="logos.type[editedItem.type]" alt="" />
@@ -113,7 +118,12 @@
                   </v-row>
                   <v-row>
                     <v-col>
-                      <v-radio-group v-model="editedItem.paths" inline label="Paths" :rules="rules">
+                      <v-radio-group
+                        v-model="editedItem.paths"
+                        inline
+                        label="Paths"
+                        :rules="[rules.required]"
+                      >
                         <v-radio label="Single" value="1"></v-radio>
                         <v-radio label="Dual" value="2"></v-radio>
                       </v-radio-group>
@@ -295,20 +305,22 @@ function sleep() {
   });
 }
 
-const rules = [
-  (value: string) => {
+const rules = {
+  required: (value: string) => {
     if (value) return true;
     return 'Required';
   },
-];
-
-const duplicateLocation = [
-  (value: string) => {
+  duplicateLocation: (value: string) => {
+    if (
+      editedIndex.value > -1 &&
+      value.toLowerCase() === machines.value[editedIndex.value].location.toLowerCase()
+    )
+      return true;
     const locations = machines.value.map((x) => x.location.toLowerCase());
     if (locations.includes(value.toLowerCase())) return 'Location already in use.';
     return true;
   },
-];
+};
 
 const locationLabel = computed(() => {
   const source = editedItem.value.source;
