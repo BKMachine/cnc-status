@@ -1,6 +1,7 @@
 import { Client } from '@elastic/elasticsearch';
 import logger from '../logger';
 import machines from '../machines';
+import { emitToRoom } from '../server/socket.io';
 
 const client = new Client({
   node: process.env.ELASTIC_URL,
@@ -40,8 +41,9 @@ function run() {
     const meta = { create: { _index: getIndex(key) } };
     const body = { ...status, '@timestamp': timestamp };
     operations.push(JSON.stringify(meta) + '\n' + JSON.stringify(body));
+    emitToRoom(key, 'elastic-status', status);
   }
-  client.bulk({ operations }).catch((e) => {
+  client.bulk({ operations }).catch(() => {
     // Do Nothing
   });
 }

@@ -46,7 +46,8 @@ router.get('/data/:id', async (req, res, next) => {
       res.sendStatus(404);
       return;
     }
-    const data = await elastic.getData(id);
+    const { minutes } = req.query;
+    const data = await elastic.getData(id, minutes);
     const response = data.hits?.hits?.map((x) => x._source);
     res.status(200).json(response);
   } catch (e) {

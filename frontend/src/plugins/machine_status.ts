@@ -34,3 +34,23 @@ getStatus().then(() => {
     store.commit('updateMachineState', payload);
   });
 });
+
+export function subscribe(id: string) {
+  if (!socket) return;
+  socket.emit('subscribe', getRoom(id));
+}
+
+export function unsubscribe(id: string) {
+  if (!socket) return;
+  socket.emit('unsubscribe', getRoom(id));
+}
+
+function getRoom(id: string) {
+  return `room-${id}`;
+}
+
+function getSocket() {
+  return socket;
+}
+
+export default getSocket;
