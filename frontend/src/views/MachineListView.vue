@@ -148,7 +148,7 @@
         </v-toolbar>
       </template>
       <template #[`item.brand`]="{ item }">
-        <img :src="logos.brand[item.brand]" alt="" />
+        <img :src="logos.brand[item.raw.brand]" alt="" />
       </template>
       <template #[`item.hidden`]="{ item }">
         <v-checkbox-btn
