@@ -10,13 +10,15 @@ const client = new Client({
   },
 });
 
+let timer: NodeJS.Timer;
+
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {
     client
       .ping()
       .then(() => {
         logger.info('Connected to Elasticsearch');
-        setTimeout(run, 5000);
+        timer = setInterval(run, 1000 * 10);
         resolve();
       })
       .catch((e: Error) => {
@@ -26,33 +28,28 @@ export function connect(): Promise<void> {
 }
 
 export function disconnect(): Promise<void> {
+  if (timer) clearInterval(timer);
   return client.close();
 }
 
 function run() {
   const timestamp = new Date().toISOString();
-  const ids = [...machines.keys()];
-  console.log(ids);
-  /*const operations: (string | null)[] = ids.map((id) => {
-    const machine = machines.get(id);
-    if (!machine) return null;
-    const status = machine.getState();
-    const meta = { create: { _index: getIndex(machine) } };
+  const operations: string[] = [];
+  for (const [key, value] of machines) {
+    const status = value.getState();
+    const meta = { create: { _index: getIndex(key) } };
     const body = { ...status, '@timestamp': timestamp };
-    return JSON.stringify(meta) + '\n' + JSON.stringify(body);
-  });
-  const filteredOperations = operations.filter((x) => {
-    if (x) return true;
-  });
-  client.bulk({ operations: filteredOperations }).catch(() => {
+    operations.push(JSON.stringify(meta) + '\n' + JSON.stringify(body));
+  }
+  client.bulk({ operations }).catch((e) => {
     // Do Nothing
-  });*/
+  });
 }
 
-export async function getData(name: string, minutes: string = '5') {
+async function getData(id: string, minutes: string = '5') {
   const ms = new Date().valueOf() - parseInt(minutes) * 60 * 1000;
   return client.search({
-    index: getIndex(name),
+    index: getIndex(id),
     query: {
       bool: {
         filter: [{ range: { '@timestamp': { gt: ms } } }],
@@ -62,6 +59,8 @@ export async function getData(name: string, minutes: string = '5') {
   });
 }
 
-function getIndex(machine: FocasMachine | ArduinoMachine | MTConnectMachine) {
-  return `status-${machine.getMachine().id}`;
+function getIndex(id: string) {
+  return `status-${id}`;
 }
+
+export default { getData };
