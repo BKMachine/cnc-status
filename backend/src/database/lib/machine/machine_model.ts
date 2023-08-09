@@ -8,7 +8,7 @@ const schema = new Schema({
   source: String,
   type: String,
   paths: String,
-  location: String,
+  location: { type: String, unique: true },
 });
 
 export interface MachineDoc extends Document {

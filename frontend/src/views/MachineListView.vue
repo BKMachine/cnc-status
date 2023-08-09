@@ -93,7 +93,7 @@
                       <v-text-field
                         v-model="editedItem.location"
                         :label="locationLabel"
-                        :rules="rules"
+                        :rules="[...rules, ...duplicateLocation]"
                         :messages="[locationMessage]"
                       ></v-text-field>
                     </v-col>
@@ -211,13 +211,13 @@ watch(dialogDelete, (open) => {
 });
 
 function editItem(item: MachineStatus) {
-  editedIndex.value = store.state.machines.indexOf(item);
+  editedIndex.value = store.state.machines.findIndex((x) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialog.value = true;
 }
 
 function deleteItem(item: MachineStatus) {
-  editedIndex.value = store.state.machines.indexOf(item);
+  editedIndex.value = store.state.machines.findIndex((x) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialogDelete.value = true;
 }
@@ -299,6 +299,14 @@ const rules = [
   (value: string) => {
     if (value) return true;
     return 'Required';
+  },
+];
+
+const duplicateLocation = [
+  (value: string) => {
+    const locations = machines.value.map((x) => x.location.toLowerCase());
+    if (locations.includes(value.toLowerCase())) return 'Location already in use.';
+    return true;
   },
 ];
 
