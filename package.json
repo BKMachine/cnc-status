@@ -8,5 +8,6 @@
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "packageManager": "yarn@4.0.0"
 }
