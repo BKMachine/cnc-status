@@ -1,7 +1,6 @@
 import { Client } from '@elastic/elasticsearch';
 import logger from '../logger';
 import machines from '../machines';
-import { emitToRoom } from '../server/socket.io';
 
 const client = new Client({
   node: process.env.ELASTIC_URL,
@@ -11,7 +10,7 @@ const client = new Client({
   },
 });
 
-let timer: NodeJS.Timer;
+let timer: NodeJS.Timeout;
 
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -37,32 +36,17 @@ function run() {
   const timestamp = new Date().toISOString();
   const operations: string[] = [];
   for (const [key, value] of machines) {
-    const status = value.getState();
+    const state = value.getElasticState();
     const meta = { create: { _index: getIndex(key) } };
-    const body = { ...status, '@timestamp': timestamp };
+    const body = { state, '@timestamp': timestamp };
     operations.push(JSON.stringify(meta) + '\n' + JSON.stringify(body));
-    emitToRoom(key, 'elastic-status', status);
+    // emitToRoom(key, 'elastic-status', status);
   }
   client.bulk({ operations }).catch(() => {
-    // Do Nothing
-  });
-}
-
-async function getData(id: string, minutes: string = '5') {
-  const ms = new Date().valueOf() - parseInt(minutes) * 60 * 1000;
-  return client.search({
-    index: getIndex(id),
-    query: {
-      bool: {
-        filter: [{ range: { '@timestamp': { gt: ms } } }],
-      },
-    },
-    sort: [{ '@timestamp': { order: 'desc' } }],
+    logger.error('Elastic Bulk write error');
   });
 }
 
 function getIndex(id: string) {
   return `status-${id}`;
 }
-
-export default { getData };

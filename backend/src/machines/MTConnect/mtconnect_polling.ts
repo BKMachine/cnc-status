@@ -5,7 +5,7 @@ import logger from '../../logger';
 import { mtConnectMachines as machines } from '../index';
 import mappings from './mtconnect_mappings';
 
-let interval: NodeJS.Timer;
+let interval: NodeJS.Timeout;
 const parser = new XMLParser({ ignoreAttributes: false });
 
 export function start() {

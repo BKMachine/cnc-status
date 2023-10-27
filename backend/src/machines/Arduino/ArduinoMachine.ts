@@ -15,6 +15,15 @@ class ArduinoMachine extends Machine {
   constructor(doc: MachineDoc) {
     super(doc, { ...initStatus });
   }
+
+  getElasticState(): ElasticState {
+    const state = this.getState() as ArduinoState;
+    if (!state.online) return 'offline';
+    else if (state.red) return 'red';
+    else if (state.green) return 'green';
+    else if (state.yellow) return 'yellow';
+    else return 'idle';
+  }
 }
 
 export default ArduinoMachine;

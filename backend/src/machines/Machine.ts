@@ -3,7 +3,7 @@ import { MachineDoc } from '../database/lib/machine/machine_model';
 import { emit } from '../server/socket.io';
 
 class Machine {
-  private readonly doc: MachineDoc;
+  readonly doc: MachineDoc;
   private readonly logo: string;
   private state: MachineState;
 

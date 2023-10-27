@@ -7,7 +7,7 @@ const axios = _axios.create({
   timeout: 1000,
 });
 
-let interval: NodeJS.Timer;
+let interval: NodeJS.Timeout;
 
 export function start() {
   stop();
