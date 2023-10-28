@@ -9,7 +9,45 @@
 </template>
 
 <script setup lang="ts">
-import '@/plugins/machine_status';
+import axios from '@/plugins/axios';
+import useMachineStore from '@/store/machine';
+import { onMounted } from 'vue';
+import { io, Socket } from 'socket.io-client';
+
+const machineStore = useMachineStore();
+let socket: Socket<ServerToClientEvents>;
+const wsUrl =
+  import.meta.env.MODE === 'production' ? import.meta.env.BASE_URL : 'http://127.0.0.1:3000';
+
+async function getStatus() {
+  return axios.get('/status').then(({ data }: { data: MachineStatus[] }) => {
+    machineStore.setMachines(data);
+  });
+}
+
+onMounted(() => {
+  setInterval(getStatus, 1000 * 60 * 5);
+  getStatus().then(() => {
+    socket = io(wsUrl, {
+      transports: ['websocket', 'polling'],
+    });
+
+    socket.io.on('reconnect', () => {
+      console.log('Socket-IO client reconnected.');
+      getStatus().catch(() => {
+        // Do Nothing
+      });
+    });
+
+    socket.on('refresh', () => {
+      location.reload();
+    });
+
+    socket.on('change', (status) => {
+      machineStore.updateMachineStatus(status);
+    });
+  });
+});
 </script>
 
 <style scoped></style>

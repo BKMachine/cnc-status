@@ -1,4 +1,4 @@
 interface ServerToClientEvents {
   refresh: () => void;
-  change: (payload: { id: string; changes: Changes }) => void;
+  change: (status: { id: string; changes: Changes }) => void;
 }

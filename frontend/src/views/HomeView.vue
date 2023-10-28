@@ -1,6 +1,6 @@
 <template v-cloak>
   <main v-if="visibleMachines.length">
-    <VueDraggable v-model="visibleMachines" class="container" @end="saveOrder">
+    <VueDraggable list="visibleMachines" class="container" @end="saveOrder">
       <div
         v-for="item in visibleMachines"
         :key="item.id"
@@ -20,11 +20,11 @@ import MachineTile from '@/components/MachineTile.vue';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
-import { useStore } from '@/store';
 import { isHidden } from '@/plugins/hide_machine';
+import useMachineStore from '@/store/machine';
 
 const router = useRouter();
-const store = useStore();
+const machineStore = useMachineStore();
 const refreshKey = ref(0);
 
 function refresh() {
@@ -35,7 +35,7 @@ const orderedMachines = computed((): MachineStatus[] => {
   const order = localStorage.getItem('order');
   const orderArray = order ? order.split(',').map((x) => parseInt(x)) : [];
   const results: MachineStatus[] = [];
-  const remaining = [...store.state.machines];
+  const remaining = [...machineStore.machines];
   for (let i = 0; i < orderArray.length; i++) {
     const index = remaining.findIndex((x) => x.index === orderArray[i]);
     if (index !== -1) {

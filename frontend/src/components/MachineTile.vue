@@ -34,13 +34,13 @@
 import { computed } from 'vue';
 import offlineImg from '@/assets/offline.png';
 import { Duration } from 'luxon';
-import { useStore } from '@/store';
 import logos from '@/plugins/dynamic_logos';
+import useNowStore from '@/store/now';
 
 const props = defineProps<{
   data: MachineStatus;
 }>();
-const store = useStore();
+const nowStore = useNowStore();
 
 /*function getLogoUrl(brand: MachineBrand) {
   // return new URL('../assets/machine_logos/' + brand + '.png', import.meta.url).href;
@@ -52,7 +52,7 @@ const isOnline = computed(() => {
 
 const seconds = computed(() => {
   const now = new Date(props.data.state.lastStateTs).valueOf();
-  let seconds = Math.floor((store.state.now.valueOf() - now) / 1000);
+  let seconds = Math.floor((nowStore.now.valueOf() - now) / 1000);
   if (seconds < 0) seconds = 0;
   return seconds;
 });

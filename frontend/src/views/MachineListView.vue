@@ -158,34 +158,33 @@
         </v-toolbar>
       </template>
       <template #[`item.brand`]="{ item }">
-        <img :src="logos.brand[item.raw.brand]" alt="" />
+        <img :src="logos.brand[item.brand]" alt="" />
       </template>
       <template #[`item.hidden`]="{ item }">
         <v-checkbox-btn
-          v-model="item.columns.hidden"
-          @change="toggleHide($event, item.raw.id)"
+          v-model="item.hidden"
+          @change="toggleHide($event, item.id)"
         ></v-checkbox-btn>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-icon size="small" class="me-2" @click="openMachine(item.raw)"> mdi-open-in-app </v-icon>
-        <v-icon size="small" class="me-2" @click="editItem(item.raw)"> mdi-pencil </v-icon>
-        <v-icon size="small" @click="deleteItem(item.raw)"> mdi-delete </v-icon>
+        <v-icon size="small" class="me-2" @click="openMachine(item)"> mdi-open-in-app </v-icon>
+        <v-icon size="small" class="me-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon size="small" @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { useStore } from '@/store';
-import { VDataTable } from 'vuetify/labs/VDataTable';
 import { nextTick, computed, watch, ref } from 'vue';
 import axios from '@/plugins/axios';
 import { useRouter } from 'vue-router';
 import { isHidden, hide, unHide } from '@/plugins/hide_machine';
 import logos from '@/plugins/dynamic_logos';
+import useMachineStore from '@/store/machine';
 
-const store = useStore();
 const router = useRouter();
+const machineStore = useMachineStore();
 const valid = ref(false);
 
 const headers = [
@@ -204,7 +203,7 @@ const editedIndex = ref(-1);
 const editedItem = ref({} as MachineStatus);
 
 const machines = computed(() => {
-  return store.state.machines.map((x) => {
+  return machineStore.machines.map((x: MachineStatus) => {
     return {
       ...x,
       hidden: isHidden(x.id),
@@ -221,13 +220,13 @@ watch(dialogDelete, (open) => {
 });
 
 function editItem(item: MachineStatus) {
-  editedIndex.value = store.state.machines.findIndex((x) => x.id === item.id);
+  editedIndex.value = machineStore.machines.findIndex((x: MachineStatus) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialog.value = true;
 }
 
 function deleteItem(item: MachineStatus) {
-  editedIndex.value = store.state.machines.findIndex((x) => x.id === item.id);
+  editedIndex.value = machineStore.machines.findIndex((x: MachineStatus) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialogDelete.value = true;
 }
@@ -236,7 +235,7 @@ function deleteItemConfirm() {
   axios
     .delete(`/machine/${editedItem.value.id}`)
     .then(() => {
-      store.commit('deleteMachine', editedIndex.value);
+      machineStore.deleteMachine(editedIndex.value);
     })
     .catch(() => {
       alert(`There was an error deleting ${editedItem.value.name}`);
@@ -276,7 +275,7 @@ async function save() {
     axios
       .put(`/machine/${editedItem.value.id}`, editedItem.value)
       .then(({ data }) => {
-        store.commit('updateMachine', { index: editedIndex.value, data });
+        machineStore.updateMachine({ index: editedIndex.value, status: data });
       })
       .catch(() => {
         alert('Error saving edited machine.');
@@ -288,7 +287,7 @@ async function save() {
     axios
       .post('/machine', editedItem.value)
       .then(({ data }) => {
-        store.commit('addMachine', data);
+        machineStore.addMachine(data);
       })
       .catch(() => {
         alert('Error saving new machine.');
@@ -316,7 +315,7 @@ const rules = {
       value.toLowerCase() === machines.value[editedIndex.value].location.toLowerCase()
     )
       return true;
-    const locations = machines.value.map((x) => x.location.toLowerCase());
+    const locations = machines.value.map((x: MachineStatus) => x.location.toLowerCase());
     if (locations.includes(value.toLowerCase())) return 'Location already in use.';
     return true;
   },
@@ -344,7 +343,7 @@ function openMachine(item: MachineStatus) {
   router.push({ name: 'machine', params: { id: item.id } });
 }
 
-function toggleHide(e, id: string) {
+function toggleHide(e: { target: { checked: any } }, id: string) {
   if (e.target.checked) {
     hide(id);
   } else {
