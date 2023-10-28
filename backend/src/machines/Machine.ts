@@ -1,5 +1,5 @@
 import { baseUrl } from '../config';
-import { MachineDoc } from '../database/lib/machine/machine_model';
+import type { MachineDoc } from '../database/lib/machine/machine_model';
 import { emit } from '../server/socket.io';
 
 class Machine {
@@ -15,7 +15,7 @@ class Machine {
 
   getMachine() {
     return {
-      id: this.doc.id,
+      id: this.doc._id.toString(),
       name: this.doc.name,
       serialNumber: this.doc.serialNumber,
       brand: this.doc.brand,
@@ -39,7 +39,7 @@ class Machine {
     // Remove cycle property before sending changes over websocket
     delete changeObj.cycle;
     if (Object.keys(changeObj).length === 0) return;
-    emit('change', { id: this.doc.id, changes: changeObj });
+    emit('change', { id: this.doc._id.toString(), changes: changeObj });
   }
 }
 

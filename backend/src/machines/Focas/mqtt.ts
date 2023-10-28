@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import mqtt, { MqttClient } from 'mqtt';
+import * as mqtt from 'mqtt';
 import logger from '../../logger';
 import { focasMachines as machines } from '../index';
 import mappings from './focas_mappings';
 
-let client: MqttClient;
+let client: mqtt.MqttClient;
 
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {

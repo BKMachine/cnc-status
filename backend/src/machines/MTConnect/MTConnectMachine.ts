@@ -1,4 +1,4 @@
-import { MachineDoc } from '../../database/lib/machine/machine_model';
+import type { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
 const initStatus: MTConnectState = {
