@@ -75,6 +75,12 @@ function processJSON(data: MTConnectResponse) {
             if (value === 'OPTIONAL_STOP') return;
             const date = new Date().toISOString();
             changes.set('lastStateTs', date);
+            if (value !== 'ACTIVE' && old === 'ACTIVE') {
+              const now = new Date().valueOf();
+              const lastState = new Date(machine.getState().lastStateTs).valueOf();
+              const time = now - lastState;
+              changes.set('lastCycle', time);
+            }
           }
         }
       });
