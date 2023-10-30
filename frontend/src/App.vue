@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import axios from '@/plugins/axios';
-import useMachineStore from '@/store/machine';
+import useMachineStore from '@/stores/machine';
 import { onMounted } from 'vue';
 import { io, Socket } from 'socket.io-client';
 

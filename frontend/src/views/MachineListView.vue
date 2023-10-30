@@ -181,7 +181,7 @@ import axios from '@/plugins/axios';
 import { useRouter } from 'vue-router';
 import { isHidden, hide, unHide } from '@/plugins/hide_machine';
 import logos from '@/plugins/dynamic_logos';
-import useMachineStore from '@/store/machine';
+import useMachineStore from '@/stores/machine';
 
 const router = useRouter();
 const machineStore = useMachineStore();

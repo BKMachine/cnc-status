@@ -21,7 +21,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
 import { isHidden } from '@/plugins/hide_machine';
-import useMachineStore from '@/store/machine';
+import useMachineStore from '@/stores/machine';
 
 const router = useRouter();
 const machineStore = useMachineStore();

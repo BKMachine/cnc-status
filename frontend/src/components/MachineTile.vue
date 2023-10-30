@@ -35,7 +35,7 @@ import { computed } from 'vue';
 import offlineImg from '@/assets/offline.png';
 import { Duration } from 'luxon';
 import logos from '@/plugins/dynamic_logos';
-import useNowStore from '@/store/now';
+import useNowStore from '@/stores/now';
 
 const props = defineProps<{
   data: MachineStatus;

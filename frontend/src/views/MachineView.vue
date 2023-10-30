@@ -13,7 +13,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { computed } from 'vue';
 import logos from '@/plugins/dynamic_logos';
-import useMachineStore from '@/store/machine';
+import useMachineStore from '@/stores/machine';
 
 const route = useRoute();
 const router = useRouter();
