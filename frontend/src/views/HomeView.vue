@@ -11,6 +11,7 @@
       </div>
     </VueDraggable>
     <Settings @clear-order="refresh" />
+    <HourEfficiency class="hour"/>
   </main>
 </template>
 
@@ -22,6 +23,7 @@ import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
 import { isHidden } from '@/plugins/hide_machine';
 import useMachineStore from '@/stores/machine';
+import HourEfficiency from '@/components/HourEfficiency.vue';
 
 const router = useRouter();
 const machineStore = useMachineStore();
@@ -72,5 +74,11 @@ function openMachine(id: string) {
 
 .machine {
   margin: 5px;
+}
+
+.hour {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 </style>

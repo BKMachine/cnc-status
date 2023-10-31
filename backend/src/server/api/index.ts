@@ -2,6 +2,7 @@ import { Router } from 'express';
 import machines from '../../machines';
 import { emit } from '../socket.io';
 import MachineRoutes from './machine';
+import * as elastic from '../../elastic';
 
 const router = Router();
 
@@ -48,4 +49,12 @@ router.post('/refresh', (req, res, next) => {
   res.sendStatus(204);
 });
 
+router.get('/hourly', async (req, res, next) => {
+  try {
+    const response = await elastic.getHourly();
+    res.status(200).json(response);
+  } catch (e) {
+    next(e);
+  }
+});
 export default router;

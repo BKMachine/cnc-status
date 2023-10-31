@@ -50,3 +50,75 @@ function run() {
 function getIndex(id: string) {
   return `status-${id}`;
 }
+
+export async function getHourly() {
+  const green = (await client.search({
+    index: 'status-*',
+    size: 0,
+    "query": {
+      "bool": {
+        "must": [],
+        "filter": [
+          {
+            "bool": {
+              "should": [
+                {
+                  "match": {
+                    "state": "green"
+                  }
+                }
+              ],
+              "minimum_should_match": 1
+            }
+          },
+          {
+            "range": {
+              "@timestamp": {
+                "format": "strict_date_optional_time",
+                "gte": "now-1h",
+              }
+            }
+          }
+        ],
+        "should": [],
+        "must_not": []
+      }
+    }
+  })).hits.total.value;
+
+  const online = (await client.search({
+    index: 'status-*',
+    size: 0,
+    "query": {
+      "bool": {
+        "must": [],
+        "filter": [
+          {
+            "bool": {
+              "should": [
+
+              ],
+              "minimum_should_match": 1
+            }
+          },
+          {
+            "range": {
+              "@timestamp": {
+                "format": "strict_date_optional_time",
+                "gte": "now-1h",
+              }
+            }
+          }
+        ],
+        "should": [],
+        "must_not": [{
+          "match": {
+            "state": "offline"
+          }
+        }]
+      }
+    }
+  })).hits.total.value;
+
+  return Math.round((((green / online) * 100) + Number.EPSILON) * 100) / 100
+}
