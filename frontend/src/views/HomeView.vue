@@ -1,6 +1,6 @@
 <template v-cloak>
   <main v-if="visibleMachines.length">
-    <VueDraggable list="visibleMachines" class="container" @end="saveOrder">
+    <VueDraggable v-model="visibleMachines" class="container">
       <div
         v-for="item in visibleMachines"
         :key="item.id"
@@ -47,15 +47,16 @@ const orderedMachines = computed((): MachineStatus[] => {
   return [...results, ...remaining];
 });
 
-const visibleMachines = computed((): MachineStatus[] => {
-  return orderedMachines.value.filter((x) => !isHidden(x.id));
-});
-
-function saveOrder() {
-  const indexes = visibleMachines.value.map((x) => x.index);
-  localStorage.setItem('order', indexes.join(','));
-  refreshKey.value++;
-}
+const visibleMachines = computed({
+  get() {
+    return orderedMachines.value.filter((x) => !isHidden(x.id));
+  },
+  set(val) {
+    const indexes = val.map((x) => x.index);
+    localStorage.setItem('order', indexes.join(','));
+    refreshKey.value++;
+  }
+})
 
 function openMachine(id: string) {
   router.push({ name: 'machine', params: { id } });
