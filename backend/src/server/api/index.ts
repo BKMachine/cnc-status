@@ -1,8 +1,8 @@
 import { Router } from 'express';
+import { getHourly } from '../../elastic/performance';
 import machines from '../../machines';
 import { emit } from '../socket.io';
 import MachineRoutes from './machine';
-import * as elastic from '../../elastic';
 
 const router = Router();
 
@@ -51,7 +51,7 @@ router.post('/refresh', (req, res, next) => {
 
 router.get('/hourly', async (req, res, next) => {
   try {
-    const response = await elastic.getHourly();
+    const response = await getHourly();
     res.status(200).json(response);
   } catch (e) {
     next(e);

@@ -1,6 +1,7 @@
 import { Client } from '@elastic/elasticsearch';
 import logger from '../logger';
-import machines from '../machines';
+import { storeMachineStatus } from './machineStatus';
+import { storePerformance } from './performance';
 
 const client = new Client({
   node: process.env.ELASTIC_URL,
@@ -10,7 +11,10 @@ const client = new Client({
   },
 });
 
-let timer: NodeJS.Timeout;
+export const prefix = process.env.NODE_ENV === 'development' ? 'dev-' : '';
+
+let statusTimer: NodeJS.Timeout;
+let performanceTimer: NodeJS.Timeout;
 
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -18,7 +22,8 @@ export function connect(): Promise<void> {
       .ping()
       .then(() => {
         logger.info('Connected to Elasticsearch');
-        timer = setInterval(run, 1000 * 10);
+        statusTimer = setInterval(storeMachineStatus, 1000 * 15);
+        performanceTimer = setInterval(storePerformance, 1000 * 60);
         resolve();
       })
       .catch((e: Error) => {
@@ -28,97 +33,9 @@ export function connect(): Promise<void> {
 }
 
 export function disconnect(): Promise<void> {
-  if (timer) clearInterval(timer);
+  if (statusTimer) clearInterval(statusTimer);
+  if (performanceTimer) clearInterval(performanceTimer);
   return client.close();
 }
 
-function run() {
-  const timestamp = new Date().toISOString();
-  const operations: string[] = [];
-  for (const [key, value] of machines) {
-    const state = value.getElasticState();
-    const meta = { create: { _index: getIndex(key) } };
-    const body = { state, '@timestamp': timestamp };
-    operations.push(JSON.stringify(meta) + '\n' + JSON.stringify(body));
-    // emitToRoom(key, 'elastic-status', status);
-  }
-  client.bulk({ operations }).catch(() => {
-    logger.error('Elastic Bulk write error');
-  });
-}
-
-function getIndex(id: string) {
-  return `status-${id}`;
-}
-
-export async function getHourly() {
-  const green = (await client.search({
-    index: 'status-*',
-    size: 0,
-    "query": {
-      "bool": {
-        "must": [],
-        "filter": [
-          {
-            "bool": {
-              "should": [
-                {
-                  "match": {
-                    "state": "green"
-                  }
-                }
-              ],
-              "minimum_should_match": 1
-            }
-          },
-          {
-            "range": {
-              "@timestamp": {
-                "format": "strict_date_optional_time",
-                "gte": "now-1h",
-              }
-            }
-          }
-        ],
-        "should": [],
-        "must_not": []
-      }
-    }
-  })).hits.total.value;
-
-  const online = (await client.search({
-    index: 'status-*',
-    size: 0,
-    "query": {
-      "bool": {
-        "must": [],
-        "filter": [
-          {
-            "bool": {
-              "should": [
-
-              ],
-              "minimum_should_match": 1
-            }
-          },
-          {
-            "range": {
-              "@timestamp": {
-                "format": "strict_date_optional_time",
-                "gte": "now-1h",
-              }
-            }
-          }
-        ],
-        "should": [],
-        "must_not": [{
-          "match": {
-            "state": "offline"
-          }
-        }]
-      }
-    }
-  })).hits.total.value;
-
-  return Math.round((((green / online) * 100) + Number.EPSILON) * 100) / 100
-}
+export default client;
