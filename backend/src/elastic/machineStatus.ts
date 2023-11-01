@@ -6,9 +6,9 @@ export function storeMachineStatus() {
   const timestamp = new Date().toISOString();
   const operations: string[] = [];
   for (const [key, value] of machines) {
-    const state = value.getElasticState();
+    const status = value.getStatus();
     const meta = { create: { _index: getIndex(key) } };
-    const body = { state, '@timestamp': timestamp };
+    const body = { status, '@timestamp': timestamp };
     operations.push(JSON.stringify(meta) + '\n' + JSON.stringify(body));
   }
   client.bulk({ operations }).catch(() => {

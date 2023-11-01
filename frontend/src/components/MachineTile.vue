@@ -38,7 +38,7 @@ import logos from '@/plugins/dynamic_logos';
 import useNowStore from '@/stores/now';
 
 const props = defineProps<{
-  data: MachineStatus;
+  data: MachineInfo;
 }>();
 const nowStore = useNowStore();
 

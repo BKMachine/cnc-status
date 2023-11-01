@@ -1,7 +1,7 @@
 import type { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: MTConnectState = {
+const initState: MTConnectState = {
   online: false,
   eStop: 'UNAVAILABLE',
   mode: 'UNAVAILABLE',
@@ -14,10 +14,10 @@ const initStatus: MTConnectState = {
 
 class MTConnectMachine extends Machine {
   constructor(doc: MachineDoc) {
-    super(doc, { ...initStatus });
+    super(doc, { ...initState });
   }
 
-  getElasticState(): ElasticState {
+  getStatus(): RunningStatus {
     const state = this.getState() as MTConnectState;
     if (!state.online) return 'offline';
     else if (state.eStop === 'TRIGGERED') return 'red';

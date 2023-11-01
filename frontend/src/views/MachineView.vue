@@ -19,8 +19,8 @@ const route = useRoute();
 const router = useRouter();
 const machineStore = useMachineStore();
 
-const machine = computed((): MachineStatus | undefined => {
-  return machineStore.machines.find((x: MachineStatus) => x.id === route.params.id);
+const machine = computed((): MachineInfo | undefined => {
+  return machineStore.machines.find((x: MachineInfo) => x.id === route.params.id);
 });
 </script>
 

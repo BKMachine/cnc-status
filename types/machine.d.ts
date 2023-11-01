@@ -136,6 +136,6 @@ interface MTConnect {
   index?: number;
 }
 
-type MachineStatus = Focas | Arduino | MTConnect;
+type MachineInfo = Focas | Arduino | MTConnect;
 
-type ElasticState = 'offline' | 'red' | 'yellow' | 'green' | 'idle'
+type RunningStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle'

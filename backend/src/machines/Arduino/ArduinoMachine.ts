@@ -1,7 +1,7 @@
 import type { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: ArduinoState = {
+const initState: ArduinoState = {
   online: false,
   green: false,
   yellow: false,
@@ -13,10 +13,10 @@ const initStatus: ArduinoState = {
 
 class ArduinoMachine extends Machine {
   constructor(doc: MachineDoc) {
-    super(doc, { ...initStatus });
+    super(doc, { ...initState });
   }
 
-  getElasticState(): ElasticState {
+  getStatus(): RunningStatus {
     const state = this.getState() as ArduinoState;
     if (!state.online) return 'offline';
     else if (state.red) return 'red';

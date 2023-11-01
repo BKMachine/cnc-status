@@ -6,9 +6,9 @@ export function storePerformance() {
   let running = 0;
   let notRunning = 0;
   for (const [, value] of machines) {
-    const state = value.getElasticState();
-    if (state === 'green') running++;
-    else if (state !== 'offline') notRunning++;
+    const status = value.getStatus();
+    if (status === 'green') running++;
+    else if (status !== 'offline') notRunning++;
   }
   const total = running + notRunning;
   client
@@ -38,7 +38,7 @@ export async function getHourly() {
               should: [
                 {
                   match: {
-                    state: 'green',
+                    status: 'green',
                   },
                 },
               ],
@@ -88,7 +88,7 @@ export async function getHourly() {
         must_not: [
           {
             match: {
-              state: 'offline',
+              status: 'offline',
             },
           },
         ],

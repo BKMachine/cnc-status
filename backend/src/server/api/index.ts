@@ -17,8 +17,9 @@ router.get('/status', async (req, res, next) => {
     const response = [];
     let id = 0;
     for (const [, value] of machines) {
-      const status = value.getMachine();
-      response.push({ ...status, index: id++ });
+      const machine = value.getMachine();
+      const status = value.getStatus();
+      response.push({ ...machine, index: id++, status });
     }
     res.status(200).json(response);
   } catch (e) {

@@ -20,7 +20,7 @@ const wsUrl =
   import.meta.env.MODE === 'production' ? import.meta.env.BASE_URL : 'http://127.0.0.1:3000';
 
 async function getStatus() {
-  return axios.get('/status').then(({ data }: { data: MachineStatus[] }) => {
+  return axios.get('/status').then(({ data }: { data: MachineInfo[] }) => {
     machineStore.setMachines(data);
   });
 }

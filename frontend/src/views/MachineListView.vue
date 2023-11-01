@@ -200,10 +200,10 @@ const headers = [
 const dialog = ref(false);
 const dialogDelete = ref(false);
 const editedIndex = ref(-1);
-const editedItem = ref({} as MachineStatus);
+const editedItem = ref({} as MachineInfo);
 
 const machines = computed(() => {
-  return machineStore.machines.map((x: MachineStatus) => {
+  return machineStore.machines.map((x: MachineInfo) => {
     return {
       ...x,
       hidden: isHidden(x.id),
@@ -219,14 +219,14 @@ watch(dialogDelete, (open) => {
   if (!open) closeDelete();
 });
 
-function editItem(item: MachineStatus) {
-  editedIndex.value = machineStore.machines.findIndex((x: MachineStatus) => x.id === item.id);
+function editItem(item: MachineInfo) {
+  editedIndex.value = machineStore.machines.findIndex((x: MachineInfo) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialog.value = true;
 }
 
-function deleteItem(item: MachineStatus) {
-  editedIndex.value = machineStore.machines.findIndex((x: MachineStatus) => x.id === item.id);
+function deleteItem(item: MachineInfo) {
+  editedIndex.value = machineStore.machines.findIndex((x: MachineInfo) => x.id === item.id);
   editedItem.value = Object.assign({}, item);
   dialogDelete.value = true;
 }
@@ -249,7 +249,7 @@ function close() {
   dialog.value = false;
   sleep().then(() => {
     nextTick(() => {
-      editedItem.value = {} as MachineStatus;
+      editedItem.value = {} as MachineInfo;
       editedIndex.value = -1;
     });
   });
@@ -259,7 +259,7 @@ function closeDelete() {
   dialogDelete.value = false;
   sleep().then(() => {
     nextTick(() => {
-      editedItem.value = {} as MachineStatus;
+      editedItem.value = {} as MachineInfo;
       editedIndex.value = -1;
     });
   });
@@ -315,7 +315,7 @@ const rules = {
       value.toLowerCase() === machines.value[editedIndex.value].location.toLowerCase()
     )
       return true;
-    const locations = machines.value.map((x: MachineStatus) => x.location.toLowerCase());
+    const locations = machines.value.map((x: MachineInfo) => x.location.toLowerCase());
     if (locations.includes(value.toLowerCase())) return 'Location already in use.';
     return true;
   },
@@ -339,7 +339,7 @@ const locationMessage = computed(() => {
   return '';
 });
 
-function openMachine(item: MachineStatus) {
+function openMachine(item: MachineInfo) {
   router.push({ name: 'machine', params: { id: item.id } });
 }
 

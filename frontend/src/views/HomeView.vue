@@ -33,10 +33,10 @@ function refresh() {
   refreshKey.value++;
 }
 
-const orderedMachines = computed((): MachineStatus[] => {
+const orderedMachines = computed((): MachineInfo[] => {
   const order = localStorage.getItem('order');
   const orderArray = order ? order.split(',').map((x) => parseInt(x)) : [];
-  const results: MachineStatus[] = [];
+  const results: MachineInfo[] = [];
   const remaining = [...machineStore.machines];
   for (let i = 0; i < orderArray.length; i++) {
     const index = remaining.findIndex((x) => x.index === orderArray[i]);

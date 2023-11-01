@@ -1,7 +1,7 @@
 import type { MachineDoc } from '../../database/lib/machine/machine_model';
 import Machine from '../Machine';
 
-const initStatus: FocasState = {
+const initState: FocasState = {
   online: false,
   mainProgram: '',
   mainComment: '',
@@ -20,10 +20,10 @@ const initStatus: FocasState = {
 
 class FocasMachine extends Machine {
   constructor(doc: MachineDoc) {
-    super(doc, { ...initStatus });
+    super(doc, { ...initState });
   }
 
-  getElasticState(): ElasticState {
+  getStatus(): RunningStatus {
     const state = this.getState() as FocasState;
     if (!state.online) return 'offline';
     else if (state.alarms.concat(state.alarms2).length > 0) return 'red';

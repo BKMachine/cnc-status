@@ -3,11 +3,11 @@ import { defineStore } from 'pinia';
 const useMachineStore = defineStore('machine', {
   state: () => {
     return {
-      machines: <MachineStatus[]>[],
+      machines: <MachineInfo[]>[],
     };
   },
   actions: {
-    setMachines(statuses: MachineStatus[]) {
+    setMachines(statuses: MachineInfo[]) {
       this.machines = statuses;
     },
     updateMachineStatus(status: { id: string; changes: Changes }) {
@@ -18,13 +18,13 @@ const useMachineStore = defineStore('machine', {
         this.machines[index].state = Object.assign({}, currentState, changes);
       }
     },
-    addMachine(status: MachineStatus) {
+    addMachine(status: MachineInfo) {
       this.machines.push(status);
     },
     deleteMachine(index: number) {
       this.machines.splice(index, 1);
     },
-    updateMachine(machine: { index: number; status: MachineStatus }) {
+    updateMachine(machine: { index: number; status: MachineInfo }) {
       const { index, status } = machine;
       this.machines[index] = Object.assign({}, this.machines[index], status);
     },
