@@ -25,26 +25,22 @@ export function storePerformance() {
     .catch(() => {});
 }
 
+interface SearchResponse {
+  hits: {
+    total: {
+      value: number;
+    };
+  };
+}
+
 export async function getHourly() {
   const green = await client.search({
     index: `${prefix}status-*`,
     size: 0,
     query: {
       bool: {
-        must: [],
+        must: [{ match: { status: 'green' } }],
         filter: [
-          {
-            bool: {
-              should: [
-                {
-                  match: {
-                    status: 'green',
-                  },
-                },
-              ],
-              minimum_should_match: 1,
-            },
-          },
           {
             range: {
               '@timestamp': {
@@ -54,27 +50,19 @@ export async function getHourly() {
             },
           },
         ],
-        should: [],
-        must_not: [],
       },
     },
   });
 
-  const greenCount = green.hits.total?.value;
+  const greenCount = (green as SearchResponse).hits.total.value;
 
   const online = await client.search({
     index: `${prefix}status-*`,
     size: 0,
     query: {
       bool: {
-        must: [],
+        must_not: [{ match: { status: 'offline' } }],
         filter: [
-          {
-            bool: {
-              should: [],
-              minimum_should_match: 1,
-            },
-          },
           {
             range: {
               '@timestamp': {
@@ -84,19 +72,11 @@ export async function getHourly() {
             },
           },
         ],
-        should: [],
-        must_not: [
-          {
-            match: {
-              status: 'offline',
-            },
-          },
-        ],
       },
     },
   });
 
-  const onlineCount = online.hits.total?.value;
+  const onlineCount = (online as SearchResponse).hits.total.value;
 
   return Math.round(((greenCount / onlineCount) * 100 + Number.EPSILON) * 100) / 100;
 }
