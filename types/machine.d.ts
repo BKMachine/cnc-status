@@ -104,6 +104,7 @@ interface Focas {
   logo: string,
   state: FocasState,
   index?: number;
+  status: RunningStatus
 }
 
 interface Arduino {
@@ -119,6 +120,7 @@ interface Arduino {
   logo: string,
   state: ArduinoState,
   index?: number;
+  status: RunningStatus
 }
 
 interface MTConnect {
@@ -134,6 +136,7 @@ interface MTConnect {
   logo: string,
   state: MTConnectState,
   index?: number;
+  status: RunningStatus
 }
 
 type MachineInfo = Focas | Arduino | MTConnect;

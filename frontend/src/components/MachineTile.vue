@@ -9,14 +9,6 @@
     </div>
     <div v-else>
       <div class="details">
-        <!--        <div class="main-program">{{ data.status.mainProgram }} {{ data.status.mainComment }}</div>
-        <div class="sub-program">
-          {{ data.status.runningProgram }} {{ data.status.runningComment }}
-        </div>-->
-        <!--        <div>
-          Last Cycle: <span>{{ lastCycle }}</span>
-        </div>-->
-
         <div v-if="isOnline" class="timer">
           <div>{{ timerText }}</div>
           <div v-if="data.state.lastCycle">Last Cycle: {{ lastCycle }}</div>
@@ -41,10 +33,6 @@ const props = defineProps<{
   data: MachineInfo;
 }>();
 const nowStore = useNowStore();
-
-/*function getLogoUrl(brand: MachineBrand) {
-  // return new URL('../assets/machine_logos/' + brand + '.png', import.meta.url).href;
-}*/
 
 const isOnline = computed(() => {
   return props.data.state.online;
@@ -92,29 +80,11 @@ const hasAlarm = computed(() => {
 });
 
 const blink = computed(() => {
-  return isOnline.value && hasAlarm.value && seconds.value >= 60 * 15;
+  return isOnline.value && status.value === 'status-red' && seconds.value >= 60 * 15;
 });
 
 const status = computed(() => {
-  if (props.data.source === 'focas') {
-    let statusString = `status-${props.data.state.execution} mode-${props.data.state.mode}`;
-    if (props.data.paths === '2') {
-      statusString += `status-${props.data.state.execution2}  mode-${props.data.state.mode2}`;
-    }
-    return statusString;
-  } else if (props.data.source === 'arduino') {
-    if (props.data.state.green) {
-      return 'status-GREEN';
-    } else if (props.data.state.yellow) {
-      return 'status-YELLOW';
-    } else if (props.data.state.red) {
-      return 'status-RED';
-    }
-    return '';
-  } else if (props.data.source === 'mtconnect') {
-    return `status-${props.data.state.execution} mode-${props.data.state.mode}`;
-  }
-  return '';
+  return `status-${props.data.status}`;
 });
 </script>
 
@@ -162,26 +132,19 @@ const status = computed(() => {
   height: 70px;
 }
 
-.machine.online.status-ACTIVE,
-.machine.online.status-OPTIONAL_STOP,
-.machine.online.status-GREEN {
-  background: #287428 !important;
+.machine.online.status-green {
+  background: #287428;
 }
 
-/*.machine .status-STOPPED,*/
-.machine.online.status-INTERRUPTED,
-.machine.online.status-READY:not(.mode-MANUAL_DATA_INPUT):not(.alarmed),
-/*.machine.online.status-UNAVAILABLE,*/
-.machine.online.status-YELLOW {
-  background: #e89a23 !important;
+.machine.online.status-yellow {
+  background: #e89a23;
 }
 
-.machine.online.alarmed,
-.machine.online.status-RED {
-  background: #bd0000 !important;
+.machine.online.status-red {
+  background: #bd0000;
 }
 
-.machine .blink {
+.blink {
   animation: blinkingAlarm 2s infinite;
 }
 
