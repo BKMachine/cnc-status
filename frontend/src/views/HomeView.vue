@@ -11,7 +11,7 @@
       </div>
     </VueDraggable>
     <Settings @clear-order="refresh" />
-    <HourEfficiency class="hour"/>
+    <HourEfficiency class="hour" />
   </main>
 </template>
 
@@ -57,8 +57,8 @@ const visibleMachines = computed({
     const indexes = val.map((x) => x.index);
     localStorage.setItem('order', indexes.join(','));
     refreshKey.value++;
-  }
-})
+  },
+});
 
 function openMachine(id: string) {
   router.push({ name: 'machine', params: { id } });
