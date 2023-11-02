@@ -1,37 +1,21 @@
-FROM node:18.16.0-alpine3.16 as base
+FROM node:20.9.0-alpine3.18 as builder
+RUN apk add --update git python3 make gcc g++
 RUN corepack enable && \
     corepack prepare yarn@stable --activate
 WORKDIR /app
-COPY package.json .
-COPY .yarn/ ./.yarn
-COPY yarn.lock .
-COPY .pnp.cjs .
-COPY .pnp.loader.mjs .
+COPY . .
+RUN yarn
 
-FROM base as backend_builder
-COPY ./backend ./backend
-COPY ./types ./types
-WORKDIR ./backend
-RUN yarn prettier
-RUN yarn lint
-# RUN yarn test
-RUN yarn build
+RUN cd /app/backend && \
+    yarn prettier && \
+    yarn lint && \
+    yarn build
 
-FROM base AS frontend_builder
-COPY ./frontend ./frontend
-COPY ./types ./types
-WORKDIR ./frontend
-RUN yarn prettier
-RUN yarn lint
-RUN yarn build
+RUN cd /app/frontend && \
+    yarn prettier && \
+    yarn lint && \
+    yarn build
 
-FROM base
-ENV DOCKER=true \
-    NODE_ENV=production
-COPY --from=backend_builder /app/backend/src/server/images ./backend/dist/server/images
-COPY --from=backend_builder /app/backend/dist ./backend/dist
-COPY --from=frontend_builder /app/frontend/dist ./frontend/dist
-
+ENV NODE_ENV=production
 EXPOSE 3000
-
-ENTRYPOINT ["node", "-r", "./.pnp.cjs", "/app/backend/dist/index.js"]
+ENTRYPOINT ["node", "-r", "/app/.pnp.cjs", "/app/backend/dist/index.js"]
