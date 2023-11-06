@@ -27,10 +27,18 @@ class FocasMachine extends Machine {
     const state = this.getState() as FocasState;
     if (!state.online) return 'offline';
     else if (state.alarms.concat(state.alarms2).length > 0) return 'red';
-    else if (state.execution === 'ACTIVE' || state.execution2 === 'ACTIVE') return 'green';
-    else if (state.execution === 'READY' || state.execution2 === 'READY') return 'yellow';
+    else if (
+      (state.mode === 'AUTOMATIC' && state.execution === 'ACTIVE') ||
+      (state.mode2 === 'AUTOMATIC' && state.execution2 === 'ACTIVE')
+    )
+      return 'green';
+    else if (
+      (state.mode === 'AUTOMATIC' && state.execution === 'READY') ||
+      (state.mode2 === 'AUTOMATIC' && state.execution2 === 'READY')
+    )
+      return 'yellow';
     else return 'idle';
   }
 }
-
+ 
 export default FocasMachine;
