@@ -2,9 +2,9 @@ import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
 import _ from 'lodash';
 import logger from '../../logger';
+import { emit } from '../../server/socket.io';
 import { mtConnectMachines as machines } from '../index';
 import mappings from './mtconnect_mappings';
-import { emit } from '../../server/socket.io';
 
 let interval: NodeJS.Timeout;
 const parser = new XMLParser({ ignoreAttributes: false });

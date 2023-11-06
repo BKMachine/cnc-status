@@ -1,8 +1,8 @@
 import _axios from 'axios';
 import _ from 'lodash';
 import logger from '../../logger';
-import { arduinoMachines as machines } from '../index';
 import { emit } from '../../server/socket.io';
+import { arduinoMachines as machines } from '../index';
 
 const axios = _axios.create({
   timeout: 1000,

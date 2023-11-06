@@ -1,15 +1,12 @@
 import _ from 'lodash';
 import * as mqtt from 'mqtt';
 import logger from '../../logger';
+import { emit } from '../../server/socket.io';
 import { focasMachines as machines } from '../index';
 import mappings from './focas_mappings';
-import { emit } from '../../server/socket.io';
 
 let client: mqtt.MqttClient;
-const machineLocationsManualCycleCalc = [
-  'rd4',
-  'rd5',
-]
+const machineLocationsManualCycleCalc = ['rd4', 'rd5'];
 
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {
