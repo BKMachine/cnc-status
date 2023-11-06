@@ -2,6 +2,7 @@ import _axios from 'axios';
 import _ from 'lodash';
 import logger from '../../logger';
 import { arduinoMachines as machines } from '../index';
+import { emit } from '../../server/socket.io';
 
 const axios = _axios.create({
   timeout: 1000,
@@ -65,6 +66,8 @@ function run() {
       .finally(() => {
         if (changes.size) {
           machine.setState(changes);
+          const status = machine.getStatus();
+          emit('status', { id: machine.doc._id, status });
         }
       });
   });

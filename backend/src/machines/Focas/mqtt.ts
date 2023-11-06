@@ -3,8 +3,13 @@ import * as mqtt from 'mqtt';
 import logger from '../../logger';
 import { focasMachines as machines } from '../index';
 import mappings from './focas_mappings';
+import { emit } from '../../server/socket.io';
 
 let client: mqtt.MqttClient;
+const machineLocationsManualCycleCalc = [
+  'rd4',
+  'rd5',
+]
 
 export function connect(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -57,6 +62,7 @@ export function processMessage(topic: string, message: Buffer) {
 
   // Loop through the mapped subtopics and see if any data values have changed
   const changes: Changes = new Map();
+  const lastStateTs = machine.getState().lastStateTs;
   Object.keys(mappings[subtopic]).forEach((location) => {
     let value: any;
     // Try to get the nested value via the mapped subtopic
@@ -78,6 +84,7 @@ export function processMessage(topic: string, message: Buffer) {
       if (prop === 'cycle') {
         if (old > value) changes.set('lastCycle', old);
       }
+
       // If the execution mode has changed the push a new lastStateTs value
       if (prop === 'execution') {
         if (value === 'OPTIONAL_STOP') return;
@@ -88,9 +95,22 @@ export function processMessage(topic: string, message: Buffer) {
     }
   });
 
+  const wasRunning = machine.getStatus() === 'green';
+
   // Update machine status if there are any changes
   if (changes.size) {
     machine.setState(changes);
+    const status = machine.getStatus();
+    emit('status', { id: machine.doc._id, status });
+  }
+
+  if (machineLocationsManualCycleCalc.includes(machineLocation)) {
+    const nowRunning = machine.getStatus() === 'green';
+    if (wasRunning && !nowRunning) {
+      const lastCycle: Changes = new Map();
+      lastCycle.set('lastCycle', new Date().valueOf() - new Date(lastStateTs).valueOf());
+      machine.setState(lastCycle);
+    }
   }
 }
 

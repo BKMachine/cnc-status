@@ -4,6 +4,7 @@ import _ from 'lodash';
 import logger from '../../logger';
 import { mtConnectMachines as machines } from '../index';
 import mappings from './mtconnect_mappings';
+import { emit } from '../../server/socket.io';
 
 let interval: NodeJS.Timeout;
 const parser = new XMLParser({ ignoreAttributes: false });
@@ -86,6 +87,8 @@ function processJSON(data: MTConnectResponse) {
       });
       if (changes.size) {
         machine.setState(changes);
+        const status = machine.getStatus();
+        emit('status', { id: machine.doc._id, status });
       }
     });
   });

@@ -43,9 +43,13 @@ onMounted(() => {
       location.reload();
     });
 
-    socket.on('change', (status) => {
-      machineStore.updateMachineStatus(status);
+    socket.on('change', (changes) => {
+      machineStore.updateMachineState(changes);
     });
+
+    socket.on('status', (status) => {
+      machineStore.updateMachineStatus(status);
+    })
   });
 });
 </script>
