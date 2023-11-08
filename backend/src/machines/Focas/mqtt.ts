@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import * as mqtt from 'mqtt';
 import logger from '../../logger';
-import { emit } from '../../server/socket.io';
 import { focasMachines as machines } from '../index';
 import mappings from './focas_mappings';
 
@@ -97,8 +96,7 @@ export function processMessage(topic: string, message: Buffer) {
   // Update machine status if there are any changes
   if (changes.size) {
     machine.setState(changes);
-    const status = machine.getStatus();
-    emit('status', { id: machine.doc._id, status });
+    machine.updateStatus();
   }
 
   if (machineLocationsManualCycleCalc.includes(machineLocation)) {

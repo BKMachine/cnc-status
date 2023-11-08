@@ -1,6 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
 export interface MachineDoc {
+  _id: Types.ObjectId;
   name: string;
   serialNumber: string;
   brand: MachineBrand;
@@ -9,7 +10,6 @@ export interface MachineDoc {
   type: MachineType;
   paths: '1' | '2';
   location: string;
-  _id: Types.ObjectId;
 }
 
 const schema = new Schema<MachineDoc>({

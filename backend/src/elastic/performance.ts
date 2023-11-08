@@ -2,7 +2,6 @@ import machines from '../machines';
 import client, { prefix } from './index';
 
 export function storePerformance() {
-  if (!client) return;
   let running = 0;
   let notRunning = 0;
   for (const [, value] of machines) {
@@ -34,7 +33,7 @@ interface SearchResponse {
 }
 
 export async function getHourly() {
-  const green = await client.search({
+  const running = await client.search({
     index: `${prefix}status-*`,
     size: 0,
     query: {
@@ -54,7 +53,7 @@ export async function getHourly() {
     },
   });
 
-  const greenCount = (green as SearchResponse).hits.total.value;
+  const runningCount = (running as SearchResponse).hits.total.value;
 
   const online = await client.search({
     index: `${prefix}status-*`,
@@ -78,5 +77,5 @@ export async function getHourly() {
 
   const onlineCount = (online as SearchResponse).hits.total.value;
 
-  return Math.round(((greenCount / onlineCount) * 100 + Number.EPSILON) * 100) / 100;
+  return Math.round(((runningCount / onlineCount) * 100 + Number.EPSILON) * 100) / 100;
 }

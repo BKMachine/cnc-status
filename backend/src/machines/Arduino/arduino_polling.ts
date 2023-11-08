@@ -1,7 +1,6 @@
 import _axios from 'axios';
 import _ from 'lodash';
 import logger from '../../logger';
-import { emit } from '../../server/socket.io';
 import { arduinoMachines as machines } from '../index';
 
 const axios = _axios.create({
@@ -46,7 +45,7 @@ function run() {
           const old = state[key as keyof ArduinoState];
           if (old === undefined) continue;
           if (!_.isEqual(old, value)) {
-            changes.set(key as MachineKey, value);
+            changes.set(key as MachineStateKey, value);
             changes.set('lastStateTs', new Date().toISOString());
           }
         }
@@ -66,8 +65,7 @@ function run() {
       .finally(() => {
         if (changes.size) {
           machine.setState(changes);
-          const status = machine.getStatus();
-          emit('status', { id: machine.doc._id, status });
+          machine.updateStatus();
         }
       });
   });

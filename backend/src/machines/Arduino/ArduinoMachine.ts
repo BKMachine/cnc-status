@@ -16,13 +16,15 @@ class ArduinoMachine extends Machine {
     super(doc, { ...initState });
   }
 
-  getStatus(): RunningStatus {
+  updateStatus(): void {
     const state = this.getState() as ArduinoState;
-    if (!state.online) return 'offline';
-    else if (state.red) return 'red';
-    else if (state.green) return 'green';
-    else if (state.yellow) return 'yellow';
-    else return 'idle';
+    let status: MachineStatus;
+    if (!state.online) status = 'offline';
+    else if (state.red) status = 'red';
+    else if (state.green) status = 'green';
+    else if (state.yellow) status = 'yellow';
+    else status = 'idle';
+    this.setStatus(status);
   }
 }
 

@@ -16,21 +16,9 @@ export default function (server: http.Server) {
     socket.on('disconnect', () => {
       logger.info('SOCKET DISCONNECTED');
     });
-
-    socket.on('subscribe', function (room) {
-      socket.join(room);
-    });
-
-    socket.on('unsubscribe', function (room) {
-      socket.leave(room);
-    });
   });
 }
 
-export function emit(event: string, data?: any): void {
+export function emit(event: EmitterEventNames, data?: any): void {
   if (io) io.emit(event, data);
-}
-
-export function emitToRoom(id: string, event: string, data?: any) {
-  if (io) io.sockets.in(`room-${id}`).emit(event, data);
 }

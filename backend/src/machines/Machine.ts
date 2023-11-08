@@ -6,6 +6,7 @@ class Machine {
   readonly doc: MachineDoc;
   private readonly logo: string;
   private state: MachineState;
+  private status: MachineStatus = 'offline';
 
   constructor(doc: MachineDoc, state: MachineState) {
     this.doc = doc;
@@ -13,7 +14,7 @@ class Machine {
     this.state = state;
   }
 
-  getMachine() {
+  getMachine(): MachineData {
     return {
       id: this.doc._id.toString(),
       name: this.doc.name,
@@ -26,6 +27,7 @@ class Machine {
       location: this.doc.location,
       logo: this.logo,
       state: this.state,
+      status: this.status,
     };
   }
 
@@ -40,6 +42,17 @@ class Machine {
     delete changeObj.cycle;
     if (Object.keys(changeObj).length === 0) return;
     emit('change', { id: this.doc._id.toString(), changes: changeObj });
+  }
+
+  getStatus() {
+    return this.status;
+  }
+
+  setStatus(status: MachineStatus): void {
+    if (status !== this.status) {
+      this.status = status;
+      emit('status', { id: this.doc._id, status: this.status });
+    }
   }
 }
 

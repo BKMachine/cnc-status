@@ -1,40 +1,27 @@
 import { Router } from 'express';
-import { getHourly } from '../../elastic/performance';
 import machines from '../../machines';
 import { emit } from '../socket.io';
 import MachineRoutes from './machine';
+import StatsRoutes from './stats';
 
 const router = Router();
-
-router.use('/machine', MachineRoutes);
 
 router.get('/', (req, res, next) => {
   res.status(200).json({ message: 'Welcome to the API' });
 });
 
-router.get('/status', async (req, res, next) => {
+router.use('/machine', MachineRoutes);
+router.use('/stats', StatsRoutes);
+
+router.get('/machines', async (req, res, next) => {
   try {
     const response = [];
     let id = 0;
     for (const [, value] of machines) {
       const machine = value.getMachine();
-      const status = value.getStatus();
-      response.push({ ...machine, index: id++, status });
+      response.push({ ...machine, index: id++ });
     }
     res.status(200).json(response);
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/status/:id', (req, res, next) => {
-  try {
-    const machine = machines.get(req.params.id);
-    if (!machine) {
-      res.sendStatus(404);
-      return;
-    }
-    res.status(200).json(machine.getMachine());
   } catch (e) {
     next(e);
   }
@@ -50,12 +37,4 @@ router.post('/refresh', (req, res, next) => {
   res.sendStatus(204);
 });
 
-router.get('/hourly', async (req, res, next) => {
-  try {
-    const response = await getHourly();
-    res.status(200).json(response);
-  } catch (e) {
-    next(e);
-  }
-});
 export default router;

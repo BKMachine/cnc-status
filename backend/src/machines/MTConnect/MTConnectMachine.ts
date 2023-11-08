@@ -17,13 +17,15 @@ class MTConnectMachine extends Machine {
     super(doc, { ...initState });
   }
 
-  getStatus(): RunningStatus {
+  updateStatus(): void {
     const state = this.getState() as MTConnectState;
-    if (!state.online) return 'offline';
-    else if (state.eStop === 'TRIGGERED') return 'red';
-    else if (state.execution === 'ACTIVE') return 'green';
-    else if (state.execution === 'READY') return 'yellow';
-    else return 'idle';
+    let status: MachineStatus;
+    if (!state.online) status = 'offline';
+    else if (state.eStop === 'TRIGGERED') status = 'red';
+    else if (state.execution === 'ACTIVE') status = 'green';
+    else if (state.mode === 'AUTOMATIC' && state.execution === 'READY') status = 'yellow';
+    else status = 'idle';
+    this.setStatus(status);
   }
 }
 

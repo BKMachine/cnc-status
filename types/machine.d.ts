@@ -77,68 +77,47 @@ interface MTConnectMappings {
 }
 
 type MachineState = FocasState | ArduinoState | MTConnectState;
-type MachineKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState;
+type MachineStateKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState;
 
-type Changes  = Map<MachineKey, any>
-
-type FocasMachine = import('../backend/src/machines/Focas/FocasMachine');
-type ArduinoMachine = import('../backend/src/machines/Arduino/ArduinoMachine');
-type MTConnectMachine = import('../backend/src/machines/MTConnect/MTConnectMachine');
-
-// type Machine = FocasMachine | ArduinoMachine | MTConnectMachine;
+type Changes  = Map<MachineStateKey, any>
 
 type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
 type MachineType = 'lathe' | 'mill' | 'swiss';
 type MachineSource = 'focas' | 'arduino' | 'mtconnect';
+type MachineStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle'
 
-interface Focas {
+interface MachineData {
   id: string,
   name: string,
   serialNumber: string,
   brand: MachineBrand,
   model: string;
+  type: MachineType,
+  source: MachineSource,
+  paths: '1'  | '2',
+  location: string,
+  logo: string,
+  status: MachineStatus
+  state: MachineState
+  index?: number;
+}
+
+interface Focas extends MachineData {
   source: 'focas',
-  type: MachineType,
-  paths: '1' | '2',
-  location: string,
-  logo: string,
   state: FocasState,
-  index?: number;
-  status: RunningStatus
+  paths: '1' | '2',
 }
 
-interface Arduino {
-  id: string,
-  name: string,
-  serialNumber: string,
-  brand: MachineBrand,
-  model: string;
+interface Arduino extends MachineData {
   source: 'arduino',
-  type: MachineType,
-  paths: '1' | '2',
-  location: string,
-  logo: string,
   state: ArduinoState,
-  index?: number;
-  status: RunningStatus
+  paths: '1',
 }
 
-interface MTConnect {
-  id: string,
-  name: string,
-  serialNumber: string,
-  brand: MachineBrand,
-  model: string;
-  source: "mtconnect",
-  type: MachineType,
-  paths: '1' | '2',
-  location: string,
-  logo: string,
+interface MTConnect extends MachineData {
+  source: 'mtconnect',
   state: MTConnectState,
-  index?: number;
-  status: RunningStatus
+  paths: '1',
 }
 
 type MachineInfo = Focas | Arduino | MTConnect;
-
-type RunningStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle'

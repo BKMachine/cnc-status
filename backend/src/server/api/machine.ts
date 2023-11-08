@@ -1,5 +1,6 @@
 import express from 'express';
 import MachineService from '../../database/lib/machine';
+import machines from '../../machines';
 
 const router = express.Router();
 
@@ -7,6 +8,19 @@ router.post('/', async (req, res, next) => {
   try {
     const newDoc = await MachineService.create(req.body);
     res.status(201).json(newDoc);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/:id', (req, res, next) => {
+  try {
+    const machine = machines.get(req.params.id);
+    if (!machine) {
+      res.sendStatus(404);
+      return;
+    }
+    res.status(200).json(machine.getMachine());
   } catch (e) {
     next(e);
   }
