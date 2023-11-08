@@ -11,7 +11,7 @@
       </div>
     </VueDraggable>
     <Settings @clear-order="refresh" />
-    <HourEfficiency class="hour" />
+    <HourEfficiency class="hour ml-2" />
   </main>
 </template>
 

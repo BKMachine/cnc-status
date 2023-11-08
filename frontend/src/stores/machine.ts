@@ -28,13 +28,13 @@ const useMachineStore = defineStore('machine', {
       const { index, status } = machine;
       this.machines[index] = Object.assign({}, this.machines[index], status);
     },
-    updateMachineStatus(data: {id: string, status: MachineStatus}) {
+    updateMachineStatus(data: { id: string; status: MachineStatus }) {
       const { id, status } = data;
       const index = this.machines.findIndex((x) => x.id === id);
       if (index !== -1) {
         this.machines[index].status = status;
       }
-    }
+    },
   },
 });
 

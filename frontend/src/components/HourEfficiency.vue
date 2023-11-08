@@ -16,11 +16,11 @@ const decrease = ref(false);
 
 onMounted(() => {
   getRate();
-  setInterval(getRate, 1000 * 30);
+  setInterval(getRate, 1000 * 60);
 });
 
 function getRate() {
-  api.get('/hourly').then(({ data }) => {
+  api.get('/stats/hourly').then(({ data }) => {
     if (data >= rate.value) {
       increase.value = true;
       decrease.value = false;

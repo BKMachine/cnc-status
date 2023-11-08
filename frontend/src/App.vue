@@ -19,22 +19,22 @@ let socket: Socket<ServerToClientEvents>;
 const wsUrl =
   import.meta.env.MODE === 'production' ? import.meta.env.BASE_URL : 'http://127.0.0.1:3000';
 
-async function getStatus() {
-  return axios.get('/status').then(({ data }: { data: MachineInfo[] }) => {
+async function getMachines() {
+  return axios.get('/machines').then(({ data }: { data: MachineInfo[] }) => {
     machineStore.setMachines(data);
   });
 }
 
 onMounted(() => {
-  setInterval(getStatus, 1000 * 60 * 5);
-  getStatus().then(() => {
+  setInterval(getMachines, 1000 * 60 * 5);
+  getMachines().then(() => {
     socket = io(wsUrl, {
       transports: ['websocket', 'polling'],
     });
 
     socket.io.on('reconnect', () => {
       console.log('Socket-IO client reconnected.');
-      getStatus().catch(() => {
+      getMachines().catch(() => {
         // Do Nothing
       });
     });
@@ -49,7 +49,7 @@ onMounted(() => {
 
     socket.on('status', (status) => {
       machineStore.updateMachineStatus(status);
-    })
+    });
   });
 });
 </script>
