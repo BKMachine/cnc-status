@@ -24,15 +24,7 @@ export function storePerformance() {
     .catch(() => {});
 }
 
-interface SearchResponse {
-  hits: {
-    total: {
-      value: number;
-    };
-  };
-}
-
-export async function getHourly() {
+export async function getHourlyRate() {
   const running = await client.search({
     index: `${prefix}status-*`,
     size: 0,
@@ -53,7 +45,7 @@ export async function getHourly() {
     },
   });
 
-  const runningCount = (running as SearchResponse).hits.total.value;
+  const runningCount = (running as StatsResponse).hits.total.value;
 
   const online = await client.search({
     index: `${prefix}status-*`,
@@ -75,7 +67,28 @@ export async function getHourly() {
     },
   });
 
-  const onlineCount = (online as SearchResponse).hits.total.value;
+  const onlineCount = (online as StatsResponse).hits.total.value;
 
   return Math.round(((runningCount / onlineCount) * 100 + Number.EPSILON) * 100) / 100;
+}
+
+export async function getHourlyPerformance() {
+  const performance = await client.search({
+    index: `${prefix}performance`,
+    size: 100,
+    query: {
+      bool: {
+        filter: {
+          range: {
+            '@timestamp': {
+              format: 'strict_date_optional_time',
+              gte: 'now-1h',
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return performance.hits.hits;
 }

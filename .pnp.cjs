@@ -531,6 +531,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@kurkle/color", [\
+      ["npm:0.3.2", {\
+        "packageLocation": "./.yarn/cache/@kurkle-color-npm-0.3.2-98f2086013-079c4b7688.zip/node_modules/@kurkle/color/",\
+        "packageDependencies": [\
+          ["@kurkle/color", "npm:0.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@mongodb-js/saslprep", [\
       ["npm:1.1.0", {\
         "packageLocation": "./.yarn/cache/@mongodb-js-saslprep-npm-1.1.0-3906c025b8-1a631b92d2.zip/node_modules/@mongodb-js/saslprep/",\
@@ -1427,6 +1436,14 @@ const RAW_RUNTIME_STATE =
           ["@vue/shared", "npm:3.3.7"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.3.8", {\
+        "packageLocation": "./.yarn/cache/@vue-reactivity-npm-3.3.8-ac936bef93-929dbd92dd.zip/node_modules/@vue/reactivity/",\
+        "packageDependencies": [\
+          ["@vue/reactivity", "npm:3.3.8"],\
+          ["@vue/shared", "npm:3.3.8"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@vue/reactivity-transform", [\
@@ -1452,6 +1469,15 @@ const RAW_RUNTIME_STATE =
           ["@vue/shared", "npm:3.3.7"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.3.8", {\
+        "packageLocation": "./.yarn/cache/@vue-runtime-core-npm-3.3.8-65ebbf2f7c-7675b0c24c.zip/node_modules/@vue/runtime-core/",\
+        "packageDependencies": [\
+          ["@vue/runtime-core", "npm:3.3.8"],\
+          ["@vue/reactivity", "npm:3.3.8"],\
+          ["@vue/shared", "npm:3.3.8"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@vue/runtime-dom", [\
@@ -1461,6 +1487,16 @@ const RAW_RUNTIME_STATE =
           ["@vue/runtime-dom", "npm:3.3.7"],\
           ["@vue/runtime-core", "npm:3.3.7"],\
           ["@vue/shared", "npm:3.3.7"],\
+          ["csstype", "npm:3.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:3.3.8", {\
+        "packageLocation": "./.yarn/cache/@vue-runtime-dom-npm-3.3.8-4efc32d0df-c0036b3820.zip/node_modules/@vue/runtime-dom/",\
+        "packageDependencies": [\
+          ["@vue/runtime-dom", "npm:3.3.8"],\
+          ["@vue/runtime-core", "npm:3.3.8"],\
+          ["@vue/shared", "npm:3.3.8"],\
           ["csstype", "npm:3.1.2"]\
         ],\
         "linkType": "HARD"\
@@ -1502,6 +1538,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@vue-shared-npm-3.3.7-44832a6399-c3d746757f.zip/node_modules/@vue/shared/",\
         "packageDependencies": [\
           ["@vue/shared", "npm:3.3.7"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:3.3.8", {\
+        "packageLocation": "./.yarn/cache/@vue-shared-npm-3.3.8-03d48d6d7e-6511b05cce.zip/node_modules/@vue/shared/",\
+        "packageDependencies": [\
+          ["@vue/shared", "npm:3.3.8"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2167,6 +2210,38 @@ const RAW_RUNTIME_STATE =
           ["chalk", "npm:4.1.2"],\
           ["ansi-styles", "npm:4.3.0"],\
           ["supports-color", "npm:7.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["chart.js", [\
+      ["npm:4.4.0", {\
+        "packageLocation": "./.yarn/cache/chart.js-npm-4.4.0-ccf7d4ad14-5d60ae67e2.zip/node_modules/chart.js/",\
+        "packageDependencies": [\
+          ["chart.js", "npm:4.4.0"],\
+          ["@kurkle/color", "npm:0.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["chartjs-plugin-annotation", [\
+      ["npm:3.0.1", {\
+        "packageLocation": "./.yarn/cache/chartjs-plugin-annotation-npm-3.0.1-d847ce254a-638550f92c.zip/node_modules/chartjs-plugin-annotation/",\
+        "packageDependencies": [\
+          ["chartjs-plugin-annotation", "npm:3.0.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.0.1", {\
+        "packageLocation": "./.yarn/__virtual__/chartjs-plugin-annotation-virtual-4be869f14f/0/cache/chartjs-plugin-annotation-npm-3.0.1-d847ce254a-638550f92c.zip/node_modules/chartjs-plugin-annotation/",\
+        "packageDependencies": [\
+          ["chartjs-plugin-annotation", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.0.1"],\
+          ["@types/chart.js", null],\
+          ["chart.js", "npm:4.4.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/chart.js",\
+          "chart.js"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3746,6 +3821,8 @@ const RAW_RUNTIME_STATE =
           ["@vue/eslint-config-typescript", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:12.0.0"],\
           ["@vue/tsconfig", "npm:0.4.0"],\
           ["axios", "npm:1.6.0"],\
+          ["chart.js", "npm:4.4.0"],\
+          ["chartjs-plugin-annotation", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.0.1"],\
           ["eslint", "npm:8.52.0"],\
           ["eslint-plugin-vue", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:9.18.1"],\
           ["luxon", "npm:3.4.3"],\
@@ -3756,6 +3833,7 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
           ["vite", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.5.0"],\
           ["vue", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.7"],\
+          ["vue-chart-3", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.1.8"],\
           ["vue-draggable-plus", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:0.2.6"],\
           ["vue-router", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:4.2.5"],\
           ["vue-tsc", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:1.8.22"],\
@@ -4803,6 +4881,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/lodash-npm-4.17.21-6382451519-c08619c038.zip/node_modules/lodash/",\
         "packageDependencies": [\
           ["lodash", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lodash-es", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "./.yarn/cache/lodash-es-npm-4.17.21-b45832dfce-03f39878ea.zip/node_modules/lodash-es/",\
+        "packageDependencies": [\
+          ["lodash-es", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7476,6 +7563,36 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@types/typescript",\
           "typescript"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["vue-chart-3", [\
+      ["npm:3.1.8", {\
+        "packageLocation": "./.yarn/cache/vue-chart-3-npm-3.1.8-a9403105f5-5ffa285f5d.zip/node_modules/vue-chart-3/",\
+        "packageDependencies": [\
+          ["vue-chart-3", "npm:3.1.8"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.1.8", {\
+        "packageLocation": "./.yarn/__virtual__/vue-chart-3-virtual-6bd5b13c34/0/cache/vue-chart-3-npm-3.1.8-a9403105f5-5ffa285f5d.zip/node_modules/vue-chart-3/",\
+        "packageDependencies": [\
+          ["vue-chart-3", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.1.8"],\
+          ["@types/chart.js", null],\
+          ["@types/vue", null],\
+          ["@vue/runtime-core", "npm:3.3.8"],\
+          ["@vue/runtime-dom", "npm:3.3.8"],\
+          ["chart.js", "npm:4.4.0"],\
+          ["csstype", "npm:3.1.2"],\
+          ["lodash-es", "npm:4.17.21"],\
+          ["vue", "virtual:a5e8d13e34df9771bfe0f3fa5c0c4073609385260f5c4b4315e9d9e571a5d1f25aa0977d214d98d00f2ec282665b0e7cd595bd0a616212b55443cb2fe4e4f784#npm:3.3.7"]\
+        ],\
+        "packagePeers": [\
+          "@types/chart.js",\
+          "@types/vue",\
+          "chart.js",\
+          "vue"\
         ],\
         "linkType": "HARD"\
       }]\

@@ -14,10 +14,13 @@
   "engineStrict": true,
   "dependencies": {
     "axios": "^1.6.0",
+    "chart.js": "^4.4.0",
+    "chartjs-plugin-annotation": "^3.0.1",
     "luxon": "^3.4.3",
     "pinia": "^2.1.7",
     "socket.io-client": "^4.7.2",
     "vue": "^3.3.7",
+    "vue-chart-3": "^3.1.8",
     "vue-draggable-plus": "^0.2.6",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.23",

@@ -23,7 +23,7 @@ import { useRouter } from 'vue-router';
 import Settings from '@/components/HomeViewSettingsCog.vue';
 import { isHidden } from '@/plugins/hide_machine';
 import useMachineStore from '@/stores/machine';
-import HourEfficiency from '@/components/HourEfficiency.vue';
+import HourEfficiency from '@/components/HourlyPerformance.vue';
 
 const router = useRouter();
 const machineStore = useMachineStore();

@@ -1,12 +1,13 @@
 import express from 'express';
-import { getHourly } from '../../elastic/performance';
+import { getHourlyPerformance, getHourlyRate } from '../../elastic/performance';
 
 const router = express.Router();
 
 router.get('/hourly', async (req, res, next) => {
   try {
-    const response = await getHourly();
-    res.status(200).json(response);
+    const rate = await getHourlyRate();
+    const performance = await getHourlyPerformance();
+    res.status(200).json({ rate, performance });
   } catch (e) {
     next(e);
   }
