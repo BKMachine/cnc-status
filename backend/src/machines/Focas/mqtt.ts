@@ -91,7 +91,7 @@ export function processMessage(topic: string, message: Buffer) {
     }
   });
 
-  const wasRunning = machine.getStatus() === 'green';
+  const previousStatus = machine.getStatus();
 
   // Update machine status if there are any changes
   if (changes.size) {
@@ -99,13 +99,23 @@ export function processMessage(topic: string, message: Buffer) {
     machine.updateStatus();
   }
 
+  const currentStatus = machine.getStatus();
+
   if (machineLocationsManualCycleCalc.includes(machineLocation)) {
-    const nowRunning = machine.getStatus() === 'green';
-    if (wasRunning && !nowRunning) {
+    if (previousStatus === 'green' && currentStatus !== 'green') {
       const lastCycle: Changes = new Map();
       lastCycle.set('lastCycle', new Date().valueOf() - new Date(lastStateTs).valueOf());
       machine.setState(lastCycle);
     }
+  }
+
+  if (previousStatus === 'yellow' && currentStatus !== 'yellow') {
+    const lastOperatorTime: Changes = new Map();
+    lastOperatorTime.set(
+      'lastOperatorTime',
+      new Date().valueOf() - new Date(lastStateTs).valueOf(),
+    );
+    machine.setState(lastOperatorTime);
   }
 }
 

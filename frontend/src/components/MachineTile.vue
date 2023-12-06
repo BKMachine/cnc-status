@@ -11,8 +11,14 @@
       <div class="details">
         <div v-if="isOnline" class="timer">
           <div>{{ timerText }}</div>
-          <div v-if="data.state.lastCycle">Last Cycle: {{ lastCycle }}</div>
-          <div v-else>Last Cycle: ---</div>
+          <div v-if="!hasAlarm">
+            <div v-if="data.state.lastCycle">Last Cycle: {{ lastCycle }}</div>
+            <div v-else>Last Cycle: ---</div>
+            <div v-if="data.state.lastOperatorTime" :class="{ 'long-change': longChange }">
+              Change Time: {{ lastOperatorIdle }}
+            </div>
+            <div v-else>Change Time: ---</div>
+          </div>
         </div>
         <div v-if="hasAlarm && data.source === 'focas'" class="alarm">
           {{ alarms[0].message.replace(/\*/g, ' ') }}
@@ -57,6 +63,13 @@ const lastCycle = computed(() => {
   return dur.toFormat('m:ss');
 });
 
+const lastOperatorIdle = computed(() => {
+  const seconds = Math.floor(props.data.state.lastOperatorTime / 1000);
+  const dur = Duration.fromObject({ seconds });
+  if (dur.as('hours') > 1) return dur.toFormat('h:mm:ss');
+  return dur.toFormat('m:ss');
+});
+
 const alarms = computed(() => {
   if (props.data.source === 'focas') {
     return props.data.state.alarms.concat(props.data.state.alarms2);
@@ -83,6 +96,11 @@ const blink = computed(() => {
   return isOnline.value && status.value === 'status-red' && seconds.value >= 60 * 15;
 });
 
+const longChange = computed(() => {
+  const seconds = Math.floor(props.data.state.lastOperatorTime / 1000);
+  return isOnline.value && seconds >= 60 * 15;
+});
+
 const status = computed(() => {
   return `status-${props.data.status}`;
 });
@@ -90,13 +108,14 @@ const status = computed(() => {
 
 <style scoped>
 .machine {
-  width: 250px;
-  height: 130px;
+  width: 200px;
+  height: 120px;
   color: #ffffff;
   padding: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 }
 
 .machine .online {
@@ -108,7 +127,7 @@ const status = computed(() => {
 }
 
 .header {
-  font-size: 28px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -116,7 +135,7 @@ const status = computed(() => {
 }
 
 .logo {
-  height: 30px;
+  height: 20px;
   flex-grow: 0;
   flex-shrink: 0;
 }
@@ -161,5 +180,9 @@ const status = computed(() => {
   100% {
     background-color: #6c6c6c;
   }
+}
+
+.long-change {
+  background-color: #bd0000;
 }
 </style>

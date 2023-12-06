@@ -4,7 +4,7 @@ import logger from '../../logger';
 import { arduinoMachines as machines } from '../index';
 
 const axios = _axios.create({
-  timeout: 1000,
+  timeout: 2000,
 });
 
 let interval: NodeJS.Timeout;
@@ -56,6 +56,15 @@ function run() {
             const lastState = new Date(machine.getState().lastStateTs).valueOf();
             const time = now - lastState;
             changes.set('lastCycle', time);
+          }
+        }
+        if (changes.has('yellow')) {
+          const isYellow = changes.get('yellow');
+          if (!isYellow) {
+            const now = new Date().valueOf();
+            const lastState = new Date(machine.getState().lastStateTs).valueOf();
+            const time = now - lastState;
+            changes.set('lastOperatorTime', time);
           }
         }
       })

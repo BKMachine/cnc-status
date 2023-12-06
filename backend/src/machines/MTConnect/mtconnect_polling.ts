@@ -84,9 +84,23 @@ function processJSON(data: MTConnectResponse) {
           }
         }
       });
+
+      const previousStatus = machine.getStatus();
+
       if (changes.size) {
         machine.setState(changes);
         machine.updateStatus();
+      }
+
+      const currentStatus = machine.getStatus();
+
+      if (previousStatus === 'yellow' && currentStatus !== 'yellow') {
+        const lastOperatorTime: Changes = new Map();
+        lastOperatorTime.set(
+          'lastOperatorTime',
+          new Date().valueOf() - new Date(machine.getState().lastStateTs).valueOf(),
+        );
+        machine.setState(lastOperatorTime);
       }
     });
   });

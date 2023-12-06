@@ -12,6 +12,7 @@ interface FocasState {
   alarms2: Alarm[];
   cycle: number;
   lastCycle: number;
+  lastOperatorTime: number;
   lastStateTs: string;
 }
 
@@ -51,6 +52,7 @@ interface ArduinoState {
   red: boolean;
   cycle: number;
   lastCycle: number;
+  lastOperatorTime: number;
   lastStateTs: string;
 }
 
@@ -69,6 +71,7 @@ interface MTConnectState {
   program: string;
   motion: 'UNAVAILABLE' | 'NORMAL' | 'WARNING' | 'FAULT';
   lastCycle: number;
+  lastOperatorTime: number;
   lastStateTs: string;
 }
 
@@ -121,3 +124,5 @@ interface MTConnect extends MachineData {
 }
 
 type MachineInfo = Focas | Arduino | MTConnect;
+
+interface BlankMachineTile { blank: true; index: number; id: string }

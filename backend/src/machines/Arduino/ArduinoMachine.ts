@@ -8,6 +8,7 @@ const initState: ArduinoState = {
   red: false,
   cycle: 0,
   lastCycle: 0,
+  lastOperatorTime: 0,
   lastStateTs: new Date().toISOString(),
 };
 

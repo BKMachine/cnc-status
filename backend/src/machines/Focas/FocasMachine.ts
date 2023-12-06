@@ -15,6 +15,7 @@ const initState: FocasState = {
   alarms2: [],
   cycle: 0,
   lastCycle: 0,
+  lastOperatorTime: 0,
   lastStateTs: new Date().toISOString(),
 };
 
