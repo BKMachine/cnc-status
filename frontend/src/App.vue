@@ -26,6 +26,7 @@ async function getMachines() {
 }
 
 onMounted(() => {
+  machineStore.setBlanks();
   setInterval(getMachines, 1000 * 60 * 5);
   getMachines().then(() => {
     socket = io(wsUrl, {

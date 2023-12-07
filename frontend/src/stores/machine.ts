@@ -4,6 +4,7 @@ const useMachineStore = defineStore('machine', {
   state: () => {
     return {
       machines: <MachineInfo[]>[],
+      blanks: <number[]>[],
     };
   },
   actions: {
@@ -34,6 +35,18 @@ const useMachineStore = defineStore('machine', {
       if (index !== -1) {
         this.machines[index].status = status;
       }
+    },
+    setBlanks() {
+      const blanks = localStorage.getItem('blanks');
+      this.blanks = blanks ? blanks.split(',').map((x) => parseInt(x)) : [];
+    },
+    addBlank(index: number) {
+      this.blanks.push(index);
+      localStorage.setItem('blanks', this.blanks.join(','));
+    },
+    removeBlank(index: number) {
+      this.blanks.slice(index, 1);
+      localStorage.setItem('blanks', this.blanks.join(','));
     },
   },
 });

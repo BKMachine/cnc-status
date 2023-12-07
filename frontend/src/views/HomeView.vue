@@ -7,11 +7,12 @@
         class="machine"
         @dblclick="openMachine(item.id)"
       >
-        <MachineTile :data="item" />
+        <BlankTile v-if="item.hasOwnProperty('blank')" />
+        <MachineTile v-else :data="item as MachineInfo" />
       </div>
     </VueDraggable>
-    <Settings @clear-order="refresh" />
     <HourEfficiency class="hour ml-2" />
+    <Settings @clear-order="refresh" />
   </main>
 </template>
 
@@ -24,6 +25,7 @@ import Settings from '@/components/HomeViewSettingsCog.vue';
 import { isHidden } from '@/plugins/hide_machine';
 import useMachineStore from '@/stores/machine';
 import HourEfficiency from '@/components/HourlyPerformance.vue';
+import BlankTile from '@/components/BlankTile.vue';
 
 const router = useRouter();
 const machineStore = useMachineStore();
@@ -33,16 +35,26 @@ function refresh() {
   refreshKey.value++;
 }
 
-const orderedMachines = computed((): MachineInfo[] => {
+const orderedMachines = computed((): (MachineInfo | BlankMachineTile)[] => {
   const order = localStorage.getItem('order');
   const orderArray = order ? order.split(',').map((x) => parseInt(x)) : [];
-  const results: MachineInfo[] = [];
+  if (!orderArray.length) {
+    const indexes = machineStore.machines.map((x) => x.index);
+    localStorage.setItem('order', indexes.join(','));
+  }
+  const blanksArray = [...machineStore.blanks];
+
+  const results: (MachineInfo | BlankMachineTile)[] = [];
   const remaining = [...machineStore.machines];
-  for (let i = 0; i < orderArray.length; i++) {
+  const length = machineStore.machines.length + blanksArray.length;
+  for (let i = 0; i < length; i++) {
     const index = remaining.findIndex((x) => x.index === orderArray[i]);
     if (index !== -1) {
       const [machine] = remaining.splice(index, 1);
       results.push(machine);
+    } else if (blanksArray.length && (blanksArray[0] === orderArray[i] || !orderArray[i])) {
+      results.push({ blank: true, id: blanksArray[0].toString(), index: blanksArray[0] });
+      blanksArray.pop();
     }
   }
   refreshKey.value; // Force recompute
@@ -50,7 +62,7 @@ const orderedMachines = computed((): MachineInfo[] => {
 });
 
 const visibleMachines = computed({
-  get() {
+  get(): (MachineInfo | BlankMachineTile)[] {
     return orderedMachines.value.filter((x) => !isHidden(x.id));
   },
   set(val) {
@@ -73,7 +85,7 @@ function openMachine(id: string) {
 }
 
 .machine {
-  margin: 5px;
+  margin: 3px;
 }
 
 .hour {

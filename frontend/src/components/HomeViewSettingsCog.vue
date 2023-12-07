@@ -11,6 +11,9 @@
       >
         Machines
       </v-list-item>
+      <v-list-item prepend-icon="mdi-checkbox-blank-outline" @click="addBlankTile">
+        Add Blank Tile
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -18,13 +21,20 @@
 <script setup lang="ts">
 import logo from '@/assets/bk-logo.png';
 import { useRouter } from 'vue-router';
+import useMachineStore from '@/stores/machine';
 
 const router = useRouter();
 const emits = defineEmits(['clear-order']);
+const machineStore = useMachineStore();
 
 function resetOrder() {
-  localStorage.removeItem('order');
+  localStorage.setItem('order', Array.from(Array(machineStore.machines.length).keys()).join(','));
   emits('clear-order');
+}
+
+function addBlankTile() {
+  const nextIndex = machineStore.machines.length + machineStore.blanks.length;
+  machineStore.addBlank(nextIndex);
 }
 </script>
 
