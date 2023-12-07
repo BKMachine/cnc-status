@@ -7,7 +7,7 @@
         class="machine"
         @dblclick="openMachine(item.id)"
       >
-        <BlankTile v-if="item.hasOwnProperty('blank')" />
+        <BlankTile v-if="item.hasOwnProperty('blank')" :index="item.index" />
         <MachineTile v-else :data="item as MachineInfo" />
       </div>
     </VueDraggable>
@@ -54,7 +54,7 @@ const orderedMachines = computed((): (MachineInfo | BlankMachineTile)[] => {
       results.push(machine);
     } else if (blanksArray.length && (blanksArray[0] === orderArray[i] || !orderArray[i])) {
       results.push({ blank: true, id: blanksArray[0].toString(), index: blanksArray[0] });
-      blanksArray.pop();
+      blanksArray.shift();
     }
   }
   refreshKey.value; // Force recompute

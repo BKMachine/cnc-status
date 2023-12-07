@@ -45,7 +45,14 @@ const useMachineStore = defineStore('machine', {
       localStorage.setItem('blanks', this.blanks.join(','));
     },
     removeBlank(index: number) {
-      this.blanks.slice(index, 1);
+      const i = this.blanks.indexOf(index);
+      if (i === -1) return;
+      const copy = [...this.blanks];
+      copy.splice(i, 1);
+      for (let j = 0; j < copy.length; j++) {
+        copy[j] = this.machines.length + j;
+      }
+      this.blanks = copy;
       localStorage.setItem('blanks', this.blanks.join(','));
     },
   },
