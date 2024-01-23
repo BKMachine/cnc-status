@@ -7,7 +7,7 @@
         class="machine"
         @dblclick="openMachine(item.id)"
       >
-        <BlankTile v-if="item.hasOwnProperty('blank')" :index="item.index" />
+        <BlankTile v-if="item.hasOwnProperty('blank')" :index="item.index as number" />
         <MachineTile v-else :data="item as MachineInfo" />
       </div>
     </VueDraggable>

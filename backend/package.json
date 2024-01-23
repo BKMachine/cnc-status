@@ -6,7 +6,8 @@
     "prettier": "prettier --write \"**/*.{js,ts,md,*rc,json}\" --ignore-path .gitignore",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore --ignore-pattern '__tests__' .",
     "performance:mqtt": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mqtt.messageHandler.performance.test.ts",
-    "performance:mtconnect": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mtconnect.performance.test.ts"
+    "performance:mtconnect": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mtconnect.performance.test.ts",
+    "thing": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only -r dotenv/config src/machines/Haas/serial.js"
   },
   "engines": {
     "node": ">=20.9.0"
@@ -24,6 +25,7 @@
     "mongoose": "^7.6.3",
     "morgan": "^1.10.0",
     "mqtt": "^5.1.3",
+    "remote-serial-port-client": "^0.4.0",
     "socket.io": "^4.7.2",
     "winston": "^3.11.0"
   },

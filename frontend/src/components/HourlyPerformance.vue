@@ -6,7 +6,7 @@
   </div>
 
   <div class="chart-container">
-    <LineChart :chartData="chartData" :options="options" class="chart" />
+    <LineChart :chart-data="chartData" :options="options" class="chart" />
   </div>
 </template>
 

@@ -4,3 +4,5 @@ declare namespace NodeJS {
     NODE_ENV: 'production' | 'development'
   }
 }
+
+module 'remote-serial-port-client'
