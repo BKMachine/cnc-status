@@ -79,14 +79,27 @@ interface MTConnectMappings {
   [key: string]: string;
 }
 
-type MachineState = FocasState | ArduinoState | MTConnectState;
-type MachineStateKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState;
+interface HaasState {
+  online: boolean;
+  mode: HaasMode;
+  execution: HaasExecution;
+  lastCycle: number;
+  lastOperatorTime: number;
+  lastStateTs: string;
+}
+
+type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE';
+type HaasMode = null | 'ZERORET';
+type HaasExecution = null | 'ALARMON'
+
+type MachineState = FocasState | ArduinoState | MTConnectState | HaasState;
+type MachineStateKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState | keyof HaasState;
 
 type Changes  = Map<MachineStateKey, any>
 
 type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
 type MachineType = 'lathe' | 'mill' | 'swiss';
-type MachineSource = 'focas' | 'arduino' | 'mtconnect';
+type MachineSource = 'focas' | 'arduino' | 'mtconnect' | 'serial';
 type MachineStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle'
 
 interface MachineData {
@@ -123,6 +136,12 @@ interface MTConnect extends MachineData {
   paths: '1',
 }
 
-type MachineInfo = Focas | Arduino | MTConnect;
+interface Haas extends MachineData {
+  source: 'serial';
+  state: HaasState;
+  paths: '1';
+}
+
+type MachineInfo = Focas | Arduino | MTConnect | Haas;
 
 interface BlankMachineTile { blank: true; index: number; id: string }

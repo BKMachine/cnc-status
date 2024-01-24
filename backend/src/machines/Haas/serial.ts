@@ -1,31 +1,125 @@
+import axios from 'axios';
 import { RemoteSerialPort } from 'remote-serial-port-client';
+import logger from '../../logger';
+import { haasMachines as machines } from '../index';
+
+let interval: NodeJS.Timeout;
 
 export function start() {
-  process('10.30.1.126', 5000);
+  stop();
+  interval = setInterval(() => {
+    try {
+      run();
+    } catch (e) {
+      // Do Nothing
+    }
+  }, 5000);
+  logger.info('Started HaasSerial polling');
 }
 
-async function process(host: string, port: number) {
-  const tcp = new RemoteSerialPort({ mode: 'tcp', host, port });
+export function stop() {
+  if (interval) {
+    clearInterval(interval);
+    logger.info('Stopped HaasSerial polling');
+  }
+}
+
+function run() {
+  machines.forEach((machine, location) => {
+    const { hostname, protocol } = new URL(location);
+    const url = protocol + '//' + hostname + '/index.htm';
+    const changes: Changes = new Map();
+    axios
+      .get(url)
+      .then(async () => {
+        const state = machine.getState() as HaasState;
+        const online = state.online;
+        if (!online) {
+          changes.set('online', true);
+          changes.set('lastStateTs', new Date().toISOString());
+        }
+        const responses = await serial(location);
+        responses.forEach((response) => {
+          const command = response.shift() as HaasCommand;
+          switch (command) {
+            case 'MODE': {
+              const old = state.mode;
+              const curr = response[0] as HaasMode;
+              if (old !== curr) {
+                changes.set('mode', curr);
+                changes.set('lastStateTs', new Date().toISOString());
+              }
+              break;
+            }
+            case 'PREVCYCLE': {
+              const old = state.lastCycle;
+              const curr = parseInt(response[0]) * 1000;
+              if (old !== curr) {
+                changes.set('lastCycle', curr);
+              }
+              break;
+            }
+            case 'PROGRAM': {
+              const old = state.execution;
+              const curr = response[1] as HaasExecution;
+              if (old !== curr) {
+                changes.set('execution', curr);
+                changes.set('lastStateTs', new Date().toISOString());
+              }
+              break;
+            }
+            default:
+            // Do Nothing
+          }
+          /*if (changes.has('yellow')) {
+            const isYellow = changes.get('yellow');
+            if (!isYellow) {
+              const now = new Date().valueOf();
+              const lastState = new Date(machine.getState().lastStateTs).valueOf();
+              const time = now - lastState;
+              changes.set('lastOperatorTime', time);
+            }
+          }*/
+        });
+      })
+      .catch(() => {
+        if (machine.getState().online) changes.set('online', false);
+      })
+      .finally(() => {
+        if (changes.size) {
+          machine.setState(changes);
+          machine.updateStatus();
+        }
+      });
+  });
+}
+
+async function serial(location: string): Promise<string[][]> {
+  const { hostname, port } = new URL(location);
+  const responses: string[][] = [];
+  const tcp: RSPC = new RemoteSerialPort({ mode: 'tcp', host: hostname, port, reconnect: false });
   await open(tcp);
-  save(await send(tcp, 200));
-  save(await send(tcp, 104));
+  responses.push(await send(tcp, 104)); // MODE, xxxxx
+  responses.push(await send(tcp, 304)); // LASTCYCLE, xxxxxxx
+  responses.push(await send(tcp, 500)); // PROGRAM, Oxxxxx, STATUS, PARTS, xxxxx
   tcp.close();
+  return responses;
 }
 
-function open(tcp) {
+function open(tcp: RSPC): Promise<void> {
   return new Promise((resolve, reject) => {
-    tcp.open(function (error: Error, result: unknown) {
+    tcp.open(function (error) {
       if (error) reject(error);
-      else resolve(result);
+      else resolve();
     });
   });
 }
 
-async function send(tcp, code: number): Promise<string[]> {
+async function send(tcp: RSPC, code: number): Promise<string[]> {
   return new Promise((resolve, reject) => {
     tcp.write(`Q${code}\r`);
     setTimeout(() => {
-      tcp.read(function (error: Error, result: Buffer) {
+      tcp.read(function (error, result) {
         if (error) reject(error);
         else resolve(parse(result));
       });
@@ -38,9 +132,4 @@ function parse(result: Buffer) {
     .toString('ascii')
     .replace(/[^0-9A-Z,]/gi, '')
     .split(',');
-}
-
-function save(thing: string[]) {
-  const command = thing.shift();
-  console.log('command', command);
 }

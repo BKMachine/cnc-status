@@ -4,24 +4,25 @@ import logger from './logger';
 import * as machines from './machines';
 import * as arduino from './machines/Arduino/arduino_polling';
 import * as mqtt from './machines/Focas/mqtt';
+import * as serial from './machines/Haas/serial';
 import * as mtconnect from './machines/MTConnect/mtconnect_polling';
 import * as server from './server';
-import * as serial from './machines/Haas/serial';
 
 async function start(): Promise<void> {
-  // await database.connect();
-  // await machines.initMachines();
-  // await elastic.connect();
-  // await mqtt.connect();
-  // arduino.start();
-  // mtconnect.start();
-  // server.start();
+  await database.connect();
+  await machines.initMachines();
+  await elastic.connect();
+  await mqtt.connect();
+  arduino.start();
+  mtconnect.start();
   serial.start();
+  server.start();
 }
 
 async function stop(): Promise<void> {
   const shutdownSequence = [
     server.stop,
+    serial.stop,
     mtconnect.stop,
     arduino.stop,
     mqtt.disconnect,

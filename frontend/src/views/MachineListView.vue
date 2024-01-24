@@ -87,6 +87,7 @@
                         <v-radio label="Focas" value="focas"></v-radio>
                         <v-radio label="Arduino" value="arduino"></v-radio>
                         <v-radio label="MTConnect" value="mtconnect"></v-radio>
+                        <v-radio label="Haas Serial" value="serial"></v-radio>
                       </v-radio-group>
                     </v-col>
                     <v-col>
@@ -326,6 +327,7 @@ const locationLabel = computed(() => {
   if (source === 'focas') return 'Machine ID';
   else if (source === 'arduino') return 'Arduino URL';
   else if (source === 'mtconnect') return 'Device ID';
+  else if (source === 'serial') return 'Serial to Ethernet Server URL';
   return 'Location';
 });
 
@@ -336,6 +338,7 @@ const locationMessage = computed(() => {
   else if (source === 'arduino') return 'http://10.30.1.XXX:8193';
   else if (source === 'mtconnect')
     return 'Enter the device id found in the mtconnect Devices.xml file.';
+  else if (source === 'serial') return 'http://10.30.1.XXX:5000';
   return '';
 });
 
