@@ -1,6 +1,10 @@
-var RemoteSerialPort = require('remote-serial-port-client').RemoteSerialPort;
+import { RemoteSerialPort } from 'remote-serial-port-client';
 
-async function process(host, port) {
+export function start() {
+  process('10.30.1.126', 5000);
+}
+
+async function process(host: string, port: number) {
   const tcp = new RemoteSerialPort({ mode: 'tcp', host, port });
   await open(tcp);
   save(await send(tcp, 200));
@@ -8,36 +12,35 @@ async function process(host, port) {
   tcp.close();
 }
 
-process('10.30.1.126', 5000);
-
 function open(tcp) {
   return new Promise((resolve, reject) => {
-    tcp.open(function (error, result) {
+    tcp.open(function (error: Error, result: unknown) {
       if (error) reject(error);
       else resolve(result);
     });
   });
 }
 
-async function send(tcp, code) {
+async function send(tcp, code: number): Promise<string[]> {
   return new Promise((resolve, reject) => {
     tcp.write(`Q${code}\r`);
     setTimeout(() => {
-      tcp.read(function (error, result) {
+      tcp.read(function (error: Error, result: Buffer) {
         if (error) reject(error);
         else resolve(parse(result));
       });
-    }, 250);
+    }, 500);
   });
 }
 
-function parse(result) {
+function parse(result: Buffer) {
   return result
     .toString('ascii')
     .replace(/[^0-9A-Z,]/gi, '')
     .split(',');
 }
 
-function save(thing) {
-  console.log(thing);
+function save(thing: string[]) {
+  const command = thing.shift();
+  console.log('command', command);
 }
