@@ -88,9 +88,9 @@ interface HaasState {
   lastStateTs: string;
 }
 
-type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE';
-type HaasMode = null | 'ZERORET';
-type HaasExecution = null | 'ALARMON'
+type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE' | 'STATUS';
+type HaasMode = null | 'ZERORET' | 'MEM' | 'EDIT' | 'JOG' | 'MDI';
+type HaasExecution = null | 'ALARMON' | 'IDLE' | 'FEEDHOLD' | 'BUSY';
 
 type MachineState = FocasState | ArduinoState | MTConnectState | HaasState;
 type MachineStateKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState | keyof HaasState;

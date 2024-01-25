@@ -20,8 +20,8 @@ class HaasMachine extends Machine {
     let status: MachineStatus;
     if (!state.online) status = 'offline';
     else if (state.execution === 'ALARMON') status = 'red';
-    // else if (state.execution === 'ACTIVE') status = 'green';
-    // else if (state.mode === 'AUTOMATIC' && state.execution === 'READY') status = 'yellow';
+    else if (state.execution === 'BUSY') status = 'green';
+    else if (state.mode === 'MEM' && state.execution === 'IDLE') status = 'yellow';
     else status = 'idle';
     this.setStatus(status);
   }

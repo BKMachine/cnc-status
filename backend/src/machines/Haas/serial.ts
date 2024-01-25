@@ -13,7 +13,7 @@ export function start() {
     } catch (e) {
       // Do Nothing
     }
-  }, 5000);
+  }, 10000);
   logger.info('Started HaasSerial polling');
 }
 
@@ -56,6 +56,15 @@ function run() {
               const curr = parseInt(response[0]) * 1000;
               if (old !== curr) {
                 changes.set('lastCycle', curr);
+              }
+              break;
+            }
+            case 'STATUS': {
+              const old = state.execution;
+              const curr = response[0] as HaasExecution;
+              if (old !== curr) {
+                changes.set('execution', curr);
+                changes.set('lastStateTs', new Date().toISOString());
               }
               break;
             }
