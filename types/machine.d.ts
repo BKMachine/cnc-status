@@ -88,7 +88,7 @@ interface HaasState {
   lastStateTs: string;
 }
 
-type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE' | 'STATUS';
+type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE' | 'STATUS' | 'LASTCYCLE';
 type HaasMode = null | 'ZERORET' | 'MEM' | 'EDIT' | 'JOG' | 'MDI';
 type HaasExecution = null | 'ALARMON' | 'IDLE' | 'FEEDHOLD' | 'BUSY';
 
@@ -145,3 +145,5 @@ interface Haas extends MachineData {
 type MachineInfo = Focas | Arduino | MTConnect | Haas;
 
 interface BlankMachineTile { blank: true; index: number; id: string }
+
+type QCode = 100 | 101 | 102 | 104 | 200 | 201 | 300 | 301 | 303 | 304 | 402 | 403 | 500 | 600
