@@ -86,6 +86,7 @@ interface HaasState {
   lastCycle: number;
   lastOperatorTime: number;
   lastStateTs: string;
+  serial: string;
 }
 
 type HaasCommand = 'MODE' | 'PROGRAM' | 'PREVCYCLE' | 'STATUS' | 'LASTCYCLE';
@@ -93,47 +94,51 @@ type HaasMode = null | 'ZERORET' | 'MEM' | 'EDIT' | 'JOG' | 'MDI';
 type HaasExecution = null | 'ALARMON' | 'IDLE' | 'FEEDHOLD' | 'BUSY';
 
 type MachineState = FocasState | ArduinoState | MTConnectState | HaasState;
-type MachineStateKey = keyof FocasState | keyof ArduinoState | keyof MTConnectState | keyof HaasState;
+type MachineStateKey =
+  | keyof FocasState
+  | keyof ArduinoState
+  | keyof MTConnectState
+  | keyof HaasState;
 
-type Changes  = Map<MachineStateKey, any>
+type Changes = Map<MachineStateKey, any>;
 
 type MachineBrand = 'fanuc' | 'mori' | 'doosan' | 'mitsubishi' | 'haas' | 'mazak' | 'hanwha';
 type MachineType = 'lathe' | 'mill' | 'swiss';
 type MachineSource = 'focas' | 'arduino' | 'mtconnect' | 'serial';
-type MachineStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle'
+type MachineStatus = 'offline' | 'red' | 'yellow' | 'green' | 'idle';
 
 interface MachineData {
-  id: string,
-  name: string,
-  serialNumber: string,
-  brand: MachineBrand,
+  id: string;
+  name: string;
+  serialNumber: string;
+  brand: MachineBrand;
   model: string;
-  type: MachineType,
-  source: MachineSource,
-  paths: '1'  | '2',
-  location: string,
-  logo: string,
-  status: MachineStatus
-  state: MachineState
+  type: MachineType;
+  source: MachineSource;
+  paths: '1' | '2';
+  location: string;
+  logo: string;
+  status: MachineStatus;
+  state: MachineState;
   index?: number;
 }
 
 interface Focas extends MachineData {
-  source: 'focas',
-  state: FocasState,
-  paths: '1' | '2',
+  source: 'focas';
+  state: FocasState;
+  paths: '1' | '2';
 }
 
 interface Arduino extends MachineData {
-  source: 'arduino',
-  state: ArduinoState,
-  paths: '1',
+  source: 'arduino';
+  state: ArduinoState;
+  paths: '1';
 }
 
 interface MTConnect extends MachineData {
-  source: 'mtconnect',
-  state: MTConnectState,
-  paths: '1',
+  source: 'mtconnect';
+  state: MTConnectState;
+  paths: '1';
 }
 
 interface Haas extends MachineData {
@@ -144,6 +149,10 @@ interface Haas extends MachineData {
 
 type MachineInfo = Focas | Arduino | MTConnect | Haas;
 
-interface BlankMachineTile { blank: true; index: number; id: string }
+interface BlankMachineTile {
+  blank: true;
+  index: number;
+  id: string;
+}
 
-type QCode = 100 | 101 | 102 | 104 | 200 | 201 | 300 | 301 | 303 | 304 | 402 | 403 | 500 | 600
+type QCode = 100 | 101 | 102 | 104 | 200 | 201 | 300 | 301 | 303 | 304 | 402 | 403 | 500 | 600;

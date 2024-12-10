@@ -39,6 +39,7 @@ function run() {
           changes.set('lastStateTs', new Date().toISOString());
         }
         const responses = await serial(location);
+        if (responses.join('').trim().length) changes.set('serial', JSON.stringify(responses));
         responses.forEach((response) => {
           const command = response.shift() as HaasCommand;
           switch (command) {
