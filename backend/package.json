@@ -5,6 +5,7 @@
     "build": "rimraf ./dist && tsc -p ./tsconfig.build.json",
     "prettier": "prettier --write \"**/*.{js,ts,md,*rc,json}\" --ignore-path .gitignore",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore --ignore-pattern '__tests__' .",
+    "test": "jest",
     "performance:mqtt": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mqtt.messageHandler.performance.test.ts",
     "performance:mtconnect": "ts-node-dev --transpile-only -r dotenv/config ./src/__tests__/mtconnect.performance.test.ts"
   },
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.20",
+    "@types/jest": "^29.5.14",
     "@types/lodash": "^4.14.200",
     "@types/morgan": "^1.9.7",
     "@types/node": "^20.17.9",
@@ -39,9 +41,11 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "jest": "^29.7.0",
     "performance-now": "^2.1.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
+    "ts-jest": "^29.2.5",
     "ts-node-dev": "^2.0.0",
     "typescript": "~5.6.3"
   }

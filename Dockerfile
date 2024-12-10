@@ -10,6 +10,7 @@ RUN yarn install --immutable
 RUN cd /app/backend && \
     yarn prettier && \
     yarn lint && \
+    yarn test && \
     yarn build
 
 RUN cd /app/frontend && \

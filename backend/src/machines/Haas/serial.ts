@@ -53,11 +53,7 @@ function run() {
             }
             case 'LASTCYCLE': {
               const old = state.lastCycle;
-              // Extract hours, minutes, and seconds based on the format HHHMMSS
-              const hours = parseInt(response[0].substring(0, 3), 10); // First 3 digits
-              const minutes = parseInt(response[0].substring(3, 5), 10); // Next 2 digits
-              const seconds = parseInt(response[0].substring(5, 7), 10); // Last 2 digits
-              const curr = hours * 3600 + minutes * 60 + seconds;
+              const curr = parseLastCycle(response[0]);
               if (old !== curr) {
                 changes.set('lastCycle', curr);
               }
@@ -146,4 +142,16 @@ function parse(result: Buffer) {
     .toString('ascii')
     .replace(/[^0-9A-Z,]/gi, '')
     .split(',');
+}
+
+export function parseLastCycle(text: string): number {
+  // Extract seconds (last 2 digits)
+  const seconds = parseInt(text.slice(-2), 10);
+
+  // Extract minutes (2 digits before the last 2 digits)
+  const minutes = parseInt(text.slice(-4, -2), 10);
+
+  // Extract hours (everything before the minutes and seconds)
+  const hours = parseInt(text.slice(0, -4), 10) || 0; // Default to 0 if empty
+  return (hours * 3600 + minutes * 60 + seconds) * 1000;
 }
