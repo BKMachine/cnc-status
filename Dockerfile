@@ -1,7 +1,7 @@
-FROM node:20.9.0-alpine3.18 as builder
+FROM node:20.11.1-alpine3.18 as builder
 RUN apk add --update git python3 make gcc g++
 RUN corepack enable && \
-    corepack prepare yarn@stable --activate
+    corepack prepare yarn@4.1.0 --activate
 WORKDIR /app
 COPY . .
 RUN yarn
