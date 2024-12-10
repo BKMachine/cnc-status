@@ -39,7 +39,6 @@ function run() {
           changes.set('lastStateTs', new Date().toISOString());
         }
         const responses = await serial(location);
-        console.log(machine.getMachine().name, responses);
         responses.forEach((response) => {
           const command = response.shift() as HaasCommand;
           switch (command) {
