@@ -14,14 +14,14 @@
   "engineStrict": true,
   "dependencies": {
     "@elastic/elasticsearch": "8.10.0",
-    "axios": "^1.6.0",
+    "axios": "^1.7.9",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "fast-xml-parser": "^4.3.2",
     "http-terminator": "^3.2.0",
     "lodash": "^4.17.21",
-    "mongoose": "^7.6.3",
+    "mongoose": "^7.8.3",
     "morgan": "^1.10.0",
     "mqtt": "^5.1.3",
     "remote-serial-port-client": "^0.4.0",
@@ -32,7 +32,7 @@
     "@types/express": "^4.17.20",
     "@types/lodash": "^4.14.200",
     "@types/morgan": "^1.9.7",
-    "@types/node": "^20.8.9",
+    "@types/node": "^20.17.9",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.57.1",
@@ -43,6 +43,6 @@
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "~5.6.3"
   }
 }
