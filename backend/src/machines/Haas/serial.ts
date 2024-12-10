@@ -39,6 +39,7 @@ function run() {
           changes.set('lastStateTs', new Date().toISOString());
         }
         const responses = await serial(location);
+        console.log(machine.getMachine().name, responses);
         responses.forEach((response) => {
           const command = response.shift() as HaasCommand;
           switch (command) {
@@ -53,7 +54,11 @@ function run() {
             }
             case 'LASTCYCLE': {
               const old = state.lastCycle;
-              const curr = parseInt(response[0]) * 1000;
+              // Extract hours, minutes, and seconds based on the format HHHMMSS
+              const hours = parseInt(response[0].substring(0, 3), 10); // First 3 digits
+              const minutes = parseInt(response[0].substring(3, 5), 10); // Next 2 digits
+              const seconds = parseInt(response[0].substring(5, 7), 10); // Last 2 digits
+              const curr = hours * 3600 + minutes * 60 + seconds;
               if (old !== curr) {
                 changes.set('lastCycle', curr);
               }
