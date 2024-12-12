@@ -51,6 +51,12 @@ onMounted(() => {
     socket.on('status', (status) => {
       machineStore.updateMachineStatus(status);
     });
+
+    socket.on('refresh-data', () => {
+      getMachines().catch(() => {
+        // Do Nothing
+      });
+    });
   });
 });
 </script>

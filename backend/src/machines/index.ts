@@ -1,4 +1,5 @@
 import Machine from '../database/lib/machine';
+import { emit } from '../server/socket.io';
 import ArduinoMachine from './Arduino/ArduinoMachine';
 import FocasMachine from './Focas/FocasMachine';
 import HaasMachine from './Haas/HaasMachine';
@@ -37,6 +38,7 @@ export function initMachines(): Promise<void> {
         haasMachines.set(doc.location, machine);
       }
     });
+    emit('refresh-data');
     resolve();
   });
 }

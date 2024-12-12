@@ -1,3 +1,4 @@
+import { initMachines } from '../../../machines';
 import Machine, { MachineDoc } from './machine_model';
 
 function list(): Promise<MachineDoc[]> {
@@ -10,11 +11,14 @@ async function create(data: any): Promise<MachineDoc> {
 }
 
 async function update(id: string, data: any): Promise<MachineDoc | null> {
-  return Machine.findByIdAndUpdate(id, data, { new: true });
+  const updated = await Machine.findByIdAndUpdate(id, data, { new: true });
+  await initMachines();
+  return updated;
 }
 
 async function remove(id: string): Promise<void> {
   await Machine.findByIdAndRemove(id);
+  await initMachines();
 }
 export default {
   list,
